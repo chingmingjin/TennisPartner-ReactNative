@@ -1,20 +1,27 @@
 import React, { Component } from 'react';
+import { Alert, StyleSheet, StatusBar, View } from 'react-native';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
 export default class AnatomyExample extends Component {
   render() {
     return (
       <Container>
-        <Header>
+       <View>
+          <StatusBar backgroundColor="#004ba0" />
+       </View>
+        <Header style={styles.header}>
           <Left>
             <Button transparent>
               <Icon name='menu' />
             </Button>
           </Left>
           <Body>
-            <Title>Header</Title>
+            <Title>Tennis Partner</Title>
           </Body>
           <Right>
-          <Button transparent>
+          <Button transparent 
+          onPress={() => {
+             Alert.alert('You tapped the button!');
+          }}>
               <Icon name='search' />
             </Button>
           </Right>
@@ -35,3 +42,9 @@ export default class AnatomyExample extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  header: {
+   backgroundColor: '#1976d2'
+  }
+});
