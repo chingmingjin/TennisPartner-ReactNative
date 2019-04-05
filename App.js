@@ -6,7 +6,7 @@ export default class AnatomyExample extends Component {
     return (
       <Container>
        <View>
-          <StatusBar backgroundColor="#004ba0" />
+          <StatusBar backgroundColor="#004ba0" barStyle="light-content"/>
        </View>
         <Header style={styles.header}>
           <Left>
