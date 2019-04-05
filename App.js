@@ -17,7 +17,7 @@ export default class AnatomyExample extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>Tennis Partner</Title>
+            <Title style={{ color: "white" }}>Tennis Partner</Title>
           </Body>
           <Right>
           <Button transparent 
