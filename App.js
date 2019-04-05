@@ -40,7 +40,7 @@ export default class AnatomyExample extends Component {
               <Text>Igrači</Text>
             </Button>
             <Button vertical>
-              <Icon name="camera" />
+            <Icon type="MaterialCommunityIcons" name="tennis" />
               <Text>Tereni</Text>
             </Button>
           </FooterTab>

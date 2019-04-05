@@ -110,8 +110,8 @@ export default {
   brandSuccess: "#5cb85c",
   brandDanger: "#d9534f",
   brandWarning: "#f0ad4e",
-  brandDark: "#000",
-  brandLight: "#f4f4f4",
+  brandDark: "#DC851F",
+  brandLight: "#ffa737",
 
   //Container
   containerBgColor: "#fff",
@@ -136,16 +136,16 @@ export default {
 
   // Footer
   footerHeight: 55,
-  footerDefaultBg: platform === "ios" ? "#F8F8F8" : "#3F51B5",
+  footerDefaultBg: "#F8F8F8",
   footerPaddingBottom: 0,
 
   // FooterTab
-  tabBarTextColor: platform === "ios" ? "#737373" : "#bfc6ea",
+  tabBarTextColor: "#737373",
   tabBarTextSize: platform === "ios" ? 14 : 11,
-  activeTab: platform === "ios" ? "#007aff" : "#fff",
+  activeTab: "#007aff",
   sTabBarActiveTextColor: "#007aff",
-  tabBarActiveTextColor: platform === "ios" ? "#2874F0" : "#fff",
-  tabActiveBgColor: platform === "ios" ? "#cde1f9" : "#3F51B5",
+  tabBarActiveTextColor: "#2874F0",
+  tabActiveBgColor: "#cde1f9",
 
   // Header
   toolbarBtnColor: "#fff",
