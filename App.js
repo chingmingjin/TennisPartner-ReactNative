@@ -5,10 +5,7 @@ export default class AnatomyExample extends Component {
   render() {
     return (
       <Container>
-       <View>
-          <StatusBar backgroundColor="#004ba0" barStyle="light-content"/>
-       </View>
-        <Header style={styles.header}>
+        <Header iosBarStyle="light-content" androidStatusBarColor="#004ba0" style={styles.header}>
           <Left>
             <Button transparent>
               <Icon name='menu' />
