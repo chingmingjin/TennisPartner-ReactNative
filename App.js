@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import { Alert, StyleSheet, StatusBar, View } from 'react-native';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
+import { Alert } from 'react-native';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, StyleProvider } from 'native-base';
+
+import getTheme from './native-base-theme/components';
+import commonColor from './native-base-theme/variables/commonColor';
+
 export default class AnatomyExample extends Component {
   render() {
     return (
+      <StyleProvider style={getTheme(commonColor)}>
       <Container>
-        <Header iosBarStyle="light-content" androidStatusBarColor="#004ba0" style={styles.header}>
+        <Header>
           <Left>
             <Button transparent>
               <Icon name='menu' />
@@ -36,12 +41,7 @@ export default class AnatomyExample extends Component {
           </FooterTab>
         </Footer>
       </Container>
+      </StyleProvider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  header: {
-   backgroundColor: '#1976d2'
-  }
-});
