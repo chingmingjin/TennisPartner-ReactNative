@@ -35,8 +35,13 @@ export default class AnatomyExample extends Component {
         </Content>
         <Footer>
           <FooterTab>
-            <Button full>
-              <Text>Footer</Text>
+            <Button vertical active>
+            <Icon type="FontAwesome" name="users" />
+              <Text>Igrači</Text>
+            </Button>
+            <Button vertical>
+              <Icon name="camera" />
+              <Text>Tereni</Text>
             </Button>
           </FooterTab>
         </Footer>
