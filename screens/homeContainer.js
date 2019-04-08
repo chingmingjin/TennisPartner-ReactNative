@@ -7,14 +7,17 @@ import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
 
 export default class HomeContainer extends Component {
+  constructor(props) {
+    super(props);
+    }
     render() {
       const ButtonLeft = Platform.select({
         ios: () => {return(<Button transparent><Icon style={{fontSize: 24}} type='FontAwesome5' name='user-cog' /></Button>)},
-        android: () => {return(<Button transparent onPress={() => this.refs['drawer'].openDrawer()}><Icon name='menu' /></Button>)},
+        android: () => {return(<Button transparent onPress={this.props.openDrawer}><Icon name='menu' /></Button>)},
       });
       return (
         <StyleProvider style={getTheme(commonColor)}>
-      <Container>
+        <Container>
           <Header>
             <Left>
               <ButtonLeft />
@@ -49,6 +52,7 @@ export default class HomeContainer extends Component {
             </FooterTab>
           </Footer> 
           </Container>
-          </StyleProvider>);
-          }
+          </StyleProvider>
+        );
+    }
 }
