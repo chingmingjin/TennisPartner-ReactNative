@@ -1,27 +1,14 @@
-import React, { Component } from 'react';
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
-import { createDrawerNavigator, createStackNavigator, createAppContainer } from "react-navigation";
-import Home from "./screens/home/";
-import SideBar from "./screens/sidebar";
+import HomeScreen from "./screens/home/";
 
-
-
-const Drawer = createDrawerNavigator(
-  {
-    Home: { screen: Home },
-  },
-  {
-    initialRouteName: "Home",
-    contentComponent: props => <SideBar {...props} />
-  }
-);
 
 const AppNavigator = createStackNavigator(
   {
-    Drawer: { screen: Drawer },
+    Home: HomeScreen,
   },
   {
-    initialRouteName: "Drawer",
+    initialRouteName: "Home",
     headerMode: "none"
   }
 );
