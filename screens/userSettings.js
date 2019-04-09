@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, SectionList, Image, Text, StyleSheet, Platform } from "react-native";
-import { ListItem, Left, Icon } from "native-base";
+import { View, SectionList, Image, StyleSheet, Platform } from "react-native";
+import { Left, Icon, Text, ListItem } from 'native-base';
 
 export default class UserSettings extends Component {
   render() {
@@ -43,7 +43,7 @@ export default class UserSettings extends Component {
       },
     });
     return (
-      <View style={styles.navigationView}>
+        <View style={styles.navigationView}>
           <View style={styles.header}>
             <Image source={require('../images/user.png')} style={styles.profileImg} />
             <Text style={styles.userName}>Sign in</Text>

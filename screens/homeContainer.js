@@ -24,7 +24,7 @@ class HomeContainer extends Component {
               <ButtonLeft />
             </Left>
             <Body>
-              <Title style={{ color: "white" }}>Tennis Partner</Title>
+              <Title style={{ color: "white" }}>Players</Title>
             </Body>
             <Right>
             <Button transparent 
@@ -44,11 +44,11 @@ class HomeContainer extends Component {
             <FooterTab>
               <Button vertical active>
               <Icon type="FontAwesome" name="users" />
-                <Text>Igrači</Text>
+                <Text>Players</Text>
               </Button>
               <Button vertical>
               <Icon type="MaterialCommunityIcons" name="tennis" />
-                <Text>Tereni</Text>
+                <Text>Courts</Text>
               </Button>
             </FooterTab>
           </Footer> 

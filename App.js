@@ -1,12 +1,12 @@
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
 import HomeScreen from "./screens/home/";
-import UserSettings from "./screens/userSettings/";
+import UserSettingsiOS from "./screens/userSettingsiOS";
 
 const AppNavigator = createStackNavigator(
   {
     Home: HomeScreen,
-    UserSettings: UserSettings,
+    UserSettings: UserSettingsiOS,
   },
   {
     initialRouteName: "Home",
