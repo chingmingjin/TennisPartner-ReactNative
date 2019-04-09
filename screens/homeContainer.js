@@ -5,14 +5,15 @@ import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Rig
 
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
+import { withNavigation } from 'react-navigation';
 
-export default class HomeContainer extends Component {
+class HomeContainer extends Component {
   constructor(props) {
     super(props);
     }
     render() {
       const ButtonLeft = Platform.select({
-        ios: () => {return(<Button transparent><Icon style={{fontSize: 24}} type='FontAwesome5' name='user-cog' /></Button>)},
+        ios: () => {return(<Button transparent onPress={() => this.props.navigation.navigate('UserSettings')}><Icon style={{fontSize: 24}} type='FontAwesome5' name='user-cog' /></Button>)},
         android: () => {return(<Button transparent onPress={this.props.openDrawer}><Icon name='menu' /></Button>)},
       });
       return (
@@ -56,3 +57,4 @@ export default class HomeContainer extends Component {
         );
     }
 }
+export default withNavigation(HomeContainer);
