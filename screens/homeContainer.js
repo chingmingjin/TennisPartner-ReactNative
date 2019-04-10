@@ -3,6 +3,8 @@ import { Alert, Platform } from 'react-native';
 
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, StyleProvider } from 'native-base';
 
+import PlayersList from '../components/PlayersList';
+
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
 import { withNavigation } from 'react-navigation';
@@ -24,7 +26,7 @@ class HomeContainer extends Component {
               <ButtonLeft />
             </Left>
             <Body>
-              <Title style={{ color: "white" }}>Players</Title>
+              <Title style={{ color: "white" }}>{ this.props.title }</Title>
             </Body>
             <Right>
             <Button transparent 
@@ -36,9 +38,7 @@ class HomeContainer extends Component {
             </Right>
           </Header>
           <Content>
-            <Text>
-              This is Content Section
-            </Text>
+            <PlayersList />
           </Content>
           <Footer>
             <FooterTab>

@@ -22,7 +22,7 @@ export default class HomeScreen extends Component {
           drawerWidth={225}
           drawerPosition={DrawerLayoutAndroid.positions.Left}
           renderNavigationView={() => navigationView}>
-          <HomeContainer openDrawer={this.openDrawer} />
+            <HomeContainer title="Players" openDrawer={this.openDrawer} />
           </DrawerLayoutAndroid>
       );
     }

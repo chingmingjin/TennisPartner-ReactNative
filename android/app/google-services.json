@@ -1,0 +1,64 @@
+{
+  "project_info": {
+    "project_number": "49503866744",
+    "firebase_url": "https://tennispartnerapp.firebaseio.com",
+    "project_id": "tennispartnerapp",
+    "storage_bucket": "tennispartnerapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:49503866744:android:497f79d0edc92881",
+        "android_client_info": {
+          "package_name": "app.tennispartner.tennispartner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "49503866744-jpdtjkrof6bodr6ac5bd5c4fcrevmt3a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.tennispartner.tennispartner",
+            "certificate_hash": "4829e77d18cd2a81674b44f398776d29382ffebf"
+          }
+        },
+        {
+          "client_id": "49503866744-h0ar1mn4gj428ea7r3lau0ivqv4hlbcq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.tennispartner.tennispartner",
+            "certificate_hash": "026da7f48d5a5c4827a14d9d2d556c9b83f1041c"
+          }
+        },
+        {
+          "client_id": "49503866744-m6e0jeo04l8e8211hq0gab6r6vamk05v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.tennispartner.tennispartner",
+            "certificate_hash": "30c10914550f4203431125407dd3a3b906c9dc8d"
+          }
+        },
+        {
+          "client_id": "49503866744-m5crbgdl9iftvivtb62dtmle853i1isd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmbvLULP9YYLvWb2frJXg0Qd_h_wBZlDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "49503866744-m5crbgdl9iftvivtb62dtmle853i1isd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

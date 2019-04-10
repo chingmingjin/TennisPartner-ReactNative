@@ -1,4 +1,4 @@
-package com.tennispartner;
+package app.tennispartner.tennispartner;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

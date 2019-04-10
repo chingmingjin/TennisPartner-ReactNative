@@ -7,7 +7,7 @@ import { withNavigation } from 'react-navigation';
 class HomeScreen extends Component {
     render() {
       return (
-          <HomeContainer />
+          <HomeContainer title="Players" />
       );
     }
   }
