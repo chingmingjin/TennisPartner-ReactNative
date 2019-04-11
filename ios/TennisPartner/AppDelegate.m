@@ -6,6 +6,7 @@
  */
 
 #import "AppDelegate.h"
+@import Firebase;
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -15,6 +16,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
+  [FIRApp configure];
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 
