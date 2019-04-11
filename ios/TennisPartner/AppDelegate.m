@@ -17,6 +17,8 @@
 {
   NSURL *jsCodeLocation;
   [FIRApp configure];
+  
+  FIRFirestore *defaultFirestore = [FIRFirestore firestore];
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 

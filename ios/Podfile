@@ -7,8 +7,8 @@ target 'TennisPartner' do
 
   # Pods for TennisPartner
 
-  pod 'Firebase/Core', '~> 5.15.0'
-  pod 'Firebase/Firestore', '~> 5.15.0'
+  pod 'Firebase/Core'
+  pod 'Firebase/Firestore'
 
   target 'TennisPartnerTests' do
     inherit! :search_paths
