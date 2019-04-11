@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { FlatList, View } from 'react-native';
+import { Spinner } from 'native-base';
 import firebase from 'react-native-firebase';
 
 import PlayerCard from '../components/PlayerCard';
@@ -14,13 +15,14 @@ class PlayersList extends Component {
 
     this.state = {
       players: [],
+      loading: true,
     };
   }
   componentDidMount() {
     var players = [];
     this.firebaseRef.get().then(snapshot => {
       snapshot.docs.forEach(doc => {
-          const { firstName, lastName, gender, birthday } = doc.data();
+          const { firstName, lastName, gender, birthday, avatarUrl } = doc.data();
           players.push({
             key: doc.id,
             doc, // DocumentSnapshot
@@ -28,14 +30,25 @@ class PlayersList extends Component {
             lastName,
             gender,
             birthday,
+            avatarUrl
           });
         });
+      this.setState({ 
+        players,
+        loading: false,
+      });
     });
-    this.setState({ 
-      players,
-   });
   }
   render() {
+    if (this.state.loading) {
+      return (
+      <View style={{
+        flex: 1, 
+        alignItems: 'center',
+        justifyContent: 'center'}}>
+        <Spinner size='large' color='#ffa737' />
+      </View>); // or render a loading icon
+    }
     return (
       <View style={{ flex: 1 }}>
           <FlatList
