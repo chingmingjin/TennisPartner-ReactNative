@@ -42,12 +42,8 @@ class PlayersList extends Component {
   render() {
     if (this.state.loading) {
       return (
-      <View style={{
-        flex: 1, 
-        alignItems: 'center',
-        justifyContent: 'center'}}>
-        <Spinner size='large' color='#ffa737' />
-      </View>); // or render a loading icon
+        <Spinner size="large" color='#ffa737' />
+      ); // or render a loading icon
     }
     return (
       <View style={{ flex: 1 }}>

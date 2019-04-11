@@ -1,21 +1,54 @@
 import React, { Component } from "react";
-import { Image } from 'react-native';
+import { Image, View, StyleSheet } from 'react-native';
 import { Card, CardItem, Body, Text } from 'native-base';
 
 import { withNavigation } from 'react-navigation';
 
+function getAge(dateString) {
+  var today = new Date();
+  var birthDate = new Date(dateString);
+  var age = today.getFullYear() - birthDate.getFullYear();
+  var m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+  }
+  return age;
+}
 
 class PlayerCard extends Component {
   constructor(props) {
     super(props);
   }
   render() {
+    const styles = StyleSheet.create({
+      avatar: {
+        width: 80, 
+        height: 80, 
+        borderRadius: 40
+      },
+      firstName: {
+        fontSize: 24,
+      },
+      birthDate: {
+        fontSize: 20,
+        color: '#999'
+      }
+    });
     return (
     <Card borderRadius={8}>
         <CardItem>
           <Body>
-          <Image source={{uri: this.props.avatarUrl}}
-          style={{width: 80, height: 80, borderRadius: 40}} />
+          <View style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            alignItems: 'center'
+          }}>
+            <Image source={{uri: this.props.avatarUrl}}
+            style={styles.avatar} />
+            <Text style={styles.firstName}>{this.props.firstName}</Text>
+            <Text style={styles.birthDate}>{getAge(this.props.birthday)}</Text>
+          </View>
           </Body>
         </CardItem>
       </Card>
