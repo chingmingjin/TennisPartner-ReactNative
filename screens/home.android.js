@@ -3,8 +3,9 @@ import { DrawerLayoutAndroid } from 'react-native';
 
 import HomeContainer from "./homeContainer/";
 import UserSettings from "./userSettings";
+import { withNavigation } from 'react-navigation';
 
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
     constructor(props) {
       super(props);
           this.openDrawer = this.openDrawer.bind(this);
@@ -27,3 +28,5 @@ export default class HomeScreen extends Component {
       );
     }
   }
+
+  export default withNavigation(HomeScreen);

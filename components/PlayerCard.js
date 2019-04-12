@@ -28,10 +28,12 @@ class PlayerCard extends Component {
       },
       firstName: {
         fontSize: 24,
+        marginStart: 10
       },
       birthDate: {
         fontSize: 20,
-        color: '#999'
+        color: '#999',
+        marginStart: 5
       }
     });
     return (
@@ -41,7 +43,7 @@ class PlayerCard extends Component {
           <View style={{
             flex: 1,
             flexDirection: 'row',
-            justifyContent: 'space-evenly',
+            justifyContent: 'space-between',
             alignItems: 'center'
           }}>
             <Image source={{uri: this.props.avatarUrl}}

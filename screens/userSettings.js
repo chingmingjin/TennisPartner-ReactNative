@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { View, SectionList, Image, StyleSheet, Platform } from "react-native";
+import { View, SectionList, Image, StyleSheet, Platform, TouchableHighlight } from "react-native";
 import { Left, Icon, Text, ListItem } from 'native-base';
+import { withNavigation } from "react-navigation";
 
-export default class UserSettings extends Component {
+class UserSettings extends Component {
   render() {
     const styles = StyleSheet.create({
       navigationView: {
@@ -45,7 +46,9 @@ export default class UserSettings extends Component {
     return (
         <View style={styles.navigationView}>
           <View style={styles.header}>
-            <Image source={require('../images/user.png')} style={styles.profileImg} />
+            <TouchableHighlight style={{ borderRadius: 40 }} onPress={() => this.props.navigation.navigate('Login')}>
+              <Image source={require('../images/user.png')} style={styles.profileImg} />
+            </TouchableHighlight>
             <Text style={styles.userName}>Sign in</Text>
           </View>
           <SectionList
@@ -67,3 +70,5 @@ export default class UserSettings extends Component {
     );
   }
 }
+
+export default withNavigation(UserSettings);
