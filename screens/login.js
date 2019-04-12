@@ -91,7 +91,7 @@ export default class PhoneAuthTest extends Component {
       <View style={{ padding: 25 }}>
         <Text>Enter phone number:</Text>
         <PhoneInput 
-                style={{ marginTop: 15, marginBottom: 15 }}
+                style={{ marginTop: 20 }}
                 ref={(ref) => { this.phone = ref; }}
                 textProps={{autoFocus: true}}
                 flagStyle={{ width: 35, height: 25 }}
@@ -115,7 +115,8 @@ export default class PhoneAuthTest extends Component {
                 <View />
         </CountryPicker>
         
-        <Button block light style={{ marginTop: 20, padding: 0 }} onPress={this.signIn}><Text style={{ color: '#FFF' }} >Sign In</Text></Button>
+        <Button block light style={{ marginTop: 20, marginBottom: 20, padding: 0 }} onPress={this.signIn}><Text style={{ color: '#FFF' }} >Verify Phone Number</Text></Button>
+        <Text>By tapping "Verify Phone Number", you are indicating that you accept our Terms of Service and Privacy Policy. An SMS may be sent. Message & data rates may apply</Text>
       </View>
     );
   }
