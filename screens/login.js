@@ -51,12 +51,16 @@ export default class PhoneAuthTest extends Component {
   }
 
   signIn = () => {
-    const { phoneNumber } = this.state;
-    this.setState({ message: 'Sending code ...' });
+    if(!this.phone.isValidNumber()) {
+        this.setState({ message: 'Please enter valid phone number!' });
+        return null;
+    }
+    const phone = this.phone.getValue();
+    this.setState({ phoneNumber: phone });
 
-    firebase.auth().signInWithPhoneNumber(phoneNumber)
+    firebase.auth().signInWithPhoneNumber(phone)
       .then(confirmResult => this.setState({ confirmResult, message: 'Code has been sent!' }))
-      .catch(error => this.setState({ message: `Sign In With Phone Number Error: ${error.message}` }));
+      .catch(error => this.setState({ message: error.message }));
   };
 
   confirmCode = () => {
@@ -96,7 +100,6 @@ export default class PhoneAuthTest extends Component {
                 textProps={{autoFocus: true}}
                 flagStyle={{ width: 35, height: 25 }}
                 textStyle={{ fontSize: 18, fontWeight: 'bold' }}
-                onChangeText={value => this.setState({ phoneNumber: value })}
                 value={phoneNumber}
                 initialCountry='hr'
                 onPressFlag={this.onPressFlag}/>
@@ -127,7 +130,7 @@ export default class PhoneAuthTest extends Component {
     if (!message.length) return null;
 
     return (
-      <Text style={{ padding: 5, backgroundColor: '#000', color: '#fff' }}>{message}</Text>
+      <Text style={{ marginStart: 20, marginEnd: 20, padding: 15, backgroundColor: '#d9534f', color: '#fff' }}>{message}</Text>
     );
   }
 
@@ -135,16 +138,16 @@ export default class PhoneAuthTest extends Component {
     const { codeInput } = this.state;
 
     return (
-      <View style={{ marginTop: 25, padding: 25 }}>
+      <View style={{ padding: 25 }}>
         <Text>Enter verification code below:</Text>
-        <TextInput
-          autoFocus
-          style={{ height: 40, marginTop: 15, marginBottom: 15 }}
-          onChangeText={value => this.setState({ codeInput: value })}
-          placeholder={'Code ... '}
-          value={codeInput}
-        />
-        <Button title="Confirm Code" color="#841584" onPress={this.confirmCode} />
+        <Item underline>
+            <Input 
+            autoFocus
+            onChangeText={value => this.setState({ codeInput: value })} 
+            placeholder="Underline Textbox"
+            value={codeInput} />
+        </Item>
+        <Button block light style={{ marginTop: 20, marginBottom: 20, padding: 0 }} onPress={this.confirmCode}><Text style={{ color: '#FFF' }} >Confirm Code</Text></Button>
       </View>
     );
   }
@@ -183,9 +186,9 @@ export default class PhoneAuthTest extends Component {
 
                 {!user && !confirmResult && this.renderPhoneNumberInput()}
 
-                {this.renderMessage()}
-
                 {!user && confirmResult && this.renderVerificationCodeInput()}
+
+                {this.renderMessage()}
 
                 {user && (
                 <View
