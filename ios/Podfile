@@ -9,6 +9,7 @@ target 'TennisPartner' do
 
   pod 'Firebase/Core'
   pod 'Firebase/Firestore'
+  pod 'Firebase/Auth'
 
   target 'TennisPartnerTests' do
     inherit! :search_paths
