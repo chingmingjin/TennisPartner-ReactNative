@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, View, SectionList, Image, StyleSheet, Platform, TouchableHighlight } from "react-native";
+import { Share, View, SectionList, Image, StyleSheet, Platform, TouchableHighlight } from "react-native";
 import { Left, Icon, Text, ListItem } from 'native-base';
 import { withNavigation } from "react-navigation";
 
@@ -30,6 +30,11 @@ class UserSettings extends Component {
  }
 
  link(item) {
+  if(item == 'Invite friends') Share.share({
+    message: 'Get new Tennis Partner app!\nhttps://tennispartner.app/get'
+  },{
+    dialogTitle: 'Invite via…'
+  });
   if(item == 'Logout') firebase.auth().signOut();
  }
 
