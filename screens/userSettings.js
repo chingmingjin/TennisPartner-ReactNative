@@ -1,9 +1,38 @@
 import React, { Component } from "react";
-import { View, SectionList, Image, StyleSheet, Platform, TouchableHighlight } from "react-native";
+import { Alert, View, SectionList, Image, StyleSheet, Platform, TouchableHighlight } from "react-native";
 import { Left, Icon, Text, ListItem } from 'native-base';
 import { withNavigation } from "react-navigation";
 
+import firebase from 'react-native-firebase';
+
 class UserSettings extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null
+    };
+    this.link = this.link.bind(this);
+  }
+
+  componentDidMount() {
+    this.unsubscribe = firebase.auth().onAuthStateChanged((userInfo) => {
+      if (userInfo) {
+        this.setState({ user: userInfo });
+      } else {
+        this.setState({
+          user: null,
+        });
+      }
+    });
+  }
+  componentWillUnmount() {
+    if (this.unsubscribe) this.unsubscribe();
+ }
+
+ link(item) {
+  if(item == 'Logout') firebase.auth().signOut();
+ }
+
   render() {
     const styles = StyleSheet.create({
       navigationView: {
@@ -43,21 +72,34 @@ class UserSettings extends Component {
         marginLeft: 20
       },
     });
+
+    const { user } = this.state;
+
     return (
         <View style={styles.navigationView}>
+        {!user && (
           <View style={styles.header}>
             <TouchableHighlight style={{ borderRadius: 40 }} onPress={() => this.props.navigation.navigate('Login')}>
               <Image source={require('../images/user.png')} style={styles.profileImg} />
             </TouchableHighlight>
             <Text style={styles.userName}>Sign in</Text>
           </View>
+        )}
+        {user && (
+          <View style={styles.header}>
+            <TouchableHighlight style={{ borderRadius: 40 }}>
+              <Image source={user.photoURL} style={styles.profileImg} />
+            </TouchableHighlight>
+            <Text style={styles.userName}>{ user.displayName }</Text>
+          </View>
+        )}
           <SectionList
             sections={[
-              {title: 'Info', data: ['Invite friends', 'About'], icon: ['share-alt', 'info-circle']},
-              {title: 'User', data: ['My Games', 'Logout'], icon: ['game', 'sign-out-alt']},
+              {data: ['Invite friends', 'About'], icon: ['share-alt', 'info-circle']},
+              {title: 'User', data: ['My Games', 'Logout'], icon: ['baseball-ball', 'sign-out-alt']}
             ]}
             renderItem={({item, index, section }) =>
-            <ListItem button noBorder>
+            <ListItem button noBorder onPress={() => this.link(item)}>
             <Left>
               <Icon active type='FontAwesome5' name={section.icon[index]} style={{ color: "#888", fontSize: 22, width: 30 }} />
               <Text style={styles.text}>{item}</Text>

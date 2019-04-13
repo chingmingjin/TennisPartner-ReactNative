@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, TextInput, Image, Platform } from 'react-native';
-import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, StyleProvider, Item, Input } from 'native-base';
+import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, StyleProvider, Item, Input, Spinner } from 'native-base';
 
 import firebase from 'react-native-firebase';
 import PhoneInput from 'react-native-phone-input';
@@ -8,8 +8,6 @@ import CountryPicker from 'react-native-country-picker-modal';
 
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
-
-const successImageUri = 'https://cdn.pixabay.com/photo/2015/06/09/16/12/icon-803718_1280.png';
 
 export default class PhoneAuthTest extends Component {
   constructor(props) {
@@ -22,6 +20,7 @@ export default class PhoneAuthTest extends Component {
       phoneNumber: '',
       confirmResult: null,
       cca2: 'HR',
+      loading: false
     };
 
     this.onPressFlag = this.onPressFlag.bind(this);
@@ -41,6 +40,8 @@ export default class PhoneAuthTest extends Component {
           codeInput: '',
           phoneNumber: '',
           confirmResult: null,
+          loading: false,
+          loadingText: ''
         });
       }
     });
@@ -56,22 +57,27 @@ export default class PhoneAuthTest extends Component {
         return null;
     }
     const phone = this.phone.getValue();
-    this.setState({ phoneNumber: phone });
+    this.setState({ phoneNumber: phone, message: '', loading: true, loadingText: 'Sending verification code...' });
 
     firebase.auth().signInWithPhoneNumber(phone)
-      .then(confirmResult => this.setState({ confirmResult, message: 'Code has been sent!' }))
+      .then(confirmResult => this.setState({ confirmResult, loading: false }))
       .catch(error => this.setState({ message: error.message }));
   };
 
   confirmCode = () => {
     const { codeInput, confirmResult } = this.state;
+    if(!codeInput.length) {
+      this.setState({ message: 'Please enter verification code!' });
+      return null;
+    }
+    this.setState({ message: '', loading: true, loadingText: 'Verifying code...' });
 
-    if (confirmResult && codeInput.length) {
+    if (confirmResult) {
       confirmResult.confirm(codeInput)
         .then((user) => {
-          this.setState({ message: 'Code Confirmed!' });
+          this.props.navigation.goBack();
         })
-        .catch(error => this.setState({ message: `Code Confirm Error: ${error.message}` }));
+        .catch(error => this.setState({ loading: false, message: error.message }));
     }
   };
 
@@ -139,12 +145,15 @@ export default class PhoneAuthTest extends Component {
 
     return (
       <View style={{ padding: 25 }}>
-        <Text>Enter verification code below:</Text>
+        <Text style={{ textAlign: 'center' }}>Enter verification code below:</Text>
         <Item underline>
             <Input 
             autoFocus
-            onChangeText={value => this.setState({ codeInput: value })} 
-            placeholder="Underline Textbox"
+            onChangeText={value => this.setState({ codeInput: value })}
+            keyboardType='number-pad'
+            textContentType='oneTimeCode'
+            maxLength={6}
+            style={{ textAlign: 'center', fontSize: 24, fontWeight: 'bold' }}
             value={codeInput} />
         </Item>
         <Button block light style={{ marginTop: 20, marginBottom: 20, padding: 0 }} onPress={this.confirmCode}><Text style={{ color: '#FFF' }} >Confirm Code</Text></Button>
@@ -153,7 +162,7 @@ export default class PhoneAuthTest extends Component {
   }
 
   render() {
-    const { user, confirmResult } = this.state;
+    const { user, confirmResult, loading, loadingText } = this.state;
     const ButtonLeft = Platform.select({
         ios: () => {
             return(
@@ -184,28 +193,19 @@ export default class PhoneAuthTest extends Component {
           <Content>
           <View style={{ flex: 1 }}>
 
-                {!user && !confirmResult && this.renderPhoneNumberInput()}
+                { loading && (
+                  <View style={{ flex: 1 }}>
+                  <Spinner color='#ffa737' />
+                  <Text style={{ textAlign: 'center' }}>{ loadingText }</Text>
+                  </View>
+                )}
 
-                {!user && confirmResult && this.renderVerificationCodeInput()}
+                {!user && !confirmResult && !loading && this.renderPhoneNumberInput()}
+
+                {!user && confirmResult && !loading && this.renderVerificationCodeInput()}
 
                 {this.renderMessage()}
 
-                {user && (
-                <View
-                    style={{
-                    padding: 15,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#77dd77',
-                    flex: 1,
-                    }}
-                >
-                    <Image source={{ uri: successImageUri }} style={{ width: 100, height: 100, marginBottom: 25 }} />
-                    <Text style={{ fontSize: 25 }}>Signed In!</Text>
-                    <Text>{JSON.stringify(user)}</Text>
-                    <Button title="Sign Out" color="red" onPress={this.signOut} />
-                </View>
-                )}
             </View>
           </Content>
           </Container>
