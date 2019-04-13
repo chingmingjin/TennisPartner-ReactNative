@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, TextInput, Image, Platform } from 'react-native';
-import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, StyleProvider, Item, Input, Spinner } from 'native-base';
+import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, StyleProvider, Item, Input, Spinner, Toast } from 'native-base';
 
 import firebase from 'react-native-firebase';
 import PhoneInput from 'react-native-phone-input';
@@ -64,15 +64,15 @@ export default class PhoneAuthTest extends Component {
     if (confirmResult) {
       confirmResult.confirm(codeInput)
         .then((user) => {
-          this.props.navigation.goBack();
+          Toast.show({
+            text: 'Login successful!',
+            textStyle: { textAlign: 'center' },
+            type: 'success',
+          }).onClose(this.props.navigation.goBack());
         })
         .catch(error => this.setState({ loading: false, message: error.message }));
     }
   };
-
-  signOut = () => {
-    firebase.auth().signOut();
-  }
 
   onPressFlag(){
     this.countryPicker.openModal();

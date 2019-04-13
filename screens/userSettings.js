@@ -30,12 +30,13 @@ class UserSettings extends Component {
  }
 
  link(item) {
+  const { user } = this.state;
   if(item == 'Invite friends') Share.share({
     message: 'Get new Tennis Partner app!\nhttps://tennispartner.app/get'
   },{
     dialogTitle: 'Invite via…'
   });
-  if(item == 'Logout') firebase.auth().signOut();
+  if(item == 'Logout') if(user) firebase.auth().signOut();
  }
 
   render() {
