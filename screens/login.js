@@ -31,18 +31,7 @@ export default class PhoneAuthTest extends Component {
     this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({ user: user.toJSON() });
-      } else {
-        // User has been signed out, reset the state
-        this.setState({
-          pickerData: this.phone.getPickerData(),
-          user: null,
-          message: '',
-          codeInput: '',
-          phoneNumber: '',
-          confirmResult: null,
-          loading: false,
-          loadingText: ''
-        });
+        this.props.navigation.goBack();
       }
     });
   }
