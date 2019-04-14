@@ -32,7 +32,8 @@ class UserSettings extends Component {
  link(item) {
   const { user } = this.state;
   if(item == 'Invite friends') Share.share({
-    message: 'Get new Tennis Partner app!\nhttps://tennispartner.app/get'
+    message: 'Get new Tennis Partner app!\nhttps://tennispartner.app/get',
+    url: 'https://tennispartner.app/get'
   },{
     dialogTitle: 'Invite via…'
   });
@@ -81,15 +82,17 @@ class UserSettings extends Component {
 
     const { user } = this.state;
 
+    const userMenu = user ? {title: 'User', data: ['My Games', 'Logout'], icon: ['baseball-ball', 'sign-out-alt']} : {data: []};
+
     return (
         <View style={styles.navigationView}>
         {!user && (
+        <TouchableHighlight style={{ borderRadius: 40 }} onPress={() => this.props.navigation.navigate('Login')}>
           <View style={styles.header}>
-            <TouchableHighlight style={{ borderRadius: 40 }} onPress={() => this.props.navigation.navigate('Login')}>
               <Image source={require('../images/user.png')} style={styles.profileImg} />
-            </TouchableHighlight>
             <Text style={styles.userName}>Sign in</Text>
           </View>
+        </TouchableHighlight>
         )}
         {user && (
           <View style={styles.header}>
@@ -102,7 +105,7 @@ class UserSettings extends Component {
           <SectionList
             sections={[
               {data: ['Invite friends', 'About'], icon: ['share-alt', 'info-circle']},
-              {title: 'User', data: ['My Games', 'Logout'], icon: ['baseball-ball', 'sign-out-alt']}
+              userMenu
             ]}
             renderItem={({item, index, section }) =>
             <ListItem button noBorder onPress={() => this.link(item)}>
@@ -111,7 +114,7 @@ class UserSettings extends Component {
               <Text style={styles.text}>{item}</Text>
             </Left>
             </ListItem>}
-            renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+            renderSectionHeader={({section}) => section.title ? <Text style={styles.sectionHeader}>{section.title}</Text> : (null)}
             keyExtractor={(item, index) => index}
           />
         </View>

@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import { View, TextInput, Image, Platform } from 'react-native';
+import { View, Linking, Platform } from 'react-native';
 import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, StyleProvider, Item, Input, Spinner, Toast } from 'native-base';
 
 import firebase from 'react-native-firebase';
 import PhoneInput from 'react-native-phone-input';
 import CountryPicker from 'react-native-country-picker-modal';
+import Link from '../components/Link';
 
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
+
 
 export default class PhoneAuthTest extends Component {
   constructor(props) {
@@ -114,7 +116,7 @@ export default class PhoneAuthTest extends Component {
         </CountryPicker>
         
         <Button block light style={{ marginTop: 20, marginBottom: 20, padding: 0 }} onPress={this.signIn}><Text style={{ color: '#FFF' }} >Verify Phone Number</Text></Button>
-        <Text>By tapping "Verify Phone Number", you are indicating that you accept our Terms of Service and Privacy Policy. An SMS may be sent. Message & data rates may apply</Text>
+        <Text>By tapping "Verify Phone Number", you are indicating that you accept our <Link url='http://tennispartner.app/tos.html'>Terms of Service</Link> and <Link url='http://tennispartner.app/privacy-policy.html'>Privacy Policy</Link>. An SMS may be sent. Message & data rates may apply</Text>
       </View>
     );
   }
