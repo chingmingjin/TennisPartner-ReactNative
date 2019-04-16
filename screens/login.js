@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Platform, StyleSheet } from 'react-native';
+import { View, Image, Platform, StyleSheet, TouchableHighlight } from 'react-native';
 import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, StyleProvider, Item, Input, Label, Spinner, ListItem, Radio } from 'native-base';
 
 import firebase from 'react-native-firebase';
@@ -7,7 +7,8 @@ import PhoneInput from 'react-native-phone-input';
 import CountryPicker from 'react-native-country-picker-modal';
 import Link from '../components/Link';
 import { LoginButton } from 'react-native-fbsdk';
-import DatePicker from 'react-native-datepicker'
+import DatePicker from 'react-native-datepicker';
+import ImagePicker from 'react-native-image-picker';
 
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
@@ -27,6 +28,7 @@ class PhoneAuth extends Component {
       cca2: 'HR',
       loading: false,
       title: 'Sign In',
+      avatarSource: require('../images/user.png')
     };
 
     this.onPressFlag = this.onPressFlag.bind(this);
@@ -151,6 +153,38 @@ class PhoneAuth extends Component {
     );
   }
 
+  openImagePicker() {
+    const options = {
+      title: 'Select Avatar',
+      customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+    
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = { uri: response.uri };
+    
+        // You can also display the image using data:
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+    
+        this.setState({
+          avatarSource: source,
+        });
+      }
+    });
+  }
+
   render() {
     const styles = StyleSheet.create({
       loginInfo: {
@@ -158,12 +192,14 @@ class PhoneAuth extends Component {
         padding: 20
       },
       profileImg: {
-          width: 100,
-          height: 100,
+          width: 120,
+          height: 120,
           borderRadius: 40,
+          marginTop: 10,
+          marginBottom: 10
       },
       separator: {
-        width: 300,
+        alignSelf: 'stretch',
         fontSize: 14,
         color: '#999',
         textAlign: 'center'
@@ -215,13 +251,15 @@ class PhoneAuth extends Component {
 
                 {user && !loading && (
                   <View style={styles.loginInfo}>
-                  <Image source={require('../images/user.png')} style={styles.profileImg} />
-                  <Item floatingLabel>
+                  <TouchableHighlight style={{ borderRadius: 40 }} onPress={() => this.openImagePicker()} source={this.state.avatarSource}>
+                    <Image style={styles.profileImg} />
+                  </TouchableHighlight>
+                  <Item style={{ marginTop: 10, marginBottom: 10 }} floatingLabel>
                     <Label>Full name</Label>
                     <Input />
                   </Item>
                     <DatePicker
-                        style={{width: 370}}
+                        style={{ alignSelf: 'stretch' }}
                         date={this.state.date}
                         mode="date"
                         androidMode="spinner"
@@ -233,23 +271,25 @@ class PhoneAuth extends Component {
                         cancelBtnText="Cancel"
                         customStyles={{
                           dateInput: {
-                            marginTop: 30,
+                            marginTop: 20,
                             borderWidth: 0,
                             borderBottomWidth: 1,
                             borderBottomColor: '#DDD',
                           },
                           dateIcon: {
-                            marginTop: 30
+                            marginTop: 20
                           },
                           placeholderText: {
                             position: 'absolute',
-                            color: '#777',
-                            fontSize: 17,
+                            color: '#555',
+                            fontSize: 16,
                             left: 0
                           }, 
                           dateText: {
-                            color: '#777',
-                            fontSize: 17,
+                            position: 'absolute',
+                            color: '#555',
+                            fontSize: 16,
+                            left: 0
                           }
                         }}
                         onDateChange={(date) => {this.setState({date: date})}}
@@ -270,11 +310,13 @@ class PhoneAuth extends Component {
                       <Radio />
                     </Right>
                   </ListItem>
+                  <Button style={{ marginTop: 10, marginBottom: 20, height: 40 }} block light>
+                    <Text style={{ color: 'white' }}>Continue</Text>
+                  </Button>
                     <Text style={styles.separator}>OR</Text>
-                    
                     <View>
                     <LoginButton
-                      style={{ width: 350, height: 30, margin: 20 }}
+                      style={{ width: 200, height: 30, marginTop: 20 }}
                       readPermissions={["user_birthday user_gender"]}
                       onLoginFinished={
                         (error, result) => {

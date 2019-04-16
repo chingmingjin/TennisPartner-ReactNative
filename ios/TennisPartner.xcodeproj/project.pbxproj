@@ -26,15 +26,15 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1AA8C50A450147AFBE2FD1C1 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F34AB4DB387445BF9E68E4F2 /* MaterialIcons.ttf */; };
 		2923A111573B4301B0A33B2F /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFA2DA97626E47CEAF4A3706 /* AntDesign.ttf */; };
-		2C36E6BE2265C8FD00E042F9 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C36E6922265C8EF00E042F9 /* FBSDKLoginKit.framework */; };
-		2C36E6BF2265C8FD00E042F9 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C36E6BB2265C8F300E042F9 /* FBSDKShareKit.framework */; };
-		2C36E6C02265C8FD00E042F9 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C36E6BC2265C8F900E042F9 /* FBSDKCoreKit.framework */; };
-		2C36E6C12265C8FD00E042F9 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C36E6BD2265C8FD00E042F9 /* Bolts.framework */; };
 		2C36E6C82265CCF100E042F9 /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C36E6C72265CCD600E042F9 /* libRCTFBSDK.a */; };
 		2C64A63A225F64F8005D4684 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C64A639225F64F8005D4684 /* GoogleService-Info.plist */; };
 		2CD8A714225F79C700BF27B1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C64A639225F64F8005D4684 /* GoogleService-Info.plist */; };
 		2CD8A715225F79C800BF27B1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C64A639225F64F8005D4684 /* GoogleService-Info.plist */; };
 		2CD8A716225F79C900BF27B1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C64A639225F64F8005D4684 /* GoogleService-Info.plist */; };
+		2CDE7A33226633FA008F2F4A /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CDE7A2F226633F9008F2F4A /* FBSDKCoreKit.framework */; };
+		2CDE7A34226633FA008F2F4A /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CDE7A30226633F9008F2F4A /* Bolts.framework */; };
+		2CDE7A35226633FA008F2F4A /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CDE7A31226633F9008F2F4A /* FBSDKLoginKit.framework */; };
+		2CDE7A36226633FA008F2F4A /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CDE7A32226633F9008F2F4A /* FBSDKShareKit.framework */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -408,12 +408,12 @@
 		1F833A2781FA48FF903DF5E3 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		2A8FE251C384E73BB00D29C8 /* Pods-TennisPartner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TennisPartner.release.xcconfig"; path = "Target Support Files/Pods-TennisPartner/Pods-TennisPartner.release.xcconfig"; sourceTree = "<group>"; };
 		2C3558872260F25A005840EB /* TennisPartner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TennisPartner.entitlements; path = TennisPartner/TennisPartner.entitlements; sourceTree = "<group>"; };
-		2C36E6922265C8EF00E042F9 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
-		2C36E6BB2265C8F300E042F9 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
-		2C36E6BC2265C8F900E042F9 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		2C36E6BD2265C8FD00E042F9 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		2C36E6C22265CCD600E042F9 /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
 		2C64A639225F64F8005D4684 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2CDE7A2F226633F9008F2F4A /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Frameworks/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		2CDE7A30226633F9008F2F4A /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Frameworks/Bolts.framework; sourceTree = "<group>"; };
+		2CDE7A31226633F9008F2F4A /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Frameworks/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		2CDE7A32226633F9008F2F4A /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Frameworks/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* TennisPartner-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TennisPartner-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* TennisPartner-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TennisPartner-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -466,24 +466,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C36E6C82265CCF100E042F9 /* libRCTFBSDK.a in Frameworks */,
+				2CDE7A34226633FA008F2F4A /* Bolts.framework in Frameworks */,
+				2CDE7A35226633FA008F2F4A /* FBSDKLoginKit.framework in Frameworks */,
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
-				2C36E6BF2265C8FD00E042F9 /* FBSDKShareKit.framework in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
+				2CDE7A33226633FA008F2F4A /* FBSDKCoreKit.framework in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
-				2C36E6BE2265C8FD00E042F9 /* FBSDKLoginKit.framework in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
-				2C36E6C12265C8FD00E042F9 /* Bolts.framework in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
+				2CDE7A36226633FA008F2F4A /* FBSDKShareKit.framework in Frameworks */,
 				C31D932BAF0A43E8A9D6A3FC /* libRNGestureHandler.a in Frameworks */,
-				2C36E6C02265C8FD00E042F9 /* FBSDKCoreKit.framework in Frameworks */,
 				2FB35D06E6FE42728A33BB1B /* libRNFirebase.a in Frameworks */,
 				5F5A9AD8CBF4CDB1F4E7D0CC /* libPods-TennisPartner.a in Frameworks */,
 			);
@@ -699,10 +699,10 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2C36E6BD2265C8FD00E042F9 /* Bolts.framework */,
-				2C36E6BC2265C8F900E042F9 /* FBSDKCoreKit.framework */,
-				2C36E6922265C8EF00E042F9 /* FBSDKLoginKit.framework */,
-				2C36E6BB2265C8F300E042F9 /* FBSDKShareKit.framework */,
+				2CDE7A30226633F9008F2F4A /* Bolts.framework */,
+				2CDE7A2F226633F9008F2F4A /* FBSDKCoreKit.framework */,
+				2CDE7A31226633F9008F2F4A /* FBSDKLoginKit.framework */,
+				2CDE7A32226633F9008F2F4A /* FBSDKShareKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				4479091972DE5B2AE8A5952E /* libPods-TennisPartner.a */,

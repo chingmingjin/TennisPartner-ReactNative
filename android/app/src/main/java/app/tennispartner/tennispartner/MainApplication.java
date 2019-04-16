@@ -3,6 +3,7 @@ package app.tennispartner.tennispartner;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.imagepicker.ImagePickerPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ImagePickerPackage(),
             new RNFirebasePackage(),
             new RNGestureHandlerPackage(),
             new RNFirebaseFirestorePackage(),
