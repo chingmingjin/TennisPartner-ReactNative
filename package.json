@@ -15,6 +15,7 @@
     "react": "16.6.3",
     "react-native": "0.58.6",
     "react-native-country-picker-modal": "^0.7.1",
+    "react-native-datepicker": "^1.7.2",
     "react-native-fbsdk": "^0.8.0",
     "react-native-firebase": "^5.3.1",
     "react-native-gesture-handler": "^1.1.0",

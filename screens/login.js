@@ -7,6 +7,7 @@ import PhoneInput from 'react-native-phone-input';
 import CountryPicker from 'react-native-country-picker-modal';
 import Link from '../components/Link';
 import { LoginButton } from 'react-native-fbsdk';
+import DatePicker from 'react-native-datepicker'
 
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
@@ -25,7 +26,7 @@ class PhoneAuth extends Component {
       confirmResult: null,
       cca2: 'HR',
       loading: false,
-      title: 'Sign In'
+      title: 'Sign In',
     };
 
     this.onPressFlag = this.onPressFlag.bind(this);
@@ -219,10 +220,40 @@ class PhoneAuth extends Component {
                     <Label>Full name</Label>
                     <Input />
                   </Item>
-                  <Item floatingLabel>
-                    <Label>Birthday</Label>
-                    <Input />
-                  </Item>
+                    <DatePicker
+                        style={{width: 370}}
+                        date={this.state.date}
+                        mode="date"
+                        androidMode="spinner"
+                        placeholder="Birthday"
+                        format="DD.MM.YYYY"
+                        minDate="01-01-1920"
+                        maxDate={"01-01-2019"}
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        customStyles={{
+                          dateInput: {
+                            marginTop: 30,
+                            borderWidth: 0,
+                            borderBottomWidth: 1,
+                            borderBottomColor: '#DDD',
+                          },
+                          dateIcon: {
+                            marginTop: 30
+                          },
+                          placeholderText: {
+                            position: 'absolute',
+                            color: '#777',
+                            fontSize: 17,
+                            left: 0
+                          }, 
+                          dateText: {
+                            color: '#777',
+                            fontSize: 17,
+                          }
+                        }}
+                        onDateChange={(date) => {this.setState({date: date})}}
+                      />
                   <ListItem>
                     <Left>
                       <Text>Male</Text>
@@ -243,19 +274,17 @@ class PhoneAuth extends Component {
                     
                     <View>
                     <LoginButton
+                      style={{ width: 350, height: 30, margin: 20 }}
                       readPermissions={["user_birthday user_gender"]}
                       onLoginFinished={
                         (error, result) => {
                           if (error) {
-                            alert("Login failed with error: " + error.message);
-                          } else if (result.isCancelled) {
-                            alert("Login was cancelled");
+                            alert("Login error: " + error.message);
                           } else {
                             alert("Login was successful with permissions: " + result.grantedPermissions)
                           }
                         }
-                      }
-                      onLogoutFinished={() => alert("User logged out")}/>
+                      }/>
                   </View>
 
               </View>
