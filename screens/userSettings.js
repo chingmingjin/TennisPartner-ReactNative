@@ -87,7 +87,7 @@ class UserSettings extends Component {
     return (
         <View style={styles.navigationView}>
         {!user && (
-        <TouchableHighlight style={{ borderRadius: 40 }} onPress={() => this.props.navigation.navigate('Login')}>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Login')}>
           <View style={styles.header}>
               <Image source={require('../images/user.png')} style={styles.profileImg} />
             <Text style={styles.userName}>Sign in</Text>

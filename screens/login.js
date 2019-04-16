@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import { View, Linking, Platform } from 'react-native';
-import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, StyleProvider, Item, Input, Spinner, Toast } from 'native-base';
+import { View, Image, Platform, StyleSheet } from 'react-native';
+import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, StyleProvider, Item, Input, Label, Spinner, ListItem, Radio } from 'native-base';
 
 import firebase from 'react-native-firebase';
 import PhoneInput from 'react-native-phone-input';
 import CountryPicker from 'react-native-country-picker-modal';
 import Link from '../components/Link';
+import { LoginButton } from 'react-native-fbsdk';
 
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
+import { withNavigation } from 'react-navigation';
 
 
-export default class PhoneAuthTest extends Component {
+class PhoneAuth extends Component {
   constructor(props) {
     super(props);
     this.unsubscribe = null;
@@ -22,7 +24,8 @@ export default class PhoneAuthTest extends Component {
       phoneNumber: '',
       confirmResult: null,
       cca2: 'HR',
-      loading: false
+      loading: false,
+      title: 'Sign In'
     };
 
     this.onPressFlag = this.onPressFlag.bind(this);
@@ -33,7 +36,6 @@ export default class PhoneAuthTest extends Component {
     this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({ user: user.toJSON() });
-        this.props.navigation.goBack();
       }
     });
   }
@@ -66,11 +68,7 @@ export default class PhoneAuthTest extends Component {
     if (confirmResult) {
       confirmResult.confirm(codeInput)
         .then((user) => {
-          Toast.show({
-            text: 'Login successful!',
-            textStyle: { textAlign: 'center' },
-            type: 'success',
-          }).onClose(this.props.navigation.goBack());
+          this.setState({ loading: false, message: '', title: 'Your Info' });
         })
         .catch(error => this.setState({ loading: false, message: error.message }));
     }
@@ -153,8 +151,25 @@ export default class PhoneAuthTest extends Component {
   }
 
   render() {
-    const { user, confirmResult, loading, loadingText } = this.state;
-    const ButtonLeft = Platform.select({
+    const styles = StyleSheet.create({
+      loginInfo: {
+        alignItems: 'center',
+        padding: 20
+      },
+      profileImg: {
+          width: 100,
+          height: 100,
+          borderRadius: 40,
+      },
+      separator: {
+        width: 300,
+        fontSize: 14,
+        color: '#999',
+        textAlign: 'center'
+      }
+    });
+    const { user, confirmResult, loading, loadingText, title } = this.state;
+    const ButtonBack = Platform.select({
         ios: () => {
             return(
             <Button transparent onPress={() => this.props.navigation.goBack()}>
@@ -174,10 +189,10 @@ export default class PhoneAuthTest extends Component {
         <Container>
           <Header>
           <Left>
-            <ButtonLeft />
+            <ButtonBack />
             </Left>
             <Body>
-              <Title style={{ color: "white" }}>Sign in</Title>
+              <Title style={{ color: "white" }}>{ title }</Title>
             </Body>
             <Right />
           </Header>
@@ -197,6 +212,55 @@ export default class PhoneAuthTest extends Component {
 
                 {this.renderMessage()}
 
+                {user && !loading && (
+                  <View style={styles.loginInfo}>
+                  <Image source={require('../images/user.png')} style={styles.profileImg} />
+                  <Item floatingLabel>
+                    <Label>Full name</Label>
+                    <Input />
+                  </Item>
+                  <Item floatingLabel>
+                    <Label>Birthday</Label>
+                    <Input />
+                  </Item>
+                  <ListItem>
+                    <Left>
+                      <Text>Male</Text>
+                    </Left>
+                    <Right>
+                      <Radio />
+                    </Right>
+                  </ListItem>
+                  <ListItem>
+                    <Left>
+                      <Text>Female</Text>
+                    </Left>
+                    <Right>
+                      <Radio />
+                    </Right>
+                  </ListItem>
+                    <Text style={styles.separator}>OR</Text>
+                    
+                    <View>
+                    <LoginButton
+                      publishPermissions={["picture, name, user_birthday, user_gender"]}
+                      onLoginFinished={
+                        (error, result) => {
+                          if (error) {
+                            alert("Login failed with error: " + error.message);
+                          } else if (result.isCancelled) {
+                            alert("Login was cancelled");
+                          } else {
+                            alert("Login was successful with permissions: " + result.grantedPermissions)
+                          }
+                        }
+                      }
+                      onLogoutFinished={() => alert("User logged out")}/>
+                  </View>
+
+              </View>
+                )}
+
             </View>
           </Content>
           </Container>
@@ -204,3 +268,5 @@ export default class PhoneAuthTest extends Component {
     );
   }
 }
+
+export default withNavigation(PhoneAuth);

@@ -11,6 +11,7 @@ target 'TennisPartner' do
   pod 'Firebase/Firestore'
   pod 'Firebase/Auth'
 
+  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
 
   target 'TennisPartnerTests' do
     inherit! :search_paths
