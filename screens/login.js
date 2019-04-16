@@ -243,7 +243,7 @@ class PhoneAuth extends Component {
                     
                     <View>
                     <LoginButton
-                      publishPermissions={["picture, name, user_birthday, user_gender"]}
+                      readPermissions={["user_birthday user_gender"]}
                       onLoginFinished={
                         (error, result) => {
                           if (error) {
