@@ -270,7 +270,7 @@ class PhoneAuth extends Component {
                     <Input />
                   </Item>
                     <DatePicker
-                        style={{ alignSelf: 'stretch', width: 370, marginTop: 5, marginBottom: 5 }}
+                        style={{ alignSelf: 'stretch', marginTop: 5, marginBottom: 5 }}
                         date={this.state.date}
                         mode="date"
                         androidMode="spinner"
