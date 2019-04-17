@@ -284,7 +284,7 @@ class PhoneAuth extends Component {
                           }, 
                           dateText: {
                             position: 'absolute',
-                            color: '#555',
+                            color: '#000',
                             fontSize: 16.5,
                             left: 2
                           }
