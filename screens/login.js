@@ -28,7 +28,9 @@ class PhoneAuth extends Component {
       cca2: 'HR',
       loading: false,
       title: 'Sign In',
-      avatarSource: require('../images/user.png')
+      avatarSource: require('../images/user.png'),
+      male: false,
+      female: false
     };
 
     this.onPressFlag = this.onPressFlag.bind(this);
@@ -182,6 +184,15 @@ class PhoneAuth extends Component {
     });
   }
 
+  toggleMale() {
+    const { male } = this.state;
+    if(!male) this.setState({ male: true, female: false });
+  }
+  toggleFemale() {
+    const { female } = this.state;
+    if(!female) this.setState({ female: true, male: false });
+  }
+
   render() {
     const styles = StyleSheet.create({
       loginInfo: {
@@ -200,6 +211,10 @@ class PhoneAuth extends Component {
         fontSize: 14,
         color: '#999',
         textAlign: 'center'
+      },
+      radio: {
+        marginStart: 2, 
+        alignSelf: 'flex-start'
       }
     });
     const { user, confirmResult, loading, loadingText, title } = this.state;
@@ -231,7 +246,6 @@ class PhoneAuth extends Component {
             <Right />
           </Header>
           <Content>
-          <View style={{ flex: 1 }}>
 
                 { loading && (
                   <View style={{ flex: 1 }}>
@@ -256,7 +270,7 @@ class PhoneAuth extends Component {
                     <Input />
                   </Item>
                     <DatePicker
-                        style={{ alignSelf: 'stretch' }}
+                        style={{ alignSelf: 'stretch', width: 370, marginTop: 5, marginBottom: 5 }}
                         date={this.state.date}
                         mode="date"
                         androidMode="spinner"
@@ -268,13 +282,14 @@ class PhoneAuth extends Component {
                         cancelBtnText="Cancel"
                         customStyles={{
                           dateInput: {
-                            marginTop: 20,
                             borderWidth: 0,
                             borderBottomWidth: 1,
                             borderBottomColor: '#EEE',
                           },
                           dateIcon: {
-                            marginTop: 20
+                            position: 'absolute',
+                            right: 4,
+                            bottom: 10
                           },
                           placeholderText: {
                             position: 'absolute',
@@ -286,28 +301,28 @@ class PhoneAuth extends Component {
                             position: 'absolute',
                             color: '#555',
                             fontSize: 16.5,
-                            left: 2
+                            left: 5,
                           }
                         }}
                         onDateChange={(date) => {this.setState({date: date})}}
                       />
-                  <ListItem>
-                    <Left>
-                      <Text>Male</Text>
-                    </Left>
-                    <Right>
-                      <Radio />
-                    </Right>
-                  </ListItem>
-                  <ListItem>
-                    <Left>
-                      <Text>Female</Text>
-                    </Left>
-                    <Right>
-                      <Radio />
-                    </Right>
-                  </ListItem>
-                  <Button style={{ marginTop: 10, marginBottom: 20, height: 40 }} block light>
+                    <ListItem onPress={() => this.toggleMale()} style={styles.radio}>
+                      <Left>
+                        <Text>Male</Text>
+                      </Left>
+                      <Right>
+                        <Radio onPress={() => this.toggleMale()} selectedColor={"#1976d2"} selected={this.state.male} />
+                      </Right>
+                    </ListItem>
+                    <ListItem onPress={() => this.toggleFemale()} style={styles.radio}>
+                      <Left>
+                        <Text>Female</Text>
+                      </Left>
+                      <Right>
+                        <Radio onPress={() => this.toggleFemale()} selectedColor={"#1976d2"} selected={this.state.female} />
+                      </Right>
+                    </ListItem>
+                  <Button style={{ marginTop: 20, marginBottom: 20, height: 40 }} block light>
                     <Text style={{ color: 'white' }}>Continue</Text>
                   </Button>
                   <View style={{flexDirection: 'row'}}>
@@ -332,8 +347,6 @@ class PhoneAuth extends Component {
 
               </View>
                 )}
-
-            </View>
           </Content>
           </Container>
           </StyleProvider>
