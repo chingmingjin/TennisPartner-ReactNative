@@ -156,11 +156,8 @@ class PhoneAuth extends Component {
   openImagePicker() {
     const options = {
       title: 'Select Avatar',
-      customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
+      cameraType: 'front',
+      allowsEditing: true
     };
 
     ImagePicker.showImagePicker(options, (response) => {
@@ -194,7 +191,7 @@ class PhoneAuth extends Component {
       profileImg: {
           width: 120,
           height: 120,
-          borderRadius: 40,
+          borderRadius: 60,
           marginTop: 10,
           marginBottom: 10
       },
@@ -251,8 +248,8 @@ class PhoneAuth extends Component {
 
                 {user && !loading && (
                   <View style={styles.loginInfo}>
-                  <TouchableHighlight style={{ borderRadius: 40 }} onPress={() => this.openImagePicker()} source={this.state.avatarSource}>
-                    <Image style={styles.profileImg} />
+                  <TouchableHighlight style={{ borderRadius: 60 }} onPress={() => this.openImagePicker()}>
+                    <Image source={this.state.avatarSource} style={styles.profileImg} />
                   </TouchableHighlight>
                   <Item style={{ marginTop: 10, marginBottom: 10 }} floatingLabel>
                     <Label>Full name</Label>
@@ -274,7 +271,7 @@ class PhoneAuth extends Component {
                             marginTop: 20,
                             borderWidth: 0,
                             borderBottomWidth: 1,
-                            borderBottomColor: '#DDD',
+                            borderBottomColor: '#EEE',
                           },
                           dateIcon: {
                             marginTop: 20
@@ -282,14 +279,14 @@ class PhoneAuth extends Component {
                           placeholderText: {
                             position: 'absolute',
                             color: '#555',
-                            fontSize: 16,
-                            left: 0
+                            fontSize: 16.5,
+                            left: 2
                           }, 
                           dateText: {
                             position: 'absolute',
                             color: '#555',
-                            fontSize: 16,
-                            left: 0
+                            fontSize: 16.5,
+                            left: 2
                           }
                         }}
                         onDateChange={(date) => {this.setState({date: date})}}
@@ -313,7 +310,11 @@ class PhoneAuth extends Component {
                   <Button style={{ marginTop: 10, marginBottom: 20, height: 40 }} block light>
                     <Text style={{ color: 'white' }}>Continue</Text>
                   </Button>
-                    <Text style={styles.separator}>OR</Text>
+                  <View style={{flexDirection: 'row'}}>
+                      <View style={{backgroundColor: '#CCC', height: 1, flex: 1, alignSelf: 'center'}} />
+                      <Text style={{ alignSelf:'center', color: '#CCC', paddingHorizontal: 5, fontSize: 16 }}>OR</Text>
+                      <View style={{backgroundColor: '#CCC', height: 1, flex: 1, alignSelf: 'center'}} />
+                  </View>
                     <View>
                     <LoginButton
                       style={{ width: 200, height: 30, marginTop: 20 }}
