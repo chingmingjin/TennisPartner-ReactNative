@@ -22,6 +22,7 @@
     "react-native-gesture-handler": "^1.1.0",
     "react-native-image-picker": "^0.28.1",
     "react-native-phone-input": "^0.2.1",
+    "react-native-progress": "^3.6.0",
     "react-navigation": "^3.7.1",
     "xcode": "^2.0.0"
   },

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { FlatList, View, PermissionsAndroid } from 'react-native';
-import { Spinner } from 'native-base';
+import { FlatList, View, PermissionsAndroid, Text } from 'react-native';
+import * as Progress from 'react-native-progress';
 import firebase from 'react-native-firebase';
 
 import PlayerCard from '../components/PlayerCard';
@@ -108,8 +108,11 @@ class PlayersList extends Component {
   render() {
     if (this.state.loading) {
       return (
-        <Spinner size="large" color='#ffa737' />
-      ); // or render a loading icon
+        <View style={{ flex: 1 }}>
+          <Progress.Circle style={{ alignSelf: 'center', marginTop: 50 }} color="#ffa737" size={45} borderWidth={3} indeterminate={true} />
+          <Text style={{ textAlign: 'center' }}>Searching players...</Text>
+        </View>
+      )
     }
     return (
       <View style={{ flex: 1 }}>

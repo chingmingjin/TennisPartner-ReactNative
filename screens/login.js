@@ -9,6 +9,7 @@ import Link from '../components/Link';
 import { LoginButton } from 'react-native-fbsdk';
 import DatePicker from 'react-native-datepicker';
 import ImagePicker from 'react-native-image-picker';
+import * as Progress from 'react-native-progress';
 
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
@@ -27,6 +28,7 @@ class PhoneAuth extends Component {
       confirmResult: null,
       cca2: 'HR',
       loading: false,
+      loadingProgress: false,
       title: 'Sign In',
       avatarSource: require('../images/user.png'),
       male: false,
@@ -164,7 +166,6 @@ class PhoneAuth extends Component {
     };
 
     ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
     
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -224,13 +225,25 @@ class PhoneAuth extends Component {
         duration: 3500
       });
     } else {
+      this.setState({ loadingProgress: true, uploadProgress: 0, loadingText: 'Signing in...' });
+
       var fullNameArr = fullName.split(' ');
       const ref = firebase.storage().ref('/images/avatars/' + user.uid + '.jpg');
-      ref.putFile(avatarSource.uri, { contentType: 'image/jpeg' })
-      .then((uploadedFile) => {
-        console.log(uploadedFile);
-      }).catch(error => 
-        alert(error)
+      const uploadTask = ref.putFile(avatarSource.uri, { contentType: 'image/jpeg' });
+      const unsubscribe = uploadTask.on(
+        firebase.storage.TaskEvent.STATE_CHANGED,
+        (snapshot) => {
+          var progress = snapshot.bytesTransferred / snapshot.totalBytes;
+          this.setState({ uploadProgress: progress });
+          if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
+            this.setState({ loadingProgress: false });
+            console.log(snapshot);
+          }
+        },
+        (error) => {
+          unsubscribe();
+          console.error(error);
+        },
       );
     }
   }
@@ -253,7 +266,7 @@ class PhoneAuth extends Component {
         alignSelf: 'flex-start'
       }
     });
-    const { user, confirmResult, loading, loadingText, title } = this.state;
+    const { user, confirmResult, loading, loadingText, loadingProgress, uploadProgress, title } = this.state;
     const ButtonBack = Platform.select({
         ios: () => {
             return(
@@ -285,7 +298,14 @@ class PhoneAuth extends Component {
 
                 { loading && (
                   <View style={{ flex: 1 }}>
-                  <Spinner color='#ffa737' />
+                  <Progress.Circle style={{ alignSelf: 'center', marginTop: 50 }} color="#ffa737" size={45} borderWidth={3} indeterminate={true} />
+                  <Text style={{ textAlign: 'center' }}>{ loadingText }</Text>
+                  </View>
+                )}
+
+                { loadingProgress && (
+                  <View style={{ flex: 1 }}>
+                  <Progress.Circle progress={ uploadProgress } showsText={true} style={{ alignSelf: 'center', marginTop: 50 }} color="#ffa737" size={55} borderWidth={3} />
                   <Text style={{ textAlign: 'center' }}>{ loadingText }</Text>
                   </View>
                 )}
@@ -296,7 +316,7 @@ class PhoneAuth extends Component {
 
                 {this.renderMessage()}
 
-                {user && !loading && (
+                {user && !(loading || loadingProgress) && (
                   <View style={styles.loginInfo}>
                   <TouchableHighlight style={{ borderRadius: 60 }} onPress={() => this.openImagePicker()}>
                     <Image source={this.state.avatarSource} style={styles.profileImg} />
