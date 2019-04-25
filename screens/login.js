@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image, Platform, StyleSheet, TouchableHighlight } from 'react-native';
-import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, StyleProvider, Item, Input, Label, Spinner, ListItem, Radio } from 'native-base';
+import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, StyleProvider, Toast, Item, Input, Label, Spinner, ListItem, Radio } from 'native-base';
 
 import firebase from 'react-native-firebase';
 import PhoneInput from 'react-native-phone-input';
@@ -30,7 +30,8 @@ class PhoneAuth extends Component {
       title: 'Sign In',
       avatarSource: require('../images/user.png'),
       male: false,
-      female: false
+      female: false,
+      avatarSelected: false
     };
 
     this.onPressFlag = this.onPressFlag.bind(this);
@@ -40,7 +41,7 @@ class PhoneAuth extends Component {
   componentDidMount() {
     this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.setState({ user: user.toJSON() });
+        this.setState({ user: user });
       }
     });
   }
@@ -169,8 +170,6 @@ class PhoneAuth extends Component {
         console.log('User cancelled image picker');
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
       } else {
         const source = { uri: response.uri };
     
@@ -178,7 +177,7 @@ class PhoneAuth extends Component {
         // const source = { uri: 'data:image/jpeg;base64,' + response.data };
     
         this.setState({
-          avatarSource: source,
+          avatarSource: source, avatarSelected: true
         });
       }
     });
@@ -193,6 +192,49 @@ class PhoneAuth extends Component {
     if(!female) this.setState({ female: true, male: false });
   }
 
+  logIn() {
+    const { user, avatarSelected, avatarSource, fullName, date, male, female } = this.state;
+    const fullNameRegex = new RegExp("^[^\d-]([-']?[a-z]+)*( [^\d-]([-']?.+)+)+$");
+    if(!avatarSelected) {
+      Toast.show({
+        text: 'You didn\'t select your avatar!',
+        textStyle: { textAlign: 'center' },
+        type: 'danger',
+        duration: 3500
+      });
+    } else if(!fullName || !fullNameRegex.test(fullName)) {
+      Toast.show({
+        text: 'You didn\'t enter your full name!',
+        textStyle: { textAlign: 'center' },
+        type: 'danger',
+        duration: 3500
+      });
+    } else if(!date) {
+      Toast.show({
+        text: 'You didn\'t enter your birthday!',
+        textStyle: { textAlign: 'center' },
+        type: 'danger',
+        duration: 3500
+      });
+    } else if(!male && !female) {
+      Toast.show({
+        text: 'You didn\'t select your gender!',
+        textStyle: { textAlign: 'center' },
+        type: 'danger',
+        duration: 3500
+      });
+    } else {
+      var fullNameArr = fullName.split(' ');
+      const ref = firebase.storage().ref('/images/avatars/' + user.uid + '.jpg');
+      ref.putFile(avatarSource.uri, { contentType: 'image/jpeg' })
+      .then((uploadedFile) => {
+        console.log(uploadedFile);
+      }).catch(error => 
+        alert(error)
+      );
+    }
+  }
+
   render() {
     const styles = StyleSheet.create({
       loginInfo: {
@@ -205,12 +247,6 @@ class PhoneAuth extends Component {
           borderRadius: 60,
           marginTop: 10,
           marginBottom: 10
-      },
-      separator: {
-        alignSelf: 'stretch',
-        fontSize: 14,
-        color: '#999',
-        textAlign: 'center'
       },
       radio: {
         marginStart: 2, 
@@ -267,7 +303,7 @@ class PhoneAuth extends Component {
                   </TouchableHighlight>
                   <Item style={{ marginTop: 10, marginBottom: 10 }} floatingLabel>
                     <Label>Full name</Label>
-                    <Input />
+                    <Input onChangeText={value => this.setState({ fullName: value })} />
                   </Item>
                     <DatePicker
                         style={{ alignSelf: 'stretch', marginTop: 5, marginBottom: 5 }}
@@ -277,7 +313,7 @@ class PhoneAuth extends Component {
                         placeholder="Birthday"
                         format="DD.MM.YYYY"
                         minDate="01-01-1920"
-                        maxDate={"01-01-2019"}
+                        maxDate={new Date()}
                         confirmBtnText="Confirm"
                         cancelBtnText="Cancel"
                         customStyles={{
@@ -322,7 +358,7 @@ class PhoneAuth extends Component {
                         <Radio onPress={() => this.toggleFemale()} selectedColor={"#1976d2"} selected={this.state.female} />
                       </Right>
                     </ListItem>
-                  <Button style={{ marginTop: 20, marginBottom: 20, height: 40 }} block light>
+                  <Button onPress={() => this.logIn()} style={{ marginTop: 20, marginBottom: 20, height: 40 }} block light>
                     <Text style={{ color: 'white' }}>Continue</Text>
                   </Button>
                   <View style={{flexDirection: 'row'}}>

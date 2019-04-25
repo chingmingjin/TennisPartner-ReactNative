@@ -13,6 +13,7 @@ class HomeContainer extends Component {
   constructor(props) {
     super(props);
     }
+
     render() {
       const ButtonLeft = Platform.select({
         ios: () => {return(<Button transparent onPress={() => this.props.navigation.navigate('UserSettings')}><Icon style={{fontSize: 24}} type='FontAwesome5' name='user-cog' /></Button>)},

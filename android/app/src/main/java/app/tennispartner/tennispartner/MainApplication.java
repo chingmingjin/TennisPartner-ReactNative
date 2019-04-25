@@ -8,7 +8,9 @@ import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
+import io.invertase.firebase.storage.RNFirebaseStoragePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -43,6 +45,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RNGestureHandlerPackage(),
             new RNFirebaseFirestorePackage(),
             new RNFirebaseAuthPackage(),
+            new RNFirebaseStoragePackage(),
+            new RNFusedLocationPackage(),
             new FBSDKPackage(mCallbackManager)
       );
     }

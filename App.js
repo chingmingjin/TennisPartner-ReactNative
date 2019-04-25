@@ -1,3 +1,6 @@
+import React from "react";
+import { Root } from 'native-base';
+
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
 import HomeScreen from "./screens/home/";
@@ -18,4 +21,7 @@ const AppNavigator = createStackNavigator(
 
 const AppContainer = createAppContainer(AppNavigator);
 
-export default AppContainer;
+export default () =>
+  <Root>
+    <AppContainer />
+  </Root>;
