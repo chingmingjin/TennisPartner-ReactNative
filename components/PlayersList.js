@@ -38,6 +38,7 @@ class PlayersList extends Component {
         
         // Get query (as Promise)
         query.get().then((snapshot) => {
+          var players = [];
           snapshot.docs.forEach(doc => {
             const { firstName, lastName, gender, birthday, avatarUrl } = doc.data();
             players.push({
