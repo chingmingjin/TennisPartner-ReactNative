@@ -305,7 +305,7 @@ class PhoneAuth extends Component {
 
                 { loadingProgress && (
                   <View style={{ flex: 1 }}>
-                  <Progress.Circle progress={ uploadProgress } showsText={true} style={{ alignSelf: 'center', marginTop: 50 }} color="#ffa737" size={55} borderWidth={3} />
+                  <Progress.Circle progress={ uploadProgress } showsText={true} style={{ alignSelf: 'center', marginTop: 50 }} color="#ffa737" size={70} borderWidth={4} />
                   <Text style={{ textAlign: 'center' }}>{ loadingText }</Text>
                   </View>
                 )}
