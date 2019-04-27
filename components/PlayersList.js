@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { FlatList, View, PermissionsAndroid, Text, Platform } from 'react-native';
+import { FlatList, View, PermissionsAndroid, Text, Platform, StyleSheet } from 'react-native';
+import { Content } from 'native-base';
 import * as Progress from 'react-native-progress';
 import firebase from 'react-native-firebase';
 
@@ -17,6 +18,7 @@ class PlayersList extends Component {
     this.state = {
       players: [],
       loading: true,
+      noPlayersNearby: false
     };
 
     this.requestLocationPermission = this.requestLocationPermission.bind(this);
@@ -38,18 +40,21 @@ class PlayersList extends Component {
         
         // Get query (as Promise)
         query.get().then((snapshot) => {
-          snapshot.docs.forEach(doc => {
-            const { firstName, lastName, gender, birthday, avatarUrl } = doc.data();
-            players.push({
-              key: doc.id,
-              doc, // DocumentSnapshot
-              firstName,
-              lastName,
-              gender,
-              birthday,
-              avatarUrl
+          if(!snapshot.empty) {
+            var players = [];
+            snapshot.docs.forEach(doc => {
+              const { firstName, lastName, gender, birthday, avatarUrl } = doc.data();
+              players.push({
+                key: doc.id,
+                doc, // DocumentSnapshot
+                firstName,
+                lastName,
+                gender,
+                birthday,
+                avatarUrl
+              });
             });
-          });
+          } else this.setState({ noPlayersNearby: true });
           
           this.setState({ 
             players,
@@ -67,7 +72,6 @@ class PlayersList extends Component {
 
   async requestLocationPermission() {      
     try {
-      var players = [];
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
@@ -82,12 +86,12 @@ class PlayersList extends Component {
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         this.getNearbyPlayers();
       } else {
-        firebase.firestore().collection('users').get().then(snapshot => {
+        firebase.firestore().collection('players').get().then(snapshot => {
+          var players = [];
           snapshot.docs.forEach(doc => {
               const { firstName, lastName, gender, birthday, avatarUrl } = doc.data();
               players.push({
                 key: doc.id,
-                doc, // DocumentSnapshot
                 firstName,
                 lastName,
                 gender,
@@ -114,22 +118,51 @@ class PlayersList extends Component {
     }
   }
   render() {
+    const styles = StyleSheet.create({
+      contentCenter: { 
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1 
+      },
+      progressCircle: { 
+        alignSelf: 'center',
+        marginBottom: 10 
+      },
+      noPlayersView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+      },
+      text: {
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: 'bold'
+      }
+    });
+
     if (this.state.loading) {
       return (
-        <View style={{ flex: 1 }}>
-          <Progress.Circle style={{ alignSelf: 'center', marginTop: 50 }} color="#ffa737" size={45} borderWidth={3} indeterminate={true} />
-          <Text style={{ textAlign: 'center' }}>Searching players...</Text>
-        </View>
+        <Content contentContainerStyle={ styles.contentCenter }>
+          <Progress.Circle style={ styles.progressCircle } color="#ffa737" size={50} borderWidth={4} indeterminate={true} />
+          <Text style={ styles.text }>Searching players...</Text>
+        </Content>
       )
     }
-    return (
-      <View style={{ flex: 1 }}>
-          <FlatList
-              data={this.state.players}
-              renderItem={({item}) => <PlayerCard {...item} />}
-          />
-      </View>
-    );
+    if(!this.state.noPlayersNearby)
+      return (
+        <Content>
+          <View style={{ flex: 1 }}>
+              <FlatList
+                  data={this.state.players}
+                  renderItem={({item}) => <PlayerCard {...item} />}
+              />
+          </View>
+        </Content>);
+     else
+     return (
+      <Content contentContainerStyle={ styles.contentCenter }>
+        <Text style={styles.text}>No players nearby</Text>
+      </Content>);
   }
 }
 export default withNavigation(PlayersList);

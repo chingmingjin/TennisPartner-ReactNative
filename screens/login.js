@@ -10,6 +10,9 @@ import { LoginButton } from 'react-native-fbsdk';
 import DatePicker from 'react-native-datepicker';
 import ImagePicker from 'react-native-image-picker';
 import * as Progress from 'react-native-progress';
+import moment from 'moment';
+import Geolocation from 'react-native-geolocation-service';
+import { Geokit } from 'geokit';
 
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
@@ -76,7 +79,9 @@ class PhoneAuth extends Component {
     if (confirmResult) {
       confirmResult.confirm(codeInput)
         .then((user) => {
-          this.setState({ loading: false, message: '', title: 'Your Info' });
+          if(user.metadata.creationTime === user.metadata.lastSignInTime)
+            this.setState({ loading: false, message: '', title: 'Your Info' });
+          else this.props.navigation.goBack();
         })
         .catch(error => this.setState({ loading: false, message: error.message }));
     }
@@ -194,7 +199,7 @@ class PhoneAuth extends Component {
   }
 
   logIn() {
-    const { user, avatarSelected, avatarSource, fullName, date, male, female } = this.state;
+    const { user, avatarSelected, avatarSource, fullName, date, male, female, phoneNumber } = this.state;
     const fullNameRegex = new RegExp("^[^\d-]([-']?[a-z]+)*( [^\d-]([-']?.+)+)+$");
     if(!avatarSelected) {
       Toast.show({
@@ -228,22 +233,50 @@ class PhoneAuth extends Component {
       this.setState({ loadingProgress: true, uploadProgress: 0, loadingText: 'Signing in...' });
 
       var fullNameArr = fullName.split(' ');
-      const ref = firebase.storage().ref('/images/avatars/' + user.uid + '.jpg');
-      const uploadTask = ref.putFile(avatarSource.uri, { contentType: 'image/jpeg' });
-      const unsubscribe = uploadTask.on(
-        firebase.storage.TaskEvent.STATE_CHANGED,
-        (snapshot) => {
-          var progress = snapshot.bytesTransferred / snapshot.totalBytes;
-          this.setState({ uploadProgress: progress });
-          if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
-            this.setState({ loadingProgress: false });
-            console.log(snapshot);
-          }
+
+      Geolocation.getCurrentPosition(
+        (position) => {
+          const ref = firebase.storage().ref('/images/avatars/' + user.uid + '.jpg');
+          const uploadTask = ref.putFile(avatarSource.uri, { contentType: 'image/jpeg' });
+          const unsubscribe = uploadTask.on(
+            firebase.storage.TaskEvent.STATE_CHANGED,
+            (snapshot) => {
+              var progress = snapshot.bytesTransferred / snapshot.totalBytes;
+              this.setState({ uploadProgress: progress });
+              if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
+                unsubscribe();
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                const location = new firebase.firestore.GeoPoint(lat, lon);
+                const playerData = {
+                  avatarUrl: snapshot.downloadURL,
+                  firstName: fullNameArr[0],
+                  lastName: fullNameArr[fullNameArr.length-1],
+                  phoneNumber: phoneNumber,
+                  gender: (male) ? 'male' : 'female',
+                  birthday: moment(date, "DD.MM.YYYY").format("YYYY-MM-DD"),
+                  l: location,
+                  g: Geokit.hash({ lat: lat,  lng: lon })
+                }
+                firebase.firestore().collection('players').doc(user.uid).set(playerData)
+                .then((user) => {
+                  this.setState({ loadingProgress: false });
+                  this.props.navigation.goBack()
+                }).catch(error => console.error(error));
+              }
+            },
+            (error) => {
+              unsubscribe();
+              console.error(error);
+            },
+          );
         },
         (error) => {
-          unsubscribe();
-          console.error(error);
+            // See error code charts below.
+            alert('Cannot get your location!');
+            console.log(error.code, error.message);
         },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
     }
   }

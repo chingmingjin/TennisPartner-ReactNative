@@ -38,9 +38,7 @@ class HomeContainer extends Component {
               </Button>
             </Right>
           </Header>
-          <Content>
             <PlayersList />
-          </Content>
           <Footer>
             <FooterTab>
               <Button vertical active>
