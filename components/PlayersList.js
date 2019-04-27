@@ -18,13 +18,15 @@ class PlayersList extends Component {
     this.state = {
       players: [],
       loading: true,
-      noPlayersNearby: false
+      noPlayersNearby: false,
+      user: null
     };
 
     this.requestLocationPermission = this.requestLocationPermission.bind(this);
   }
 
   getNearbyPlayers = () => {
+    const { user } = this.state;
     Geolocation.getCurrentPosition(
       (position) => {
         const geofirestore = new GeoFirestore(firebase.firestore());
@@ -44,15 +46,16 @@ class PlayersList extends Component {
             var players = [];
             snapshot.docs.forEach(doc => {
               const { firstName, lastName, gender, birthday, avatarUrl } = doc.data();
-              players.push({
-                key: doc.id,
-                doc, // DocumentSnapshot
-                firstName,
-                lastName,
-                gender,
-                birthday,
-                avatarUrl
-              });
+              if(!user || user.uid !== doc.id)
+                players.push({
+                  key: doc.id,
+                  doc, // DocumentSnapshot
+                  firstName,
+                  lastName,
+                  gender,
+                  birthday,
+                  avatarUrl
+                });
             });
           } else this.setState({ noPlayersNearby: true });
           
@@ -116,7 +119,17 @@ class PlayersList extends Component {
     else if(Platform.OS === 'ios'){
       this.getNearbyPlayers();
     }
+
+    this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) this.setState({ user: user, loading: true }); else this.setState({ user: null, loading: true });
+      this.getNearbyPlayers();
+    });
   }
+
+  componentWillUnmount() {
+    if (this.unsubscribe) this.unsubscribe();
+  }
+
   render() {
     const styles = StyleSheet.create({
       contentCenter: { 
