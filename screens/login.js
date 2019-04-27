@@ -259,9 +259,11 @@ class PhoneAuth extends Component {
                   g: Geokit.hash({ lat: lat,  lng: lon })
                 }
                 firebase.firestore().collection('players').doc(user.uid).set(playerData)
-                .then((user) => {
-                  this.setState({ loadingProgress: false });
-                  this.props.navigation.goBack()
+                .then((userRef) => {
+                  user.updateProfile({displayName: fullName, photoURL: snapshot.downloadURL }).then(() => {
+                    this.setState({ loadingProgress: false });
+                    this.props.navigation.goBack()
+                  });
                 }).catch(error => console.error(error));
               }
             },

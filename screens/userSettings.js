@@ -15,7 +15,16 @@ class UserSettings extends Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = firebase.auth().onAuthStateChanged((userInfo) => {
+    this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user: user });
+      } else {
+        this.setState({
+          user: null,
+        });
+      }
+    });
+    this.unsubscribeUserChange = firebase.auth().onUserChanged((userInfo) => {
       if (userInfo) {
         this.setState({ user: userInfo });
       } else {
@@ -27,6 +36,8 @@ class UserSettings extends Component {
   }
   componentWillUnmount() {
     if (this.unsubscribe) this.unsubscribe();
+    if (this.unsubscribeUserChange) this.unsubscribe();
+
  }
 
  link(item) {
@@ -95,12 +106,12 @@ class UserSettings extends Component {
         </TouchableHighlight>
         )}
         {user && (
+        <TouchableHighlight>
           <View style={styles.header}>
-            <TouchableHighlight style={{ borderRadius: 40 }}>
-              <Image source={user.photoURL} style={styles.profileImg} />
-            </TouchableHighlight>
+              <Image source={{uri: user.photoURL}} style={styles.profileImg} />
             <Text style={styles.userName}>{ user.displayName }</Text>
           </View>
+        </TouchableHighlight>
         )}
           <SectionList
             sections={[
