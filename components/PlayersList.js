@@ -40,17 +40,19 @@ class PlayersList extends Component {
         
         // Get query (as Promise)
         query.get().then((snapshot) => {
-          var players = [];
-          snapshot.docs.forEach(doc => {
-            const { firstName, lastName, gender, birthday, avatarUrl } = doc.data();
-            players.push({
-              key: doc.id,
-              doc, // DocumentSnapshot
-              firstName,
-              lastName,
-              gender,
-              birthday,
-              avatarUrl
+          if(!snapshot.empty) {
+            var players = [];
+            snapshot.docs.forEach(doc => {
+              const { firstName, lastName, gender, birthday, avatarUrl } = doc.data();
+              players.push({
+                key: doc.id,
+                doc, // DocumentSnapshot
+                firstName,
+                lastName,
+                gender,
+                birthday,
+                avatarUrl
+              });
             });
           } else this.setState({ noPlayersNearby: true });
           
