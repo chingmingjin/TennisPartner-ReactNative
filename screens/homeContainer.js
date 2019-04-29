@@ -12,9 +12,28 @@ import { withNavigation } from 'react-navigation';
 class HomeContainer extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      tabPlayers: true,
+      tabCourts: false
+    };
+
+    }
+
+    toggleTabPlayers() {
+      this.setState({
+        tabPlayers: true,
+        tabCourts: false
+      });
+    }
+    toggleTabCourts() {
+      this.setState({
+        tabPlayers: false,
+        tabCourts: true
+      });
     }
 
     render() {
+      const { tabPlayers, tabCourts } = this.state;
       const ButtonLeft = Platform.select({
         ios: () => {return(<Button transparent onPress={() => this.props.navigation.navigate('UserSettings')}><Icon style={{fontSize: 24}} type='FontAwesome5' name='user-cog' /></Button>)},
         android: () => {return(<Button transparent onPress={this.props.openDrawer}><Icon name='menu' /></Button>)},
@@ -38,14 +57,15 @@ class HomeContainer extends Component {
               </Button>
             </Right>
           </Header>
-            <PlayersList />
+          {tabPlayers && (<PlayersList />) }
+          {tabCourts && (<Content padder />) }
           <Footer>
             <FooterTab>
-              <Button vertical active>
+              <Button vertical active={this.state.tabPlayers} onPress={() => this.toggleTabPlayers()}>
               <Icon type="FontAwesome" name="users" />
                 <Text>Players</Text>
               </Button>
-              <Button vertical>
+              <Button vertical active={this.state.tabCourts} onPress={() => this.toggleTabCourts()}>
               <Icon type="MaterialCommunityIcons" name="tennis" />
                 <Text>Courts</Text>
               </Button>

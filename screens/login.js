@@ -6,7 +6,7 @@ import firebase from 'react-native-firebase';
 import PhoneInput from 'react-native-phone-input';
 import CountryPicker from 'react-native-country-picker-modal';
 import Link from '../components/Link';
-import { LoginButton } from 'react-native-fbsdk';
+import { LoginButton, GraphRequest, GraphRequestManager, AccessToken } from 'react-native-fbsdk';
 import DatePicker from 'react-native-datepicker';
 import ImagePicker from 'react-native-image-picker';
 import * as Progress from 'react-native-progress';
@@ -36,7 +36,9 @@ class PhoneAuth extends Component {
       avatarSource: require('../images/user.png'),
       male: false,
       female: false,
-      avatarSelected: false
+      avatarSelected: false,
+      fbLogin: false,
+      gender: null
     };
 
     this.onPressFlag = this.onPressFlag.bind(this);
@@ -199,79 +201,32 @@ class PhoneAuth extends Component {
   }
 
   logIn() {
-    const { user, avatarSelected, avatarSource, fullName, date, male, female, phoneNumber } = this.state;
-    const fullNameRegex = new RegExp("^[^\d-]([-']?[a-z]+)*( [^\d-]([-']?.+)+)+$");
-    if(!avatarSelected) {
-      Toast.show({
-        text: 'You didn\'t select your avatar!',
-        textStyle: { textAlign: 'center' },
-        type: 'danger',
-        duration: 3500
-      });
-    } else if(!fullName || !fullNameRegex.test(fullName)) {
-      Toast.show({
-        text: 'You didn\'t enter your full name!',
-        textStyle: { textAlign: 'center' },
-        type: 'danger',
-        duration: 3500
-      });
-    } else if(!date) {
-      Toast.show({
-        text: 'You didn\'t enter your birthday!',
-        textStyle: { textAlign: 'center' },
-        type: 'danger',
-        duration: 3500
-      });
-    } else if(!male && !female) {
-      Toast.show({
-        text: 'You didn\'t select your gender!',
-        textStyle: { textAlign: 'center' },
-        type: 'danger',
-        duration: 3500
-      });
-    } else {
-      this.setState({ loadingProgress: true, uploadProgress: 0, loadingText: 'Signing in...' });
-
+    const { user, avatarSelected, avatarSource, fullName, date, male, female, phoneNumber, fbLogin, gender } = this.state;
+    if(fbLogin) {
+      this.setState({ loading: true, loadingText: 'Signing in...' });
       var fullNameArr = fullName.split(' ');
-
       Geolocation.getCurrentPosition(
         (position) => {
-          const ref = firebase.storage().ref('/images/avatars/' + user.uid + '.jpg');
-          const uploadTask = ref.putFile(avatarSource.uri, { contentType: 'image/jpeg' });
-          const unsubscribe = uploadTask.on(
-            firebase.storage.TaskEvent.STATE_CHANGED,
-            (snapshot) => {
-              var progress = snapshot.bytesTransferred / snapshot.totalBytes;
-              this.setState({ uploadProgress: progress });
-              if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
-                unsubscribe();
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                const location = new firebase.firestore.GeoPoint(lat, lon);
-                const playerData = {
-                  avatarUrl: snapshot.downloadURL,
-                  firstName: fullNameArr[0],
-                  lastName: fullNameArr[fullNameArr.length-1],
-                  phoneNumber: phoneNumber,
-                  gender: (male) ? 'male' : 'female',
-                  birthday: moment(date, "DD.MM.YYYY").format("YYYY-MM-DD"),
-                  l: location,
-                  g: Geokit.hash({ lat: lat,  lng: lon })
-                }
-                firebase.firestore().collection('players').doc(user.uid).set(playerData)
-                .then((userRef) => {
-                  user.updateProfile({displayName: fullName, photoURL: snapshot.downloadURL }).then(() => {
-                    this.setState({ loadingProgress: false });
-                    this.props.navigation.goBack()
-                  });
-                }).catch(error => console.error(error));
-              }
-            },
-            (error) => {
-              unsubscribe();
-              console.error(error);
-            },
-          );
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const location = new firebase.firestore.GeoPoint(lat, lon);
+          const playerData = {
+            avatarUrl: avatarSource,
+            firstName: fullNameArr[0],
+            lastName: fullNameArr[fullNameArr.length-1],
+            phoneNumber: phoneNumber,
+            gender: gender,
+            birthday: date,
+            l: location,
+            g: Geokit.hash({ lat: lat,  lng: lon })
+          }
+          firebase.firestore().collection('players').doc(user.uid).set(playerData)
+          .then((userRef) => {
+            user.updateProfile({displayName: fullName, photoURL: avatarSource }).then(() => {
+              this.setState({ loading: false });
+              this.props.navigation.goBack()
+            });
+          }).catch(error => console.error(error));
         },
         (error) => {
             // See error code charts below.
@@ -280,6 +235,96 @@ class PhoneAuth extends Component {
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
+    } else {
+      const fullNameRegex = new RegExp("^[^\d-]([-']?[a-z]+)*( [^\d-]([-']?.+)+)+$");
+      if(!avatarSelected) {
+        Toast.show({
+          text: 'You didn\'t select your avatar!',
+          textStyle: { textAlign: 'center' },
+          type: 'danger',
+          duration: 3500
+        });
+      } else if(!fullName || !fullNameRegex.test(fullName)) {
+        Toast.show({
+          text: 'You didn\'t enter your full name!',
+          textStyle: { textAlign: 'center' },
+          type: 'danger',
+          duration: 3500
+        });
+      } else if(!date) {
+        Toast.show({
+          text: 'You didn\'t enter your birthday!',
+          textStyle: { textAlign: 'center' },
+          type: 'danger',
+          duration: 3500
+        });
+      } else if(!male && !female) {
+        Toast.show({
+          text: 'You didn\'t select your gender!',
+          textStyle: { textAlign: 'center' },
+          type: 'danger',
+          duration: 3500
+        });
+      } else {
+        this.setState({ loadingProgress: true, uploadProgress: 0, loadingText: 'Signing in...' });
+
+        var fullNameArr = fullName.split(' ');
+
+        Geolocation.getCurrentPosition(
+          (position) => {
+            const ref = firebase.storage().ref('/images/avatars/' + user.uid + '.jpg');
+            const uploadTask = ref.putFile(avatarSource.uri, { contentType: 'image/jpeg' });
+            const unsubscribe = uploadTask.on(
+              firebase.storage.TaskEvent.STATE_CHANGED,
+              (snapshot) => {
+                var progress = snapshot.bytesTransferred / snapshot.totalBytes;
+                this.setState({ uploadProgress: progress });
+                if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
+                  unsubscribe();
+                  const lat = position.coords.latitude;
+                  const lon = position.coords.longitude;
+                  const location = new firebase.firestore.GeoPoint(lat, lon);
+                  const playerData = {
+                    avatarUrl: snapshot.downloadURL,
+                    firstName: fullNameArr[0],
+                    lastName: fullNameArr[fullNameArr.length-1],
+                    phoneNumber: phoneNumber,
+                    gender: (male) ? 'male' : 'female',
+                    birthday: moment(date, "DD.MM.YYYY").format("YYYY-MM-DD"),
+                    l: location,
+                    g: Geokit.hash({ lat: lat,  lng: lon })
+                  }
+                  firebase.firestore().collection('players').doc(user.uid).set(playerData)
+                  .then((userRef) => {
+                    user.updateProfile({displayName: fullName, photoURL: snapshot.downloadURL }).then(() => {
+                      this.setState({ loadingProgress: false });
+                      this.props.navigation.goBack()
+                    });
+                  }).catch(error => console.error(error));
+                }
+              },
+              (error) => {
+                unsubscribe();
+                console.error(error);
+              },
+            );
+          },
+          (error) => {
+              // See error code charts below.
+              alert('Cannot get your location!');
+              console.log(error.code, error.message);
+          },
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
+      }
+    }
+  }
+
+  _responseInfoCallback(error, result) {
+    if (error) {
+      console.log('Error fetching data: ' + error.toString());
+    } else {
+      console.log(result);
     }
   }
 
@@ -424,13 +469,51 @@ class PhoneAuth extends Component {
                     <View>
                     <LoginButton
                       style={{ width: 200, height: 30, marginTop: 20 }}
-                      readPermissions={["user_birthday user_gender"]}
+                      readPermissions={["user_birthday", "user_gender"]}
                       onLoginFinished={
                         (error, result) => {
                           if (error) {
                             alert("Login error: " + error.message);
                           } else {
-                            alert("Login was successful with permissions: " + result.grantedPermissions)
+                            AccessToken.getCurrentAccessToken().then(
+                              (data) => {
+                                let accessToken = data.accessToken;
+                                console.log(accessToken);
+                  
+                                const responseInfoCallback = (error, result) => {
+                                  if (error) {
+                                    console.log(error);
+                                    console.log('Error fetching data: ' + error.toString());
+                                  } else {
+                                    this.setState({ 
+                                      fbLogin: true, 
+                                      fullName: result.name, 
+                                      avatarSource: 'https://graph.facebook.com/' + result.id + '/picture?width=300',
+                                      gender: result.gender,
+                                      date: moment(result.birthday, "MM/DD/YYYY").format("YYYY-MM-DD")
+                                    });
+                                    this.logIn();
+                                  }
+                                }
+                  
+                                const infoRequest = new GraphRequest(
+                                  '/me',
+                                  {
+                                    accessToken: accessToken,
+                                    parameters: {
+                                      fields: {
+                                        string: 'name,first_name,last_name,birthday,gender'
+                                      }
+                                    }
+                                  },
+                                  responseInfoCallback
+                                );
+                  
+                                // Start the graph request.
+                                new GraphRequestManager().addRequest(infoRequest).start()
+                  
+                              }
+                            )
                           }
                         }
                       }/>
