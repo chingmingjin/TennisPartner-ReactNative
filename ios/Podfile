@@ -12,6 +12,8 @@ target 'TennisPartner' do
   pod 'Firebase/Auth'
   pod 'Firebase/Storage'
 
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
   target 'TennisPartnerTests' do
     inherit! :search_paths
     # Pods for testing

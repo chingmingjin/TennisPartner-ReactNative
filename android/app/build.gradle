@@ -135,6 +135,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-maps')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-fbsdk')
     implementation project(':react-native-firebase')
@@ -142,7 +143,13 @@ dependencies {
     implementation project(':react-native-geolocation-service')
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
+    implementation(project(':react-native-maps')){
+       exclude group: 'com.google.android.gms', module: 'play-services-base'
+       exclude group: 'com.google.android.gms', module: 'play-services-maps'
+   }
+
     implementation "com.google.android.gms:play-services-base:16.1.0"
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation "com.google.firebase:firebase-core:16.0.8"
     implementation "com.google.firebase:firebase-firestore:18.2.0"
     implementation "com.google.firebase:firebase-auth:16.2.1"

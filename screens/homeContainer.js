@@ -4,6 +4,7 @@ import { Alert, Platform } from 'react-native';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, StyleProvider } from 'native-base';
 
 import PlayersList from '../components/PlayersList';
+import CourtList from '../components/CourtList';
 
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
@@ -58,7 +59,7 @@ class HomeContainer extends Component {
             </Right>
           </Header>
           {tabPlayers && (<PlayersList />) }
-          {tabCourts && (<Content padder />) }
+          {tabCourts && (<CourtList />) }
           <Footer>
             <FooterTab>
               <Button vertical active={this.state.tabPlayers} onPress={() => this.toggleTabPlayers()}>
