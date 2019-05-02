@@ -105,7 +105,7 @@ class UserSettings extends Component {
           </View>
         </TouchableHighlight>
         )}
-        {user && (
+        {user && user.photoURL && (
         <TouchableHighlight>
           <View style={styles.header}>
               <Image source={{uri: user.photoURL}} style={styles.profileImg} />
