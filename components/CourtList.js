@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { FlatList, View, PermissionsAndroid, Text, Platform, StyleSheet } from 'react-native';
 import { Content } from 'native-base';
 import firebase from 'react-native-firebase';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 
 import Geolocation from 'react-native-geolocation-service';
 import { GeoFirestore } from 'geofirestore';
@@ -16,7 +16,6 @@ class CourtList extends Component {
     
         this.state = {
           courts: [],
-          noCourtsNearby: false,
           lat: 0,
           lon: 0
         };
@@ -46,17 +45,14 @@ class CourtList extends Component {
               if(!snapshot.empty) {
                 var courts = [];
                 snapshot.docs.forEach(doc => {
-                  const { name, phone } = doc.data();
+                  const { name, phone, l } = doc.data();
                     courts.push({
-                      name, phone
+                      name, phone, l
                     });
                 });
-              } else this.setState({ noCourtssNearby: true });
+              } else alert('No courts nearby!');
               
-              this.setState({ 
-                courts,
-                loading: false,
-              });
+              this.setState({ courts });
             });
           },
           (error) => {
@@ -106,8 +102,15 @@ class CourtList extends Component {
             longitude: this.state.lon,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
-            }}
-            />
+            }}>
+            {this.state.courts.map(court => (
+                <Marker
+                coordinate={{latitude: court.l.latitude, longitude: court.l.longitude}}
+                title={court.name}
+                image={require('../images/tennis_court_marker.png')}
+                />
+            ))}
+            </MapView>
         </Content>
     );
   }
