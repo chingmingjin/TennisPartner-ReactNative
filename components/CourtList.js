@@ -106,6 +106,7 @@ class CourtList extends Component {
             {this.state.courts.map(court => (
                 <Marker
                 coordinate={{latitude: court.l.latitude, longitude: court.l.longitude}}
+                centerOffset={{ x: 0, y: -45 }}
                 title={court.name}
                 image={require('../images/tennis_court_marker.png')}
                 />
