@@ -47,6 +47,7 @@ class CourtList extends Component {
                 snapshot.docs.forEach(doc => {
                   const { name, phone, l } = doc.data();
                     courts.push({
+                        key: doc.id,
                       name, phone, l
                     });
                 });

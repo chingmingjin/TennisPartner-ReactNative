@@ -5,6 +5,7 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 
 import HomeScreen from "./screens/home/";
 import UserSettingsiOS from "./screens/userSettingsiOS";
+import UserDetailsScreen from "./screens/userDetails";
 import LoginScreen from "./screens/login/";
 
 const AppNavigator = createStackNavigator(
@@ -12,6 +13,7 @@ const AppNavigator = createStackNavigator(
     Home: HomeScreen,
     UserSettings: UserSettingsiOS,
     Login: LoginScreen,
+    UserDetails: UserDetailsScreen,
   },
   {
     initialRouteName: "Home",

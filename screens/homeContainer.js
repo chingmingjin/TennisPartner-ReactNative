@@ -5,8 +5,7 @@ import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Rig
 
 import PlayersList from '../components/PlayersList';
 import CourtList from '../components/CourtList';
-
-import firebase from 'react-native-firebase';
+import ButtonLeft from '../components/ButtonLeft';
 
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
@@ -19,7 +18,6 @@ class HomeContainer extends Component {
       tabPlayers: true,
       tabCourts: false
     };
-
     }
 
     toggleTabPlayers() {
@@ -37,16 +35,13 @@ class HomeContainer extends Component {
 
     render() {
       const { tabPlayers, tabCourts } = this.state;
-      const ButtonLeft = Platform.select({
-        ios: () => {return(<Button transparent onPress={() => this.props.navigation.navigate('UserSettings')}><Icon style={{fontSize: 24}} type='FontAwesome5' name='user-cog' /></Button>)},
-        android: () => {return(<Button transparent onPress={this.props.openDrawer}><Icon name='menu' /></Button>)},
-      });
+      
       return (
         <StyleProvider style={getTheme(commonColor)}>
         <Container>
           <Header>
             <Left>
-              <ButtonLeft />
+              <ButtonLeft {...this.props} />
             </Left>
             <Body>
               <Title style={{ color: "white" }}>{ this.props.title }</Title>

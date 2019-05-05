@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, View, StyleSheet } from 'react-native';
+import { Image, View, StyleSheet, TouchableHighlight } from 'react-native';
 import { Card, CardItem, Body, Text } from 'native-base';
 
 import { withNavigation } from 'react-navigation';
@@ -18,6 +18,7 @@ function getAge(dateString) {
 class PlayerCard extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props);
   }
   render() {
     const styles = StyleSheet.create({
@@ -37,6 +38,7 @@ class PlayerCard extends Component {
       }
     });
     return (
+    <TouchableHighlight style={{ borderRadius: 8 }} onPress={() => this.props.navigation.navigate('UserDetails', {userId: this.props.doc.id}) }>
     <Card borderRadius={8}>
         <CardItem>
           <Body>
@@ -54,6 +56,7 @@ class PlayerCard extends Component {
           </Body>
         </CardItem>
       </Card>
+      </TouchableHighlight>
     );
   }
 }
