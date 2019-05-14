@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet } from 'react-native';
-import { Button, Icon } from 'native-base';
+import { Button, Icon, Text } from 'native-base';
 import { withNavigation } from 'react-navigation';
 
 class ButtonBack extends Component {
@@ -9,7 +9,7 @@ class ButtonBack extends Component {
         const styles = StyleSheet.create({
             icon: {
                 color: '#fff',
-                fontSize: 25
+                fontSize: 25,
             }
         });
 
@@ -18,7 +18,7 @@ class ButtonBack extends Component {
                 return (
                     <Button transparent onPress={() => this.props.navigation.goBack()}>
                         <Icon style={styles.icon} name='arrow-back' />
-                        <Text>Back</Text>
+                        <Text style={{ color: '#fff' }}>Back</Text>
                     </Button>
                 )
             },

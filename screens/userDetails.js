@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Dimensions, StyleSheet, Platform, TouchableOpacity } from "react-native";
+import { View, Dimensions, StyleSheet, Platform } from "react-native";
 import { withNavigation, Header } from "react-navigation";
 import { Icon, Card, CardItem, Body, Text } from 'native-base';
 
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   navBar: {
     height: NAV_BAR_HEIGHT,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: 'transparent',
