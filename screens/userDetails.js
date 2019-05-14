@@ -1,11 +1,56 @@
 import React, { Component } from "react";
-import { Share, View, Text, SectionList, Image, StyleSheet, Platform, TouchableHighlight } from "react-native";
-import { withNavigation } from "react-navigation";
-import { Header } from 'react-navigation';
+import { View, Dimensions, StyleSheet, Platform, TouchableOpacity } from "react-native";
+import { withNavigation, Header } from "react-navigation";
+import { Icon, Card, CardItem, Body, Text } from 'native-base';
 
-import HeaderImageScrollView, { TriggeringView } from 'react-native-image-header-scroll-view';
+import color from "color";
+import ButtonBack from '../components/ButtonBack';
+import ReactNativeParallaxHeader from 'react-native-parallax-header';
 
 import firebase from 'react-native-firebase';
+
+const {
+  height: SCREEN_HEIGHT,
+} = Dimensions.get('window');
+
+const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
+const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 44 : 20) : 0;
+const HEADER_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 88 : 64) : 64;
+const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  contentContainer: {
+    flexGrow: 1,
+  },
+  navContainer: {
+    height: HEADER_HEIGHT,
+    marginHorizontal: 10,
+  },
+  statusBar: {
+    height: STATUS_BAR_HEIGHT,
+    backgroundColor: 'transparent',
+  },
+  navBar: {
+    height: NAV_BAR_HEIGHT,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+  },
+  titleStyle: {
+    color: 'white',
+    fontSize: 36,
+  },
+  headerTitle: {
+    justifyContent: 'flex-end',
+    alignItems: 'flex-start',
+    paddingLeft: 20,
+    paddingBottom: 15
+  }
+});
 
 class UserDetails extends Component {
   constructor(props) {
@@ -41,67 +86,60 @@ class UserDetails extends Component {
     });
   }
 
-  render() {
-    const styles = StyleSheet.create({
-      playerView: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'stretch',
-      },
-      header: {
-        backgroundColor: '#ffa737',
-        paddingTop: 20,
-        paddingBottom: 20,
-        alignItems: 'center'
-      },
-      profileImg: {
-      },
-      userName: {
-        fontSize: 25,
-        color: 'white',
-        paddingTop: 8
-      },
-      sectionHeader: {
-        paddingTop: 2,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingBottom: 2,
-        fontSize: 14,
-        fontWeight: 'bold',
-        backgroundColor: 'rgba(247,247,247,1.0)',
-      },
-      text: {
-        fontWeight: Platform.OS === "ios" ? "500" : "400",
-        fontSize: 16,
-        marginLeft: 20
-      },
-    });
+  renderNavBar = () => (
+    <View style={styles.navContainer}>
+      <View style={styles.statusBar} />
+      <View style={styles.navBar}>
+        <ButtonBack />
+      </View>
+    </View>
+  )
 
+  renderContent = () => (
+    <View style={{ flex: 1 }}>
+      <Card>
+        <CardItem header bordered>
+          <Text style={{ color: '#999' }}>INFO</Text>
+        </CardItem>
+        <CardItem bordered>
+          <Body>
+            <Text>
+              NativeBase is a free and open source framework that enable
+              developers to build
+              high-quality mobile apps using React Native iOS and Android
+              apps
+              with a fusion of ES6.
+                </Text>
+          </Body>
+        </CardItem>
+      </Card>
+    </View>
+  )
+
+  render() {
     const { user, firstName, lastName, avatarUrl } = this.state;
 
     return (
-        <View style={{ flex: 1 }}>
-            <HeaderImageScrollView
-                maxHeight={300}
-                minHeight={Header.HEIGHT}
-                minOverlayOpacity={0.1}
-                headerImage={{ uri: avatarUrl }}
-                foregroundExtrapolate={null}
-                renderForeground={() => (
-                    <View style={{ height: 300, justifyContent: 'flex-end', alignItems: 'flex-start' }} >
-                        <Text style={{ paddingLeft: 15, paddingBottom: 20, backgroundColor: "transparent", fontSize: 36, color: '#FFF' }}>{firstName + ' ' + lastName}</Text>
-                    </View>
-                )}
-            >
-                <View style={{ height: 1000 }}>
-                    <TriggeringView>
-                        <Text>Scroll Me!</Text>
-                    </TriggeringView>
-                </View>
-            </HeaderImageScrollView>
-        </View>
-          );
+      <View style={styles.container}>
+      <ReactNativeParallaxHeader
+        headerMinHeight={HEADER_HEIGHT}
+        headerMaxHeight={300}
+        extraScrollHeight={20}
+        navbarColor="#1976d2"
+        statusBarColor={color('#1976d2').darken(0.2).hex()}
+        title={ firstName + ' ' + lastName }
+        titleStyle={styles.titleStyle}
+        headerTitleStyle={styles.headerTitle}
+        backgroundImage={{ uri: avatarUrl }}
+        backgroundImageScale={1.2}
+        renderNavBar={this.renderNavBar}
+        renderContent={this.renderContent}
+        containerStyle={styles.container}
+        contentContainerStyle={styles.contentContainer}
+        innerContainerStyle={styles.container}
+      />
+    </View>
+    );
   }
 }
 

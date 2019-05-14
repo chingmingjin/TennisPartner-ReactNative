@@ -6,6 +6,7 @@ import firebase from 'react-native-firebase';
 import PhoneInput from 'react-native-phone-input';
 import CountryPicker from 'react-native-country-picker-modal';
 import Link from '../components/Link';
+import ButtonBack from '../components/ButtonBack';
 import { LoginButton, GraphRequest, GraphRequestManager, AccessToken } from 'react-native-fbsdk';
 import DatePicker from 'react-native-datepicker';
 import ImagePicker from 'react-native-image-picker';
@@ -347,21 +348,6 @@ class PhoneAuth extends Component {
       }
     });
     const { user, confirmResult, loading, loadingText, loadingProgress, uploadProgress, title } = this.state;
-    const ButtonBack = Platform.select({
-        ios: () => {
-            return(
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-                <Icon name='arrow-back' />
-                <Text>Back</Text>
-            </Button>
-            )},
-        android: () => {
-            return(
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-                <Icon name='arrow-back' />
-            </Button>
-            )},
-      });
     return (
         <StyleProvider style={getTheme(commonColor)}>
         <Container>
