@@ -135,6 +135,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-vector-icons')
     implementation project(':react-native-maps')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-fbsdk')
@@ -154,6 +155,7 @@ dependencies {
     implementation "com.google.firebase:firebase-firestore:18.2.0"
     implementation "com.google.firebase:firebase-auth:16.2.1"
     implementation "com.google.firebase:firebase-storage:16.1.0"
+    implementation "com.google.firebase:firebase-messaging:17.5.0"
     
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules

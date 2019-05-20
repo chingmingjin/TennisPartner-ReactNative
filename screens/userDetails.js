@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { View, Dimensions, StyleSheet, Platform } from "react-native";
 import { withNavigation, Header } from "react-navigation";
-import { Icon, Card, CardItem, Body, Text } from 'native-base';
+import { Card, CardItem, Body, Text, Icon } from 'native-base';
+import ActionButton from 'react-native-action-button';
 
 import color from "color";
 import ButtonBack from '../components/ButtonBack';
@@ -82,7 +83,7 @@ class UserDetails extends Component {
   getUser = (userId) => {
     firebase.firestore().collection('players').doc(userId).get().then((snapshot) => {
         const{ avatarUrl, firstName, lastName } = snapshot.data();
-        this.setState({ firstName: firstName, lastName: lastName, avatarUrl: avatarUrl });
+        this.setState({ userId: snapshot.id, firstName: firstName, lastName: lastName, avatarUrl: avatarUrl });
     });
   }
 
@@ -117,8 +118,7 @@ class UserDetails extends Component {
   )
 
   render() {
-    const { user, firstName, lastName, avatarUrl } = this.state;
-
+    const { userId, firstName, lastName, avatarUrl } = this.state;
     return (
       <View style={styles.container}>
       <ReactNativeParallaxHeader
@@ -138,6 +138,12 @@ class UserDetails extends Component {
         contentContainerStyle={styles.contentContainer}
         innerContainerStyle={styles.container}
       />
+        <ActionButton
+          buttonColor="#ffa737"
+          size={64}
+          renderIcon={() => (<Icon style={{ color: '#fff', fontSize: 34 }} name='chatboxes' /> )}
+          onPress={() => { console.log(userId) }}
+        />
     </View>
     );
   }
