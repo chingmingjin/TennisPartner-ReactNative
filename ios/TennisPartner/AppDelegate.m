@@ -11,6 +11,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "RNFirebaseNotifications.h"
 
 @implementation AppDelegate
 
@@ -21,6 +22,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [FIRApp configure];
+  [RNFirebaseNotifications configure];
   
   FIRFirestore *defaultFirestore = [FIRFirestore firestore];
   
@@ -43,6 +45,10 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+  [[RNFirebaseNotifications instance] didReceiveLocalNotification:notification];
 }
 
 - (BOOL)application:(UIApplication *)application
