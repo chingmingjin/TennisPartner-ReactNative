@@ -12,10 +12,11 @@ import store from "./src/store";
 import SendBird from 'sendbird';
 import firebase from 'react-native-firebase';
 
-import HomeScreen from "./screens/home/";
-import UserSettingsiOS from "./screens/userSettingsiOS";
-import UserDetailsScreen from "./screens/userDetails";
-import LoginScreen from "./screens/login/";
+import HomeScreen from "./src/screens/home";
+import UserSettingsiOS from "./src/screens/userSettingsiOS";
+import UserDetailsScreen from "./src/screens/userDetails";
+import LoginScreen from "./src/screens/login";
+import StartChat from "./src/screens/startchat"
 
 const AppNavigator = createStackNavigator(
   {
@@ -23,6 +24,7 @@ const AppNavigator = createStackNavigator(
     UserSettings: UserSettingsiOS,
     Login: LoginScreen,
     UserDetails: UserDetailsScreen,
+    StartChat: StartChat
   },
   {
     initialRouteName: "Home",
@@ -45,11 +47,9 @@ export default class App extends Component {
     firebase.notifications().android.createChannel(channel);
 
     console.disableYellowBox = true;
-    console.log('app is launched');
     AppState.addEventListener("change", this._handleAppStateChange);
   }
   componentWillUnmount() {
-    console.log('app is killed');
     AppState.removeEventListener("change", this._handleAppStateChange);
   }
   render() {

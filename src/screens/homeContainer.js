@@ -7,8 +7,8 @@ import PlayersList from '../components/PlayersList';
 import CourtList from '../components/CourtList';
 import ButtonLeft from '../components/ButtonLeft';
 
-import getTheme from '../native-base-theme/components';
-import commonColor from '../native-base-theme/variables/commonColor';
+import getTheme from '../../native-base-theme/components';
+import commonColor from '../../native-base-theme/variables/commonColor';
 import { withNavigation } from 'react-navigation';
 
 class HomeContainer extends Component {

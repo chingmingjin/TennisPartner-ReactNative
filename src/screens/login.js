@@ -15,10 +15,13 @@ import moment from 'moment';
 import Geolocation from 'react-native-geolocation-service';
 import { Geokit } from 'geokit';
 
-import getTheme from '../native-base-theme/components';
-import commonColor from '../native-base-theme/variables/commonColor';
+import getTheme from '../../native-base-theme/components';
+import commonColor from '../../native-base-theme/variables/commonColor';
 import { withNavigation } from 'react-navigation';
-
+import {
+  sbConnect,
+  sbGetChannelTitle
+} from '../sendbirdActions';
 
 class PhoneAuth extends Component {
   constructor(props) {
@@ -82,9 +85,15 @@ class PhoneAuth extends Component {
     if (confirmResult) {
       confirmResult.confirm(codeInput)
         .then((user) => {
-          if(user.metadata.creationTime === user.metadata.lastSignInTime)
-            this.setState({ loading: false, message: '', title: 'Your Info' });
-          else this.props.navigation.goBack();
+          sbConnect(user.uid)
+            .then(() => {
+              if (user.metadata.creationTime === user.metadata.lastSignInTime)
+                this.setState({ loading: false, message: '', title: 'Your Info' });
+              else this.props.navigation.goBack();
+            })
+            .catch((err) => {
+              console.error(err);
+            });
         })
         .catch(error => this.setState({ loading: false, message: error.message }));
     }

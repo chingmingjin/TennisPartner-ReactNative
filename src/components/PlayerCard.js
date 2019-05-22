@@ -18,7 +18,6 @@ function getAge(dateString) {
 class PlayerCard extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
   }
   render() {
     const styles = StyleSheet.create({
