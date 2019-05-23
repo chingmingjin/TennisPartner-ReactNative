@@ -1,12 +1,10 @@
 PODS:
-  - boost-for-react-native (1.63.0)
   - BoringSSL-GRPC (0.0.2):
     - BoringSSL-GRPC/Implementation (= 0.0.2)
     - BoringSSL-GRPC/Interface (= 0.0.2)
   - BoringSSL-GRPC/Implementation (0.0.2):
     - BoringSSL-GRPC/Interface (= 0.0.2)
   - BoringSSL-GRPC/Interface (0.0.2)
-  - DoubleConversion (1.1.6)
   - Firebase/Auth (5.20.2):
     - Firebase/CoreOnly
     - FirebaseAuth (= 5.4.2)
@@ -74,11 +72,6 @@ PODS:
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 5.2)
     - GTMSessionFetcher/Core (~> 1.1)
-  - Folly (2018.10.22.00):
-    - boost-for-react-native
-    - DoubleConversion
-    - glog
-  - glog (0.3.5)
   - GoogleAppMeasurement (5.8.1):
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
     - GoogleUtilities/MethodSwizzler (~> 5.2)
@@ -129,92 +122,26 @@ PODS:
   - Protobuf (3.7.0)
   - React (0.58.6):
     - React/Core (= 0.58.6)
-  - react-native-maps (0.24.2):
-    - React
   - React/ART (0.58.6):
     - React/Core
   - React/Core (0.58.6):
     - yoga (= 0.58.6.React)
-  - React/CxxBridge (0.58.6):
-    - Folly (= 2018.10.22.00)
-    - React/Core
-    - React/cxxreact
-    - React/jsiexecutor
-  - React/cxxreact (0.58.6):
-    - boost-for-react-native (= 1.63.0)
-    - Folly (= 2018.10.22.00)
-    - React/jsinspector
-  - React/DevSupport (0.58.6):
-    - React/Core
-    - React/RCTWebSocket
-  - React/fishhook (0.58.6)
-  - React/jsi (0.58.6):
-    - Folly (= 2018.10.22.00)
-  - React/jsiexecutor (0.58.6):
-    - Folly (= 2018.10.22.00)
-    - React/cxxreact
-    - React/jsi
-  - React/jsinspector (0.58.6)
-  - React/RCTActionSheet (0.58.6):
-    - React/Core
-  - React/RCTAnimation (0.58.6):
-    - React/Core
-  - React/RCTBlob (0.58.6):
-    - React/Core
-  - React/RCTGeolocation (0.58.6):
-    - React/Core
-  - React/RCTImage (0.58.6):
-    - React/Core
-    - React/RCTNetwork
-  - React/RCTLinkingIOS (0.58.6):
-    - React/Core
-  - React/RCTNetwork (0.58.6):
-    - React/Core
-  - React/RCTSettings (0.58.6):
-    - React/Core
-  - React/RCTText (0.58.6):
-    - React/Core
-  - React/RCTVibration (0.58.6):
-    - React/Core
-  - React/RCTWebSocket (0.58.6):
-    - React/Core
-    - React/fishhook
-    - React/RCTBlob
   - RNVectorIcons (6.1.0):
     - React
   - yoga (0.58.6.React)
 
 DEPENDENCIES:
-  - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Firestore
   - Firebase/Messaging
   - Firebase/Storage
-  - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
-  - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - React (from `../node_modules/react-native`)
-  - react-native-maps (from `../node_modules/react-native-maps`)
   - React/ART (from `../node_modules/react-native`)
-  - React/Core (from `../node_modules/react-native`)
-  - React/CxxBridge (from `../node_modules/react-native`)
-  - React/DevSupport (from `../node_modules/react-native`)
-  - React/RCTActionSheet (from `../node_modules/react-native`)
-  - React/RCTAnimation (from `../node_modules/react-native`)
-  - React/RCTGeolocation (from `../node_modules/react-native`)
-  - React/RCTImage (from `../node_modules/react-native`)
-  - React/RCTLinkingIOS (from `../node_modules/react-native`)
-  - React/RCTNetwork (from `../node_modules/react-native`)
-  - React/RCTSettings (from `../node_modules/react-native`)
-  - React/RCTText (from `../node_modules/react-native`)
-  - React/RCTVibration (from `../node_modules/react-native`)
-  - React/RCTWebSocket (from `../node_modules/react-native`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - boost-for-react-native
     - BoringSSL-GRPC
     - Firebase
     - FirebaseAnalytics
@@ -236,25 +163,15 @@ SPEC REPOS:
     - Protobuf
 
 EXTERNAL SOURCES:
-  DoubleConversion:
-    :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
-  Folly:
-    :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
-  glog:
-    :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
-  react-native-maps:
-    :path: "../node_modules/react-native-maps"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
 SPEC CHECKSUMS:
-  boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BoringSSL-GRPC: 2a230d9cd93e7ce39916044f645cebb31f37dde6
-  DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   Firebase: 0c8cf33f266410c61ab3e2265cfa412200351d9c
   FirebaseAnalytics: ece1aa57a4f43c64d53a648b5a5e05151aae947b
   FirebaseAnalyticsInterop: efbe45c8385ec626e29f9525e5ebd38520dfb6c1
@@ -265,8 +182,6 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: a122b0c258720cf250551bb2bedf48c699f80d90
   FirebaseMessaging: 4235f949ce1c4e827aeb19705ba5c53f9b85aa10
   FirebaseStorage: 6162ef4322502b818d9de0ec552f5226d283de43
-  Folly: de497beb10f102453a1afa9edbf8cf8a251890de
-  glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   GoogleAppMeasurement: ffe513e90551844a739e7bcbb1d2aca1c28a4338
   GoogleUtilities: 04fce34bcd5620c1ee76fb79172105c74a4df335
   "gRPC-C++": e76441995900ac90e9bd98644ab4733f12521edf
@@ -276,10 +191,9 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
   React: 130b87b2d5e2baac646954282cab87be986d98fc
-  react-native-maps: 0316ed017dbb64b33b227751fa810e2454fcfa39
   RNVectorIcons: ac7bf6bfeafaf3ad34552cdc6eed6fb8c4b7c940
   yoga: 32d7ef1081951e9a35a4c72a7be797598b138a48
 
-PODFILE CHECKSUM: 9a31d40c28e8da0e23a0696f24263a3811782246
+PODFILE CHECKSUM: 3ef53d5cf0973dcb16d6f34f0ce9686bf98cd616
 
 COCOAPODS: 1.6.1
