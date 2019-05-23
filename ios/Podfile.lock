@@ -120,15 +120,15 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - Protobuf (3.7.0)
-  - React (0.58.6):
-    - React/Core (= 0.58.6)
-  - React/ART (0.58.6):
+  - React (0.59.8):
+    - React/Core (= 0.59.8)
+  - React/ART (0.59.8):
     - React/Core
-  - React/Core (0.58.6):
-    - yoga (= 0.58.6.React)
+  - React/Core (0.59.8):
+    - yoga (= 0.59.8.React)
   - RNVectorIcons (6.1.0):
     - React
-  - yoga (0.58.6.React)
+  - yoga (0.59.8.React)
 
 DEPENDENCIES:
   - Firebase/Auth
@@ -190,9 +190,9 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
-  React: 130b87b2d5e2baac646954282cab87be986d98fc
+  React: 76e6aa2b87d05eb6cccb6926d72685c9a07df152
   RNVectorIcons: ac7bf6bfeafaf3ad34552cdc6eed6fb8c4b7c940
-  yoga: 32d7ef1081951e9a35a4c72a7be797598b138a48
+  yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
 PODFILE CHECKSUM: 3ef53d5cf0973dcb16d6f34f0ce9686bf98cd616
 
