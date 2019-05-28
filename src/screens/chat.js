@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Platform, View, FlatList, Text, Alert, AsyncStorage, BackHandler } from "react-native";
+import { Platform, View, FlatList, Text, Alert } from "react-native";
 import { NavigationActions } from "react-navigation";
-import { Container, Content, Header, Left, Right, Body, Title } from "native-base";
+import { Container, Header, Left, Right, Body, Title, StyleProvider } from "native-base";
 import ButtonBack from "../components/ButtonBack";
+import getTheme from '../../native-base-theme/components';
+import commonColor from '../../native-base-theme/variables/commonColor';
 import { connect } from 'react-redux';
 import {
     openChannelProgress,
@@ -178,7 +180,8 @@ class Chat extends Component {
       const { list } = this.props;
 
       return (
-          <View style={styles.containerViewStyle}>
+        <StyleProvider style={getTheme(commonColor)}>
+          <Container>
             <Header>
               <Left>
                 <ButtonBack {...this.props} />
@@ -212,7 +215,8 @@ class Chat extends Component {
                 onChangeText={this._onTextMessageChanged}
               />
             </View>
-          </View>
+          </Container>
+          </StyleProvider>
         )
       }
 }
@@ -264,7 +268,6 @@ const styles = {
         height: 14
       },
       containerViewStyle: {
-        backgroundColor: '#f1f2f6',
         flex: 1
       },
       messageListViewStyle: {

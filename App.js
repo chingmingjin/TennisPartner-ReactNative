@@ -72,7 +72,7 @@ export default class App extends Component {
     if (sb) {
       if (nextAppState === 'active') {
         if(Platform.OS === 'ios') {
-          PushNotificationIOS.setApplicationIconBadgeNumber(0);
+          //PushNotificationIOS.setApplicationIconBadgeNumber(0);
         }
         console.log('app is into foreground');
         sb.setForegroundState();
