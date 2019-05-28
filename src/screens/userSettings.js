@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Share, View, SectionList, Image, StyleSheet, Platform, TouchableHighlight } from "react-native";
 import { Left, Icon, Text, ListItem } from 'native-base';
 import { withNavigation } from "react-navigation";
+import {
+  sbDisconnect
+} from '../sendbirdActions';
 
 import firebase from 'react-native-firebase';
 
@@ -48,7 +51,10 @@ class UserSettings extends Component {
   },{
     dialogTitle: 'Invite via…'
   });
-  if(item == 'Logout') if(user) firebase.auth().signOut();
+  if(item == 'Logout') if(user) {
+    firebase.auth().signOut();
+    sbDisconnect();
+  }
  }
 
   render() {

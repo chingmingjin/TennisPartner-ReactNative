@@ -79,11 +79,6 @@ class UserDetails extends Component {
     this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({ user: user });
-        Toast.show({
-          text: "Login successful!",
-          duration: 3000,
-          type: "success"
-        })
       } else {
         this.setState({
           user: null,
@@ -141,6 +136,7 @@ class UserDetails extends Component {
 
   render() {
     const { userId, firstName, lastName, avatarUrl } = this.state;
+    const currentUser = firebase.auth().currentUser;
     return (
       <View style={styles.container}>
       <ReactNativeParallaxHeader
@@ -165,8 +161,8 @@ class UserDetails extends Component {
           size={64}
           renderIcon={() => (<Icon style={{ color: '#fff', fontSize: 34 }} name='chatboxes' /> )}
           onPress={() => {
-            firebase.auth().currentUser ?
-            this.props.navigation.navigate('StartChat', {userId: userId}) :
+            currentUser ?
+            this.props.navigation.navigate('Chat', { userId: currentUser.uid, otherUserId: userId }) :
             this.toggleModal()
           }}
         />

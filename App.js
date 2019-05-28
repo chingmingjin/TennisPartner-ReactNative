@@ -16,7 +16,10 @@ import HomeScreen from "./src/screens/home";
 import UserSettingsiOS from "./src/screens/userSettingsiOS";
 import UserDetailsScreen from "./src/screens/userDetails";
 import LoginScreen from "./src/screens/login";
-import StartChat from "./src/screens/startchat"
+import Chat from "./src/screens/chat";
+import {
+  sbConnect
+} from './src/sendbirdActions';
 
 const AppNavigator = createStackNavigator(
   {
@@ -24,7 +27,7 @@ const AppNavigator = createStackNavigator(
     UserSettings: UserSettingsiOS,
     Login: LoginScreen,
     UserDetails: UserDetailsScreen,
-    StartChat: StartChat
+    Chat: Chat
   },
   {
     initialRouteName: "Home",
@@ -46,8 +49,10 @@ export default class App extends Component {
     );
     firebase.notifications().android.createChannel(channel);
 
-    console.disableYellowBox = true;
+    //console.disableYellowBox = true;
     AppState.addEventListener("change", this._handleAppStateChange);
+
+    if(firebase.auth().currentUser) sbConnect(firebase.auth().currentUser.uid);
   }
   componentWillUnmount() {
     AppState.removeEventListener("change", this._handleAppStateChange);

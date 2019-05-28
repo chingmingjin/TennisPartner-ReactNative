@@ -56,7 +56,7 @@ export const sbTypingStart = (channelUrl) => {
             channel.startTyping();
             resolve(channel);
         })
-        .catch(reject(error));
+        .catch((error) => reject(error));
     });
 }
 
@@ -67,7 +67,7 @@ export const sbTypingEnd = (channelUrl) => {
             channel.endTyping();
             resolve(channel);
         })
-        .catch(reject(error));
+        .catch((error) => reject(error));
     });
 }
 

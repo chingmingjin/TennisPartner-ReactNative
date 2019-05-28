@@ -103,21 +103,23 @@ export const sbConnect = (userId) => {
     })
 };
 
-export const sbUpdateProfile = (nickname) => {
+export const sbUpdateProfile = (nickname, avatarUrl) => {
     return new Promise((resolve, reject) => {
         if (!nickname) {
             reject('Nickname is required.');
             return;
         }
+        if (!avatarUrl) {
+            reject('mage is required.');
+            return;
+        }
         let sb = SendBird.getInstance();
         if(!sb) sb = new SendBird({'appId': APP_ID});
-        sb.updateCurrentUserInfo(nickname, null, (user, error) => {
+        sb.updateCurrentUserInfo(nickname, avatarUrl, (user, error) => {
             if (error) {
                 reject('Update profile failed.')
             } else {
-                AsyncStorage.setItem('user', JSON.stringify(user), () => {
-                    resolve(user);
-                });
+                resolve(user);
             }
         })
     })
@@ -127,10 +129,8 @@ export const sbDisconnect = () => {
     return new Promise((resolve, reject) => {
         const sb = SendBird.getInstance();
         if (sb) {
-            AsyncStorage.removeItem('user', () => {
-                sb.disconnect(() => {
-                    resolve(null);
-                });
+            sb.disconnect(() => {
+                resolve(null);
             });
         } else {
             resolve(null);

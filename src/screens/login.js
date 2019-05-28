@@ -20,7 +20,7 @@ import commonColor from '../../native-base-theme/variables/commonColor';
 import { withNavigation } from 'react-navigation';
 import {
   sbConnect,
-  sbGetChannelTitle
+  sbUpdateProfile
 } from '../sendbirdActions';
 
 class PhoneAuth extends Component {
@@ -89,7 +89,14 @@ class PhoneAuth extends Component {
             .then(() => {
               if (user.metadata.creationTime === user.metadata.lastSignInTime)
                 this.setState({ loading: false, message: '', title: 'Your Info' });
-              else this.props.navigation.goBack();
+              else  {
+                Toast.show({
+                  text: "Login successful!",
+                  duration: 3000,
+                  type: "success"
+                });
+                this.props.navigation.goBack();
+              }
             })
             .catch((err) => {
               console.error(err);
@@ -232,10 +239,21 @@ class PhoneAuth extends Component {
           }
           firebase.firestore().collection('players').doc(user.uid).set(playerData)
           .then((userRef) => {
-            user.updateProfile({displayName: fullName, photoURL: avatarSource }).then(() => {
-              this.setState({ loading: false });
-              this.props.navigation.goBack()
-            });
+            sbUpdateProfile(fullName, avatarSource)
+              .then(() => {
+                user.updateProfile({ displayName: fullName, photoURL: avatarSource }).then(() => {
+                  this.setState({ loading: false });
+                  Toast.show({
+                    text: "Login successful!",
+                    duration: 3000,
+                    type: "success"
+                  });
+                  this.props.navigation.goBack()
+                });
+              })
+              .catch((err) => {
+                console.error(err);
+              });
           }).catch(error => console.error(error));
         },
         (error) => {
@@ -306,10 +324,21 @@ class PhoneAuth extends Component {
                   }
                   firebase.firestore().collection('players').doc(user.uid).set(playerData)
                   .then((userRef) => {
-                    user.updateProfile({displayName: fullName, photoURL: snapshot.downloadURL }).then(() => {
-                      this.setState({ loadingProgress: false });
-                      this.props.navigation.goBack()
-                    });
+                    sbUpdateProfile(fullName, avatarSource)
+                      .then(() => {
+                        user.updateProfile({ displayName: fullName, photoURL: snapshot.downloadURL }).then(() => {
+                          this.setState({ loadingProgress: false });
+                          Toast.show({
+                            text: "Login successful!",
+                            duration: 3000,
+                            type: "success"
+                          });
+                          this.props.navigation.goBack()
+                        });
+                      })
+                      .catch((err) => {
+                        console.error(err);
+                      });
                   }).catch(error => console.error(error));
                 }
               },

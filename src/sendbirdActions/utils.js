@@ -6,8 +6,10 @@ export const sbGetChannelTitle = (channel) => {
     } else {
         const { members } = channel;
         let nicknames = members.map((member) => {
+            if(member.nickname !== SendBird.getInstance().currentUser.nickname)
             return member.nickname
-        }).join(', ');
+        });
+        if(nicknames.length > 1) nicknames.join(', ');
         
         if (nicknames.length > 21) {
             nicknames = nicknames.substring(0, 17) + '...'
