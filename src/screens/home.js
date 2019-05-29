@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, Dimensions } from 'react-native';
 
 import { Footer, FooterTab, Button, Icon, Text } from 'native-base';
 import { Header } from 'react-native-elements';
@@ -8,6 +8,9 @@ import color from "color";
 import PlayersList from '../components/PlayersList';
 import CourtList from '../components/CourtList';
 import Settings from './userSettings';
+
+const d = Dimensions.get("window");
+const isX = Platform.OS === "ios" && (d.height > 800 || d.width > 800) ? true : false;
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -52,7 +55,6 @@ class HomeScreen extends Component {
                 backgroundColor: color("#1976d2").darken(0.2).hex() 
               }}
               containerStyle={{ 
-                height: 64,
                 backgroundColor: "#1976d2",
                 ...Platform.select({
                   android: {
@@ -60,13 +62,14 @@ class HomeScreen extends Component {
                       paddingTop: -10
                   },
                   ios: {
-                      minHeight: 70
+                      height: isX ? 97 : 64
                   },
               })
               }}
               placement="left"
-              leftComponent={{ text: 'Players nearby', style: { color: '#fff', fontSize: 18 } }}
-              rightComponent={{ icon: 'search', color: '#fff' }}
+              leftComponent={{ icon: 'room', underlayColor: "#1976d2", color: '#fff' }}
+              centerComponent={{ text: 'Players nearby', style: { color: '#fff', fontSize: 18 } }}
+              rightComponent={{ icon: 'search', underlayColor: "#1976d2", color: '#fff', onPress: () => alert("You pressed the button") }}
             />
           {tabPlayers && (<PlayersList />) }
           {tabCourts && (<CourtList />) }
