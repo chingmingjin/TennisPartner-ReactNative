@@ -38,6 +38,7 @@
 		2CDE7A34226633FA008F2F4A /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CDE7A30226633F9008F2F4A /* Bolts.framework */; };
 		2CDE7A35226633FA008F2F4A /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CDE7A31226633F9008F2F4A /* FBSDKLoginKit.framework */; };
 		2CDE7A36226633FA008F2F4A /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CDE7A32226633F9008F2F4A /* FBSDKShareKit.framework */; };
+		2CEA97AE229EBD2D00E1E0B2 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CEA9781229EBD0E00E1E0B2 /* libBVLinearGradient.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -224,6 +225,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = B5C32A36220C603B000FFB8D;
 			remoteInfo = "RNGestureHandler-tvOS";
+		};
+		2CEA9780229EBD0E00E1E0B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2CEA9778229EBD0E00E1E0B2 /* BVLinearGradient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = BVLinearGradient;
+		};
+		2CEA9782229EBD0E00E1E0B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2CEA9778229EBD0E00E1E0B2 /* BVLinearGradient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 64AA15081EF7F30100718508;
+			remoteInfo = "BVLinearGradient-tvOS";
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -449,6 +464,7 @@
 		2CDE7A30226633F9008F2F4A /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Frameworks/Bolts.framework; sourceTree = "<group>"; };
 		2CDE7A31226633F9008F2F4A /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Frameworks/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		2CDE7A32226633F9008F2F4A /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Frameworks/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		2CEA9778229EBD0E00E1E0B2 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* TennisPartner-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TennisPartner-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* TennisPartner-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TennisPartner-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D8D188FB80544BB9E5C989C /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
@@ -512,6 +528,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CEA97AE229EBD2D00E1E0B2 /* libBVLinearGradient.a in Frameworks */,
 				2C8BC8FE22969E9B0019209F /* libAirMaps.a in Frameworks */,
 				2CB0E68E22725BCB00DC2E58 /* libART.a in Frameworks */,
 				2C4D903022672D73006D1CB4 /* libRNImagePicker.a in Frameworks */,
@@ -785,6 +802,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		2CEA9779229EBD0E00E1E0B2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2CEA9781229EBD0E00E1E0B2 /* libBVLinearGradient.a */,
+				2CEA9783229EBD0E00E1E0B2 /* libBVLinearGradient.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -822,6 +848,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				2CEA9778229EBD0E00E1E0B2 /* BVLinearGradient.xcodeproj */,
 				2C8BC8CC22969E820019209F /* AirMaps.xcodeproj */,
 				2CB0E65B22725B9700DC2E58 /* ART.xcodeproj */,
 				2C4D900122672D4C006D1CB4 /* RNImagePicker.xcodeproj */,
@@ -1038,6 +1065,10 @@
 					ProjectRef = 2CB0E65B22725B9700DC2E58 /* ART.xcodeproj */;
 				},
 				{
+					ProductGroup = 2CEA9779229EBD0E00E1E0B2 /* Products */;
+					ProjectRef = 2CEA9778229EBD0E00E1E0B2 /* BVLinearGradient.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
 				},
@@ -1251,6 +1282,20 @@
 			fileType = archive.ar;
 			path = "libRNGestureHandler-tvOS.a";
 			remoteRef = 2CD47D59225F6252009AFBAC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2CEA9781229EBD0E00E1E0B2 /* libBVLinearGradient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBVLinearGradient.a;
+			remoteRef = 2CEA9780229EBD0E00E1E0B2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2CEA9783229EBD0E00E1E0B2 /* libBVLinearGradient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBVLinearGradient.a;
+			remoteRef = 2CEA9782229EBD0E00E1E0B2 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */ = {
