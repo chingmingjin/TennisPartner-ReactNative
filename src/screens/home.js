@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 
 import { Footer, FooterTab, Button, Icon, Text } from 'native-base';
 import { Header } from 'react-native-elements';
@@ -52,9 +52,16 @@ class HomeScreen extends Component {
                 backgroundColor: color("#1976d2").darken(0.2).hex() 
               }}
               containerStyle={{ 
-                height: 56,
+                height: 64,
                 backgroundColor: "#1976d2",
-                paddingTop: -10
+                ...Platform.select({
+                  android: {
+                      minHeight: 56,
+                  },
+                  ios: {
+                      minHeight: 70
+                  },
+              })
               }}
               placement="left"
               leftComponent={{ text: 'Players nearby', style: { color: '#fff', fontSize: 18 } }}
