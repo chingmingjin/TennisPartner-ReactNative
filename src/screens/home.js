@@ -5,46 +5,54 @@ import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Rig
 
 import PlayersList from '../components/PlayersList';
 import CourtList from '../components/CourtList';
+import Settings from './userSettings';
 import ButtonLeft from '../components/ButtonLeft';
 
 import getTheme from '../../native-base-theme/components';
 import commonColor from '../../native-base-theme/variables/commonColor';
 import { withNavigation } from 'react-navigation';
 
-class HomeContainer extends Component {
+class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tabPlayers: true,
-      tabCourts: false
+      tabCourts: false,
+      tabSettings: false
     };
     }
 
     toggleTabPlayers() {
       this.setState({
         tabPlayers: true,
-        tabCourts: false
+        tabCourts: false,
+        tabSettings: false
       });
     }
     toggleTabCourts() {
       this.setState({
         tabPlayers: false,
-        tabCourts: true
+        tabCourts: true,
+        tabSettings: false
+      });
+    }
+    toggleTabSettings() {
+      this.setState({
+        tabPlayers: false,
+        tabCourts: false,
+        tabSettings: true,
       });
     }
 
     render() {
-      const { tabPlayers, tabCourts } = this.state;
+      const { tabPlayers, tabCourts, tabSettings } = this.state;
       
       return (
         <StyleProvider style={getTheme(commonColor)}>
         <Container>
           <Header>
-            <Left>
-              <ButtonLeft {...this.props} />
-            </Left>
             <Body>
-              <Title style={{ color: "white" }}>{ this.props.title }</Title>
+              <Title style={{ color: "white" }}>Players nearby</Title>
             </Body>
             <Right>
             <Button transparent 
@@ -57,6 +65,7 @@ class HomeContainer extends Component {
           </Header>
           {tabPlayers && (<PlayersList />) }
           {tabCourts && (<CourtList />) }
+          {tabSettings && (<Settings />) }
           <Footer>
             <FooterTab>
               <Button vertical active={this.state.tabPlayers} onPress={() => this.toggleTabPlayers()}>
@@ -67,6 +76,10 @@ class HomeContainer extends Component {
               <Icon type="MaterialCommunityIcons" name="tennis" />
                 <Text>Courts</Text>
               </Button>
+              <Button vertical active={this.state.tabSettings} onPress={() => this.toggleTabSettings()}>
+              <Icon name="cog" />
+                <Text>Settings</Text>
+              </Button>
             </FooterTab>
           </Footer> 
           </Container>
@@ -74,4 +87,4 @@ class HomeContainer extends Component {
         );
     }
 }
-export default withNavigation(HomeContainer);
+export default withNavigation(HomeScreen);

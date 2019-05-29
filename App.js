@@ -13,7 +13,6 @@ import SendBird from 'sendbird';
 import firebase from 'react-native-firebase';
 
 import HomeScreen from "./src/screens/home";
-import UserSettingsiOS from "./src/screens/userSettingsiOS";
 import UserDetailsScreen from "./src/screens/userDetails";
 import LoginScreen from "./src/screens/login";
 import Chat from "./src/screens/chat";
@@ -24,7 +23,6 @@ import {
 const AppNavigator = createStackNavigator(
   {
     Home: HomeScreen,
-    UserSettings: UserSettingsiOS,
     Login: LoginScreen,
     UserDetails: UserDetailsScreen,
     Chat: Chat

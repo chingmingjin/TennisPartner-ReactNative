@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { Image, View, StyleSheet, TouchableHighlight } from 'react-native';
-import { Card, CardItem, Body, Text } from 'native-base';
+import { Image, View, StyleSheet, TouchableHighlight, Text } from 'react-native';
+import { ListItem } from 'react-native-elements';
+import TouchableScale from 'react-native-touchable-scale';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { withNavigation } from 'react-navigation';
 
@@ -19,44 +21,63 @@ class PlayerCard extends Component {
   constructor(props) {
     super(props);
   }
-  render() {
-    const styles = StyleSheet.create({
-      avatar: {
-        width: 80, 
-        height: 80, 
-        borderRadius: 40
-      },
-      firstName: {
-        fontSize: 24,
-        marginStart: 10
-      },
-      birthDate: {
-        fontSize: 20,
-        color: '#999',
-        marginStart: 5
-      }
-    });
+
+  _renderNameAge = (name, age) => {
     return (
-    <TouchableHighlight style={{ borderRadius: 8 }} onPress={() => this.props.navigation.navigate('UserDetails', {userId: this.props.doc.id}) }>
-    <Card borderRadius={8}>
-        <CardItem>
-          <Body>
-          <View style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
-            <Image source={{uri: this.props.avatarUrl}}
-            style={styles.avatar} />
-            <Text style={styles.firstName}>{this.props.firstName}</Text>
-            <Text style={styles.birthDate}>{getAge(this.props.birthday)}</Text>
-          </View>
-          </Body>
-        </CardItem>
-      </Card>
-      </TouchableHighlight>
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={ styles.firstName }>{name}</Text>
+        <Text style={ styles.age }>{age}</Text>
+      </View>
+    );
+  }
+
+  render() {
+
+    return (
+      <ListItem
+        Component={TouchableScale}
+        containerStyle={ styles.container }
+        friction={90} //
+        tension={100} // These props are passed to the parent component (here TouchableScale)
+        activeScale={0.95} //
+        linearGradientProps={{
+          colors: ['#eaeaea', '#fff'],
+          start: { x: 0.8, y: 0 },
+          end: { x: 0.07, y: 0 },
+        }}
+        ViewComponent={LinearGradient} // Only if no expo
+        leftAvatar={{ avatarStyle: styles.avatar, rounded: true, size: 'large', title: this.props.firstName[0], source: { uri: this.props.avatarUrl } }}
+        title={this._renderNameAge(this.props.firstName, getAge(this.props.birthday))}
+        chevron={{ color: '#666', size: 30 }}
+        onPress={() => this.props.navigation.navigate('UserDetails', {userId: this.props.doc.id})}
+      />
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    borderRadius: 20,
+    padding: 8,
+    marginTop: 10,
+    marginStart: 8,
+    marginEnd: 8,
+   
+  },
+  avatar: {
+    borderRadius: 20
+  },
+  firstName: {
+    fontSize: 22,
+    color: 'black',
+    fontWeight: 'bold'
+  },
+  age: {
+    alignSelf: 'center',
+    marginStart: 5,
+    fontSize: 20,
+    color: '#888',
+  }
+});
+
 export default withNavigation(PlayerCard);

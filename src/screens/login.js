@@ -23,7 +23,7 @@ import {
   sbUpdateProfile
 } from '../sendbirdActions';
 
-class PhoneAuth extends Component {
+class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.unsubscribe = null;
@@ -552,4 +552,4 @@ class PhoneAuth extends Component {
   }
 }
 
-export default withNavigation(PhoneAuth);
+export default withNavigation(LoginScreen);

@@ -5,7 +5,7 @@ import { Icon } from 'react-native-elements';
 const TextItem = (props) => {
     return (
         <View style={{}}>
-            <Text style={{fontSize: 12, color: props.isUser ? '#fff' : '#000'}}>{props.message}</Text>
+            <Text style={{fontSize: 15, color: props.isUser ? '#fff' : '#000'}}>{props.message}</Text>
         </View>
     )
 }
