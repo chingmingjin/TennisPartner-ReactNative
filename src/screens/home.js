@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import { Alert, Platform } from 'react-native';
+import { View } from 'react-native';
 
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, StyleProvider } from 'native-base';
+import { Footer, FooterTab, Button, Icon, Text } from 'native-base';
+import { Header } from 'react-native-elements';
 
+import color from "color";
 import PlayersList from '../components/PlayersList';
 import CourtList from '../components/CourtList';
 import Settings from './userSettings';
-import ButtonLeft from '../components/ButtonLeft';
-
-import getTheme from '../../native-base-theme/components';
-import commonColor from '../../native-base-theme/variables/commonColor';
-import { withNavigation } from 'react-navigation';
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -48,21 +45,21 @@ class HomeScreen extends Component {
       const { tabPlayers, tabCourts, tabSettings } = this.state;
       
       return (
-        <StyleProvider style={getTheme(commonColor)}>
-        <Container>
-          <Header>
-            <Body>
-              <Title style={{ color: "white" }}>Players nearby</Title>
-            </Body>
-            <Right>
-            <Button transparent 
-            onPress={() => {
-               Alert.alert('You tapped the button!');
-            }}>
-                <Icon name='search' />
-              </Button>
-            </Right>
-          </Header>
+        <View style={{ flex: 1 }}>
+            <Header
+              statusBarProps={{ 
+                barStyle: 'light-content', 
+                backgroundColor: color("#1976d2").darken(0.2).hex() 
+              }}
+              containerStyle={{ 
+                height: 56,
+                backgroundColor: "#1976d2",
+                paddingTop: -10
+              }}
+              placement="left"
+              leftComponent={{ text: 'Players nearby', style: { color: '#fff', fontSize: 18 } }}
+              rightComponent={{ icon: 'search', color: '#fff' }}
+            />
           {tabPlayers && (<PlayersList />) }
           {tabCourts && (<CourtList />) }
           {tabSettings && (<Settings />) }
@@ -81,10 +78,9 @@ class HomeScreen extends Component {
                 <Text>Settings</Text>
               </Button>
             </FooterTab>
-          </Footer> 
-          </Container>
-          </StyleProvider>
+          </Footer>
+          </View>
         );
     }
 }
-export default withNavigation(HomeScreen);
+export default HomeScreen;
