@@ -56,7 +56,8 @@ class HomeScreen extends Component {
                 backgroundColor: "#1976d2",
                 ...Platform.select({
                   android: {
-                      minHeight: 56,
+                      height: 56,
+                      paddingTop: -10
                   },
                   ios: {
                       minHeight: 70
