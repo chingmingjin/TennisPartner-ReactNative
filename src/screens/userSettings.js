@@ -39,7 +39,7 @@ class UserSettings extends Component {
   }
   componentWillUnmount() {
     if (this.unsubscribe) this.unsubscribe();
-    if (this.unsubscribeUserChange) this.unsubscribe();
+    if (this.unsubscribeUserChange) this.unsubscribeUserChange();
 
  }
 

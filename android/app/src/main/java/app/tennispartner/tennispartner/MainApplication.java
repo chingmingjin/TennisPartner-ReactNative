@@ -3,6 +3,8 @@ package app.tennispartner.tennispartner;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+import com.devfd.RNGeocoder.RNGeocoderPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -45,6 +47,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new AsyncStoragePackage(),
             new LinearGradientPackage(),
             new VectorIconsPackage(),
             new ImagePickerPackage(),
@@ -56,6 +59,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RNFusedLocationPackage(),
             new RNFirebaseMessagingPackage(),
             new RNFirebaseNotificationsPackage(),
+            new RNGeocoderPackage(),
             new MapsPackage(),
             new FBSDKPackage(mCallbackManager)
       );

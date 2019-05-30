@@ -16,6 +16,7 @@ import HomeScreen from "./src/screens/home";
 import UserDetailsScreen from "./src/screens/userDetails";
 import LoginScreen from "./src/screens/login";
 import Chat from "./src/screens/chat";
+import PlacesScreen from "./src/screens/places";
 import {
   sbConnect
 } from './src/sendbirdActions';
@@ -25,7 +26,8 @@ const AppNavigator = createStackNavigator(
     Home: HomeScreen,
     Login: LoginScreen,
     UserDetails: UserDetailsScreen,
-    Chat: Chat
+    Chat: Chat,
+    Places: PlacesScreen
   },
   {
     initialRouteName: "Home",
