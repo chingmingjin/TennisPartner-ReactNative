@@ -114,9 +114,8 @@ class HomeScreen extends Component {
     Geocoder.geocodePosition({ lat: lat, lng: lon }).then(res => {
       for(var i = res.length-1; i > 0; i--) {
         if(res[i].locality !== null) {
-          console.log(res[i]);
           this.setState({
-            city: res[i].locality
+            city: 'in ' + res[i].locality
           });
           return;
         }
@@ -170,7 +169,7 @@ class HomeScreen extends Component {
           }}
           placement="left"
           leftComponent={{ icon: 'room', underlayColor: "#1976d2", color: '#fff', onPress: () => this.props.navigation.navigate('Places') }}
-          centerComponent={{ text: 'Players in ' + this.state.city, style: { color: '#fff', fontSize: 18 }, onPress: () => this.props.navigation.navigate('Places') }}
+          centerComponent={{ text: 'Players ' + this.state.city, style: { color: '#fff', fontSize: 18 }, onPress: () => this.props.navigation.navigate('Places') }}
           rightComponent={{ icon: 'search', underlayColor: "#1976d2", color: '#fff', onPress: () => alert("You pressed the button") }}
         />
         {tabPlayers && this.state.latitude != 0 && (<PlayersList latitude={this.state.latitude} longitude={this.state.longitude} />)}
