@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, View, FlatList, Text, Alert } from "react-native";
+import { Dimensions, View, FlatList, Text, Alert } from "react-native";
 import { NavigationActions } from "react-navigation";
 import { Container, Header, Left, Right, Body, Title, StyleProvider } from "native-base";
 import ButtonBack from "../components/ButtonBack";
@@ -23,6 +23,12 @@ import {
 import { Button, Spinner, TextItem, FileItem, MessageInput, Message, AdminMessage } from "../components";
 import { BarIndicator } from "react-native-indicators";
 import { sbCreateGroupChannel, sbGetChannelTitle, sbCreatePreviousMessageListQuery, sbAdjustMessageList, sbIsImageMessage, sbMarkAsRead } from "../sendbirdActions";
+
+const {
+  height: SCREEN_HEIGHT,
+} = Dimensions.get('window');
+
+const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
 
 
 class Chat extends Component {
@@ -277,6 +283,7 @@ const styles = {
       messageInputViewStyle: {
         flex: 1,
         marginBottom: 0,
+        paddingBottom: IS_IPHONE_X ? 35 : 0,
         flexDirection: "column",
         justifyContent: "center"
       }

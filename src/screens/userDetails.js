@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
   bottomModal: {
     justifyContent: 'flex-end',
     margin: 0,
+    paddingBottom: IS_IPHONE_X ? 35 : 0
   },
   modalContent: {
     backgroundColor: 'white',
