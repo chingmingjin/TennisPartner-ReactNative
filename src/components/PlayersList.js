@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { FlatList, View, Text, Platform, StyleSheet } from 'react-native';
-import { Content } from 'native-base';
+import { Content, Icon } from 'native-base';
 import * as Progress from 'react-native-progress';
 import firebase from 'react-native-firebase';
 
@@ -45,7 +45,7 @@ class PlayersList extends Component {
     // Create a GeoQuery based on a location
     const query = geocollection.near({
       center: new firebase.firestore.GeoPoint(latitude, longitude),
-      radius: 100
+      radius: 50
     });
 
     // Get query (as Promise)
@@ -92,8 +92,7 @@ class PlayersList extends Component {
       },
       text: {
         textAlign: 'center',
-        fontSize: 20,
-        fontWeight: 'bold'
+        fontSize: 18,
       }
     });
 
@@ -118,7 +117,8 @@ class PlayersList extends Component {
      else
      return (
       <Content contentContainerStyle={ styles.contentCenter }>
-        <Text style={styles.text}>No players nearby</Text>
+        <Icon style={{ fontSize: 50, marginBottom: 10 }} type="FontAwesome5" name="frown" />
+        <Text style={styles.text}>There are currently no players {this.props.city}</Text>
       </Content>);
   }
 }

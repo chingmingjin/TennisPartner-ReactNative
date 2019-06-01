@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Platform, Dimensions, PermissionsAndroid } from 'react-native';
 
-import { Footer, FooterTab, Button, Icon, Text } from 'native-base';
+import { Footer, FooterTab, Button, Icon, Text, Content } from 'native-base';
 import { Header } from 'react-native-elements';
 
 import Geolocation from 'react-native-geolocation-service';
@@ -12,6 +12,7 @@ import color from "color";
 import PlayersList from '../components/PlayersList';
 import CourtList from '../components/CourtList';
 import Settings from './userSettings';
+import PlacesScreen from './places';
 
 const d = Dimensions.get("window");
 const isX = Platform.OS === "ios" && (d.height > 800 || d.width > 800) ? true : false;
@@ -25,7 +26,8 @@ class HomeScreen extends Component {
       tabSettings: false,
       latitude: 0,
       longitude: 0,
-      city: 'everywhere'
+      city: 'nearby',
+      showPicker: false
     }
     Geocoder.fallbackToGoogle("AIzaSyACKQQQmNubjsitW4kE-cH4Leee7Kg-gYE");
     this.requestLocationPermission = this.requestLocationPermission.bind(this);
@@ -66,18 +68,19 @@ class HomeScreen extends Component {
     }
   }
 
-  getLocationCoord = async () => {
+  getLocationCoord = async (lat = null, lng  = null) => {
     try {
-      var lat = await AsyncStorage.getItem('lat');
-      var lng = await AsyncStorage.getItem('lng');
-      if (lat !== null && lng !== null) {
-        lat = parseFloat(lat);
-        lng = parseFloat(lng);
+      if(lat !== null && lng !== null) this.storeLocation(lat, lng);
+      var latitude = lat ? lat : await AsyncStorage.getItem('lat');
+      var longitude = lng ? lng : await AsyncStorage.getItem('lng');
+      if (latitude !== null && longitude !== null) {
+        latitude = parseFloat(latitude);
+        longitude = parseFloat(longitude);
         this.setState({
-          latitude: lat,
-          longitude: lng
+          latitude: latitude,
+          longitude: longitude
         });
-        this.getCity(lat, lng);
+        this.getCity(latitude, longitude);
       } else {
         if (Platform.OS === 'android')
           this.requestLocationPermission();
@@ -145,9 +148,19 @@ class HomeScreen extends Component {
     }
   }
 
-  render() {
-    const { tabPlayers, tabCourts, tabSettings } = this.state;
+  togglePicker = () => {
+    if (this.state.showPicker)
+      this.setState({ showPicker: false })
+    else this.setState({ showPicker: true })
+  }
 
+  render() {
+    const { tabPlayers, tabCourts, tabSettings, showPicker } = this.state;
+
+    if(showPicker) {
+    return (
+      <PlacesScreen getNewLocation={this.getLocationCoord} togglePicker={this.togglePicker} />
+    ) } else {
     return (
       <View style={{ flex: 1 }}>
         <Header
@@ -168,11 +181,12 @@ class HomeScreen extends Component {
             })
           }}
           placement="left"
-          leftComponent={{ icon: 'room', underlayColor: "#1976d2", color: '#fff', onPress: () => this.props.navigation.navigate('Places') }}
-          centerComponent={{ text: 'Players ' + this.state.city, style: { color: '#fff', fontSize: 18 }, onPress: () => this.props.navigation.navigate('Places') }}
+          leftComponent={{ icon: 'room', underlayColor: "#1976d2", color: '#fff', onPress: () => this.togglePicker() }}
+          centerComponent={{ text: 'Players ' + this.state.city, style: { color: '#fff', fontSize: 18 }, onPress: () => this.togglePicker() }}
           rightComponent={{ icon: 'search', underlayColor: "#1976d2", color: '#fff', onPress: () => alert("You pressed the button") }}
         />
-        {tabPlayers && this.state.latitude != 0 && (<PlayersList latitude={this.state.latitude} longitude={this.state.longitude} />)}
+        {this.state.latitude == 0 && (<Content padder />)}
+        {tabPlayers && this.state.latitude != 0 && (<PlayersList latitude={this.state.latitude} longitude={this.state.longitude} city={this.state.city} />)}
         {tabCourts && this.state.latitude != 0 && (<CourtList latitude={this.state.latitude} longitude={this.state.longitude} />)}
         {tabSettings && (<Settings />)}
         <Footer>
@@ -192,7 +206,7 @@ class HomeScreen extends Component {
           </FooterTab>
         </Footer>
       </View>
-    );
+    )}
   }
 }
 export default HomeScreen;

@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import {
   Platform,
   AppState,
-  PushNotificationIOS
+  PushNotificationIOS,
+  SafeAreaView
 } from "react-native";
 import { Root } from 'native-base';
 
@@ -60,9 +61,11 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Root>
-          <AppContainer />
-        </Root>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#ddd' }}>
+          <Root>
+            <AppContainer />
+          </Root>
+        </SafeAreaView>
       </Provider>
     );
   }
