@@ -63,6 +63,7 @@ class CourtList extends Component {
             }}>
             {this.state.courts && this.state.courts.map(court => (
                 <Marker
+                key={court.key}
                 coordinate={{latitude: court.l.latitude, longitude: court.l.longitude}}
                 centerOffset={{ x: 0, y: -45 }}
                 title={court.name}

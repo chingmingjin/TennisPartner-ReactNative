@@ -23,10 +23,9 @@ class PlayersList extends Component {
   }
 
   componentDidMount() {
-    this.getNearbyPlayers();
     this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) this.setState({ user: user, loading: true }); else this.setState({ user: null, loading: true });
-      this.getNearbyPlayers();
+      if (user) this.setState({ user: user, loading: true }, () => this.getNearbyPlayers()); 
+      else this.setState({ user: null, loading: true }, () => this.getNearbyPlayers());
     });
   }
 
@@ -118,7 +117,7 @@ class PlayersList extends Component {
      return (
       <Content contentContainerStyle={ styles.contentCenter }>
         <Icon style={{ fontSize: 50, marginBottom: 10 }} type="FontAwesome5" name="frown" />
-        <Text style={styles.text}>There are currently no players {this.props.city}</Text>
+        <Text style={styles.text}>There are currently no players in {this.props.city}</Text>
       </Content>);
   }
 }

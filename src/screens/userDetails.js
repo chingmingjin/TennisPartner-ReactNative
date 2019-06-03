@@ -139,6 +139,7 @@ class UserDetails extends Component {
   render() {
     const { userId, firstName, lastName, avatarUrl } = this.state;
     const currentUser = firebase.auth().currentUser;
+
     if(!firstName || !lastName)
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -165,6 +166,7 @@ class UserDetails extends Component {
         contentContainerStyle={styles.contentContainer}
         innerContainerStyle={styles.container}
       />
+      {(!currentUser || (currentUser !== null && userId !== currentUser.uid)) && (
         <ActionButton
           buttonColor="#ffa737"
           size={64}
@@ -175,6 +177,7 @@ class UserDetails extends Component {
             this.toggleModal()
           }}
         />
+      )}
         <Modal
           isVisible={this.state.isModalVisible}
           onBackdropPress={() => this.setState({ isModalVisible: false })}

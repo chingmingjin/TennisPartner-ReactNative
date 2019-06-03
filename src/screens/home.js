@@ -3,6 +3,8 @@ import { View, Platform, Dimensions, PermissionsAndroid } from 'react-native';
 
 import { Footer, FooterTab, Button, Icon, Text, Content } from 'native-base';
 import { Header } from 'react-native-elements';
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+import fontelloConfig from '../config.json';
 
 import Geolocation from 'react-native-geolocation-service';
 import Geocoder from 'react-native-geocoder';
@@ -17,6 +19,8 @@ import PlacesScreen from './places';
 const d = Dimensions.get("window");
 const isX = Platform.OS === "ios" && (d.height > 800 || d.width > 800) ? true : false;
 
+const TennisIcons = createIconSetFromFontello(fontelloConfig);
+
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +30,7 @@ class HomeScreen extends Component {
       tabSettings: false,
       latitude: 0,
       longitude: 0,
-      city: 'nearby',
+      title: 'Players nearby',
       showPicker: false
     }
     Geocoder.fallbackToGoogle("AIzaSyACKQQQmNubjsitW4kE-cH4Leee7Kg-gYE");
@@ -39,6 +43,7 @@ class HomeScreen extends Component {
 
   toggleTabPlayers() {
     this.setState({
+      title: 'Players in ' + this.state.city,
       tabPlayers: true,
       tabCourts: false,
       tabSettings: false
@@ -46,6 +51,7 @@ class HomeScreen extends Component {
   }
   toggleTabCourts() {
     this.setState({
+      title: 'Courts in ' + this.state.city,
       tabPlayers: false,
       tabCourts: true,
       tabSettings: false
@@ -53,6 +59,7 @@ class HomeScreen extends Component {
   }
   toggleTabSettings() {
     this.setState({
+      title: 'Settings',
       tabPlayers: false,
       tabCourts: false,
       tabSettings: true,
@@ -118,7 +125,8 @@ class HomeScreen extends Component {
       for(var i = res.length-1; i > 0; i--) {
         if(res[i].locality !== null) {
           this.setState({
-            city: 'in ' + res[i].locality
+            title: 'Players in ' + res[i].locality,
+            city: res[i].locality
           });
           return;
         }
@@ -182,7 +190,7 @@ class HomeScreen extends Component {
           }}
           placement="left"
           leftComponent={{ icon: 'room', underlayColor: "#1976d2", color: '#fff', onPress: () => this.togglePicker() }}
-          centerComponent={{ text: 'Players ' + this.state.city, style: { color: '#fff', fontSize: 18 }, onPress: () => this.togglePicker() }}
+          centerComponent={{ text: this.state.title, style: { color: '#fff', fontSize: 18 }, onPress: () => this.togglePicker() }}
           rightComponent={{ icon: 'search', underlayColor: "#1976d2", color: '#fff', onPress: () => alert("You pressed the button") }}
         />
         {this.state.latitude == 0 && (<Content padder />)}
@@ -196,7 +204,7 @@ class HomeScreen extends Component {
               <Text>Players</Text>
             </Button>
             <Button vertical active={this.state.tabCourts} onPress={() => this.toggleTabCourts()}>
-              <Icon type="MaterialCommunityIcons" name="tennis" />
+              <TennisIcons color="white" size={28} name="tennis-court" />
               <Text>Courts</Text>
             </Button>
             <Button vertical active={this.state.tabSettings} onPress={() => this.toggleTabSettings()}>

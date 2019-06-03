@@ -37,7 +37,7 @@ class Chat extends Component {
         this.flatList = null;
         this.state = {
           channel: null,
-          isLoading: false,
+          isLoading: true,
           previousMessageListQuery: null,
           textMessage: ""
         };
@@ -65,12 +65,17 @@ class Chat extends Component {
       }
 
       componentWillReceiveProps(props) {
-        const { title, memberCount, list, exit } = props;
-    
+        const { list, exit } = props;
+
         if (list !== this.props.list) {
           this.setState({ isLoading: false });
         }
 
+        if (exit) {
+          this.setState({ isLoading: false }, () => {
+            this.props.navigation.goBack();
+          });
+        }
       }
     
       _componentInit = () => {
@@ -88,7 +93,6 @@ class Chat extends Component {
 
       _getChatTitle = () => {
         const { channel } = this.state;
-        const userId = this.props.navigation.getParam('userId', '0');
         if(channel) return sbGetChannelTitle(channel);
       }
 
@@ -182,15 +186,13 @@ class Chat extends Component {
       };
 
     render() {
-      const { channel } = this.state;
-      const { list } = this.props;
-
+      const { channel, isLoading } = this.state;
       return (
         <StyleProvider style={getTheme(commonColor)}>
           <Container>
             <Header>
               <Left>
-                <ButtonBack {...this.props} />
+                <ButtonBack onclick={() => {this.props.channelExit(channel.url, false); this.props.navigation.goBack()}} />
               </Left>
               <Body>
                 <Title style={{ color: "white" }}>
@@ -199,9 +201,11 @@ class Chat extends Component {
               </Body>
               <Right />
             </Header>
-            <Spinner visible={this.state.isLoading} />
+            {isLoading && (
+              <Spinner style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />
+            )}
             <View style={styles.messageListViewStyle}>
-            {channel && list.length > 0 && (
+            {channel && (
               <FlatList
                 ref={elem => this.flatList = elem}
                 renderItem={this._renderList}
@@ -228,10 +232,9 @@ class Chat extends Component {
 }
 
 function mapStateToProps({ chat }) {
-    let { title, memberCount, list, exit, typing } = chat;
-    
+    let { list, exit, typing } = chat;
     list = sbAdjustMessageList(list);
-    return { title, memberCount, list, exit, typing };
+    return { list, exit, typing };
   }
   
   export default connect(mapStateToProps, {

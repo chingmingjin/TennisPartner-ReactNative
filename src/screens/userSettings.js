@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Share, View, SectionList, Image, StyleSheet, Platform, TouchableHighlight } from "react-native";
 import { Left, Icon, Text, ListItem } from 'native-base';
 import { withNavigation } from "react-navigation";
+import { Avatar } from 'react-native-elements';
 import {
   sbDisconnect
 } from '../sendbirdActions';
@@ -112,12 +113,17 @@ class UserSettings extends Component {
         </TouchableHighlight>
         )}
         {user && user.photoURL && (
-        <TouchableHighlight>
-          <View style={styles.header}>
-              <Image source={{uri: user.photoURL}} style={styles.profileImg} />
-            <Text style={styles.userName}>{ user.displayName }</Text>
-          </View>
-        </TouchableHighlight>
+          <TouchableHighlight>
+            <View style={styles.header}>
+              <Avatar
+                source={{ uri: user.photoURL }}
+                containerStyle={{ width: 120, height: 120 }}
+                rounded
+                title={user.displayName.charAt(0)}
+              />
+              <Text style={styles.userName}>{user.displayName}</Text>
+            </View>
+          </TouchableHighlight>
         )}
           <SectionList
             sections={[

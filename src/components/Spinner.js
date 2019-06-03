@@ -5,7 +5,7 @@ class Spinner extends Component {
     render() {
         return (
             <Progress.Circle 
-                style={{ alignSelf: 'center', marginTop: 50 }} color="#ffa737" size={45} borderWidth={3} indeterminate={true} 
+                style={{ alignSelf: 'center' }} color="#ffa737" size={45} borderWidth={3} indeterminate={true} 
                 />
         )
     }

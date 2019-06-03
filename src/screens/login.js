@@ -402,7 +402,7 @@ class LoginScreen extends Component {
 
                 { loading && (
                   <View style={{ flex: 1 }}>
-                  <Progress.Circle style={{ alignSelf: 'center', marginTop: 50 }} color="#ffa737" size={45} borderWidth={3} indeterminate={true} />
+                  <Progress.Circle style={{ alignSelf: 'center', marginTop: 50, marginBottom: 10 }} color="#ffa737" size={45} borderWidth={3} indeterminate={true} />
                   <Text style={{ textAlign: 'center' }}>{ loadingText }</Text>
                   </View>
                 )}

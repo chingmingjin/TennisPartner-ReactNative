@@ -14,8 +14,8 @@ const MessageInput = (props) => {
                         color: '#212529',
                         ...Platform.select({
                             android: {
-                                minHeight: 60,
-                                width: width - 60
+                                minHeight: 40,
+                                width: width - 45
                             },
                             ios: {
                                 minHeight: 40,
@@ -26,12 +26,14 @@ const MessageInput = (props) => {
                     placeholder={'Your message'}
                     autoCapitalize='none'
                     autoCorrect={false}
+                    autoFocus={true}
                     underlineColorAndroid='transparent'
                     value={props.textMessage}
                     onChangeText={props.onChangeText}
                 />
             </View>
             <Icon
+                containerStyle={{ justifyContent: 'center', alignItems: 'flex-end' }}
                 name='md-send'
                 type='ionicon'
                 color={props.textMessage.length > 0 ? '#ffa737' : '#494e57'}
@@ -44,12 +46,13 @@ const MessageInput = (props) => {
 
 const styles = {
     containerStyle: {
+        borderTopWidth: 1,
+        borderTopColor: '#EEE',
         flexDirection: 'row',
         backgroundColor:'#fff'
     },
     inputViewStyle: {
-        paddingLeft: 8,
-        paddingRight: 8
+        paddingLeft: 8
     },
     inputStyle: {
         fontSize:13,
