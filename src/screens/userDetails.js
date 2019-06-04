@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   navBar: {
     height: NAV_BAR_HEIGHT,
-    marginTop: 40
+    marginTop: IS_IPHONE_X ? 40 : 0
   },
   titleStyle: {
     color: 'white',
