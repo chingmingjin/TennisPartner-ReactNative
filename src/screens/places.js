@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Dimensions, Platform } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import ButtonBack from '../components/ButtonBack'
+import { Icon } from 'react-native-elements'
 
 const d = Dimensions.get("window");
 const isX = Platform.OS === "ios" && (d.height > 800 || d.width > 800) ? true : false;
@@ -39,12 +39,13 @@ class PlacesScreen extends Component {
                 styles={{
                     textInputContainer: {
                         height: isX ? 80 : 56,
-                        alignItems: 'flex-end',
+                        alignItems: isX ? 'flex-end' : 'center',
                         paddingBottom: isX ? 5 : 0,
                         width: '100%',
                         backgroundColor: '#1976d2',
                     },
                     textInput: {
+                        marginBottom: 8,
                         height: 35,
                         fontSize: 18,
                     },
@@ -75,10 +76,12 @@ class PlacesScreen extends Component {
                 filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
 
                 debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
-                renderLeftButton={() => 
-                    <ButtonBack 
-                    click={() => this.props.togglePicker}
-                    style={{ justifyContent: 'flex-end' }} />}
+                renderLeftButton={() => <Icon
+                    name='keyboard-arrow-left'
+                    color='#fff'
+                    size={40}
+                    iconStyle={{ padding: 5 }}
+                    onPress={() => this.props.togglePicker()} />}
             />
         );
     }
