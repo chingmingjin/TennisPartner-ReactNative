@@ -17,7 +17,6 @@
     "prop-types": "^15.7.2",
     "react": "16.8.6",
     "react-native": "^0.59.0",
-    "react-native-action-button": "^2.8.5",
     "react-native-country-picker-modal": "^0.7.1",
     "react-native-datepicker": "^1.7.2",
     "react-native-elements": "^1.1.0",

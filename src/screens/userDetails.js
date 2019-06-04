@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { View, Dimensions, StyleSheet, Platform, StatusBar } from "react-native";
 import { withNavigation, Header } from "react-navigation";
-import { Card, CardItem, Body, Text, Icon, Button, Toast } from 'native-base';
-import ActionButton from 'react-native-action-button';
-
+import { Card, CardItem, Body, Text, Button, Toast } from 'native-base';
+import { Icon } from 'react-native-elements';
 import color from "color";
 import * as Progress from 'react-native-progress';
 import ButtonBack from '../components/ButtonBack';
@@ -162,18 +161,23 @@ class UserDetails extends Component {
         contentContainerStyle={styles.contentContainer}
         innerContainerStyle={styles.container}
       />
-      {(!currentUser || (currentUser !== null && userId !== currentUser.uid)) && (
-        <ActionButton
-          buttonColor="#ffa737"
-          size={64}
-          renderIcon={() => (<Icon style={{ color: '#fff', fontSize: 34 }} name='chatboxes' /> )}
-          onPress={() => {
-            currentUser ?
-            this.props.navigation.navigate('Chat', { userId: currentUser.uid, otherUserId: userId }) :
-            this.toggleModal()
-          }}
-        />
-      )}
+        {(!currentUser || (currentUser !== null && userId !== currentUser.uid)) && (
+          <Icon reverse={true} 
+          containerStyle={{
+            alignItems: 'flex-end',
+            paddingBottom: 15,
+            paddingRight: 15          
+        }}
+          color='#ffa737' 
+          size={32}
+          type='font-awesome' 
+          name='comments'
+            onPress={() => {
+              currentUser ?
+                this.props.navigation.navigate('Chat', { userId: currentUser.uid, otherUserId: userId }) :
+                this.toggleModal()
+            }} />
+        )}
         <Modal
           isVisible={this.state.isModalVisible}
           onBackdropPress={() => this.setState({ isModalVisible: false })}
