@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -40,6 +41,7 @@
 		2CDE7A35226633FA008F2F4A /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CDE7A31226633F9008F2F4A /* FBSDKLoginKit.framework */; };
 		2CDE7A36226633FA008F2F4A /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CDE7A32226633F9008F2F4A /* FBSDKShareKit.framework */; };
 		2CEA97AE229EBD2D00E1E0B2 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CEA9781229EBD0E00E1E0B2 /* libBVLinearGradient.a */; };
+		2CEB25EC22A540030018F9D3 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2CEB25EA22A53FEC0018F9D3 /* fontello.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -482,6 +484,7 @@
 		2CDE7A31226633F9008F2F4A /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Frameworks/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		2CDE7A32226633F9008F2F4A /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Frameworks/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		2CEA9778229EBD0E00E1E0B2 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
+		2CEB25EA22A53FEC0018F9D3 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* TennisPartner-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TennisPartner-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* TennisPartner-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TennisPartner-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D8D188FB80544BB9E5C989C /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
@@ -724,6 +727,7 @@
 		28D7A7D27C1A4BDCB4C6426C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2CEB25EA22A53FEC0018F9D3 /* fontello.ttf */,
 				FFA2DA97626E47CEAF4A3706 /* AntDesign.ttf */,
 				A96238828A034DC19AC6C1C3 /* Entypo.ttf */,
 				BA3286DE7FA447B5AABD2E6D /* EvilIcons.ttf */,
@@ -1547,6 +1551,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CEB25EC22A540030018F9D3 /* fontello.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				2923A111573B4301B0A33B2F /* AntDesign.ttf in Resources */,

@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
   },
   navContainer: {
     height: HEADER_HEIGHT,
-    marginHorizontal: 10,
   },
   statusBar: {
     height: STATUS_BAR_HEIGHT,
@@ -38,10 +37,6 @@ const styles = StyleSheet.create({
   },
   navBar: {
     height: NAV_BAR_HEIGHT,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
   },
   titleStyle: {
     color: 'white',

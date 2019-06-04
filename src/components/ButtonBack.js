@@ -9,32 +9,37 @@ class ButtonBack extends Component {
     }
 
     handleClick = () => {
-        if(this.props.onClick)
-        return this.props.onclick;
+        console.log(this.props.onclick);
+        if(this.props.click)
+        return this.props.click;
         else
         return this.props.navigation.goBack()
     }
 
     render() {
         const styles = StyleSheet.create({
+            button: {
+                alignSelf: 'flex-end'
+            },
             icon: {
                 color: '#fff',
                 fontSize: 25,
+                marginRight: 3
             }
         });
 
         const ButtonBack = Platform.select({
             ios: () => {
                 return (
-                    <Button transparent onPress={() => this.handleClick()}>
+                    <Button style={styles.button} transparent onPress={() => this.handleClick()}>
                         <Icon style={styles.icon} name='arrow-back' />
-                        <Text style={{ color: '#fff' }}>Back</Text>
+                        <Text style={{ color: '#fff', paddingLeft: 2, paddingRight: 2 }}>Back</Text>
                     </Button>
                 )
             },
             android: () => {
                 return (
-                    <Button transparent onPress={() => this.handleClick()}>
+                    <Button style={styles.button} transparent onPress={() => this.handleClick()}>
                         <Icon style={styles.icon} name='arrow-back' />
                     </Button>
                 )

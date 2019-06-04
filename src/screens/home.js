@@ -204,7 +204,7 @@ class HomeScreen extends Component {
               <Text>Players</Text>
             </Button>
             <Button vertical active={this.state.tabCourts} onPress={() => this.toggleTabCourts()}>
-              <TennisIcons color="white" size={28} name="tennis-court" />
+              <TennisIcons color={Platform.OS === 'android' ? 'white' : '#666'} size={28} name="tennis-court" />
               <Text>Courts</Text>
             </Button>
             <Button vertical active={this.state.tabSettings} onPress={() => this.toggleTabSettings()}>

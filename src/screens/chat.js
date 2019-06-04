@@ -192,7 +192,7 @@ class Chat extends Component {
           <Container>
             <Header>
               <Left>
-                <ButtonBack onclick={() => {this.props.channelExit(channel.url, false); this.props.navigation.goBack()}} />
+                <ButtonBack />
               </Left>
               <Body>
                 <Title style={{ color: "white" }}>
