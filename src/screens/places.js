@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Dimensions, Platform, StatusBar, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
+import color from "color";
 
 const d = Dimensions.get("window");
 const isX = Platform.OS === "ios" && (d.height > 800 || d.width > 800) ? true : false;
@@ -13,7 +14,7 @@ class PlacesScreen extends Component {
     render() {
         return (
             <View style={{ height: '100%' }}>
-            <StatusBar barStyle='light-content' />
+            <StatusBar barStyle='light-content' backgroundColor={color("#1976d2").darken(0.2).hex()} />
             <GooglePlacesAutocomplete
                 placeholder='Enter city'
                 minLength={2} // minimum length of text to search
