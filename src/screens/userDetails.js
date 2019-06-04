@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   navBar: {
     height: NAV_BAR_HEIGHT,
-    marginTop: 20
+    marginTop: 40
   },
   titleStyle: {
     color: 'white',
