@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, Platform } from 'react-native';
+import { Dimensions, Platform, StatusBar, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Icon } from 'react-native-elements'
 
@@ -12,6 +12,8 @@ class PlacesScreen extends Component {
     }
     render() {
         return (
+            <View style={{ height: '100%' }}>
+            <StatusBar barStyle='light-content' />
             <GooglePlacesAutocomplete
                 placeholder='Enter city'
                 minLength={2} // minimum length of text to search
@@ -83,6 +85,7 @@ class PlacesScreen extends Component {
                     underlayColor='#1976d2'
                     onPress={() => this.props.togglePicker()} />}
             />
+            </View>
         );
     }
 }

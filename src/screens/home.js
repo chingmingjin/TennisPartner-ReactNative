@@ -122,7 +122,8 @@ class HomeScreen extends Component {
 
   getCity = (lat, lon) => {
     Geocoder.geocodePosition({ lat: lat, lng: lon }).then(res => {
-      for(var i = res.length-1; i > 0; i--) {
+      console.log(res);
+      for(var i = res.length-1; i >= 0; i--) {
         if(res[i].locality !== null) {
           this.setState({
             title: 'Players in ' + res[i].locality,
@@ -204,7 +205,7 @@ class HomeScreen extends Component {
               <Text>Players</Text>
             </Button>
             <Button vertical active={this.state.tabCourts} onPress={() => this.toggleTabCourts()}>
-              <TennisIcons color={Platform.OS === 'android' ? 'white' : '#666'} size={28} name="tennis-court" />
+              <TennisIcons color={Platform.OS === 'android' ? 'white' : '#666'} size={26} name="tennis-court" />
               <Text>Courts</Text>
             </Button>
             <Button vertical active={this.state.tabSettings} onPress={() => this.toggleTabSettings()}>

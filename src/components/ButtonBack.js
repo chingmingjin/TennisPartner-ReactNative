@@ -19,7 +19,7 @@ class ButtonBack extends Component {
     render() {
         const styles = StyleSheet.create({
             button: {
-                alignSelf: 'flex-end'
+                alignSelf: 'flex-start'
             },
             icon: {
                 color: '#fff',
