@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Dimensions, StyleSheet, Platform } from "react-native";
+import { View, Dimensions, StyleSheet, Platform, StatusBar } from "react-native";
 import { withNavigation, Header } from "react-navigation";
 import { Card, CardItem, Body, Text, Icon, Button, Toast } from 'native-base';
 import ActionButton from 'react-native-action-button';
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
   },
   navBar: {
     height: NAV_BAR_HEIGHT,
+    marginTop: 20
   },
   titleStyle: {
     color: 'white',
@@ -103,7 +104,7 @@ class UserDetails extends Component {
 
   renderNavBar = () => (
     <View style={styles.navContainer}>
-      <View style={styles.statusBar} />
+      <StatusBar backgroundColor='transparent' translucent />
       <View style={styles.navBar}>
         <ButtonBack />
       </View>

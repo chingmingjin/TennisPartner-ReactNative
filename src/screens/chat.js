@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, View, FlatList, Text, Alert } from "react-native";
+import { Dimensions, View, FlatList, Text, Alert, StatusBar } from "react-native";
 import { NavigationActions } from "react-navigation";
 import { Container, Header, Left, Right, Body, Title, StyleProvider } from "native-base";
 import ButtonBack from "../components/ButtonBack";
@@ -190,6 +190,7 @@ class Chat extends Component {
       return (
         <StyleProvider style={getTheme(commonColor)}>
           <Container>
+          <StatusBar translucent={false} />
             <Header>
               <Left>
                 <ButtonBack />
