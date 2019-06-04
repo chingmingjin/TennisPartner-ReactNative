@@ -38,14 +38,14 @@ class PlacesScreen extends Component {
 
                 styles={{
                     textInputContainer: {
-                        height: isX ? 80 : 56,
+                        height: isX ? 90 : 56,
                         alignItems: isX ? 'flex-end' : 'center',
                         paddingBottom: isX ? 5 : 0,
                         width: '100%',
                         backgroundColor: '#1976d2',
                     },
                     textInput: {
-                        marginBottom: 8,
+                        marginBottom: isX ? 4 : 8,
                         height: 35,
                         fontSize: 18,
                     },
@@ -80,7 +80,7 @@ class PlacesScreen extends Component {
                     name='keyboard-arrow-left'
                     color='#fff'
                     size={40}
-                    iconStyle={{ padding: 5 }}
+                    underlayColor='#1976d2'
                     onPress={() => this.props.togglePicker()} />}
             />
         );
