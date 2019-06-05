@@ -28,7 +28,6 @@
 		2923A111573B4301B0A33B2F /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFA2DA97626E47CEAF4A3706 /* AntDesign.ttf */; };
 		2C36E6C82265CCF100E042F9 /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C36E6C72265CCD600E042F9 /* libRCTFBSDK.a */; };
 		2C4D903022672D73006D1CB4 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C4D902F22672D4C006D1CB4 /* libRNImagePicker.a */; };
-		2C55123222A08774002BBB52 /* libRNGeocoder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C55122E22A0875C002BBB52 /* libRNGeocoder.a */; };
 		2C55127F22A0894E002BBB52 /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C55127922A08935002BBB52 /* libRNCAsyncStorage.a */; };
 		2C64A63A225F64F8005D4684 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C64A639225F64F8005D4684 /* GoogleService-Info.plist */; };
 		2C8BC8FE22969E9B0019209F /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C8BC8D122969E830019209F /* libAirMaps.a */; };
@@ -158,13 +157,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
 			remoteInfo = RNImagePicker;
-		};
-		2C55122D22A0875C002BBB52 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2C5511FD22A0875C002BBB52 /* RNGeocoder.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BF8FCF941BFFB184000FCD37;
-			remoteInfo = RNGeocoder;
 		};
 		2C55127822A08935002BBB52 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -474,7 +466,6 @@
 		2C3558872260F25A005840EB /* TennisPartner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TennisPartner.entitlements; path = TennisPartner/TennisPartner.entitlements; sourceTree = "<group>"; };
 		2C36E6C22265CCD600E042F9 /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
 		2C4D900122672D4C006D1CB4 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
-		2C5511FD22A0875C002BBB52 /* RNGeocoder.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNGeocoder.xcodeproj; path = "../node_modules/react-native-geocoder/ios/RNGeocoder.xcodeproj"; sourceTree = "<group>"; };
 		2C55124722A08935002BBB52 /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
 		2C64A639225F64F8005D4684 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2C8BC8CC22969E820019209F /* AirMaps.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
@@ -549,7 +540,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C55127F22A0894E002BBB52 /* libRNCAsyncStorage.a in Frameworks */,
-				2C55123222A08774002BBB52 /* libRNGeocoder.a in Frameworks */,
 				2CEA97AE229EBD2D00E1E0B2 /* libBVLinearGradient.a in Frameworks */,
 				2C8BC8FE22969E9B0019209F /* libAirMaps.a in Frameworks */,
 				2CB0E68E22725BCB00DC2E58 /* libART.a in Frameworks */,
@@ -781,14 +771,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2C5511FE22A0875C002BBB52 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				2C55122E22A0875C002BBB52 /* libRNGeocoder.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		2C55124822A08935002BBB52 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -888,7 +870,6 @@
 			isa = PBXGroup;
 			children = (
 				2C55124722A08935002BBB52 /* RNCAsyncStorage.xcodeproj */,
-				2C5511FD22A0875C002BBB52 /* RNGeocoder.xcodeproj */,
 				2CEA9778229EBD0E00E1E0B2 /* BVLinearGradient.xcodeproj */,
 				2C8BC8CC22969E820019209F /* AirMaps.xcodeproj */,
 				2CB0E65B22725B9700DC2E58 /* ART.xcodeproj */,
@@ -1170,10 +1151,6 @@
 					ProjectRef = 2D8D188FB80544BB9E5C989C /* RNFirebase.xcodeproj */;
 				},
 				{
-					ProductGroup = 2C5511FE22A0875C002BBB52 /* Products */;
-					ProjectRef = 2C5511FD22A0875C002BBB52 /* RNGeocoder.xcodeproj */;
-				},
-				{
 					ProductGroup = 2CD47D4E225F6250009AFBAC /* Products */;
 					ProjectRef = 5C2D766901764CAC95946CF1 /* RNGestureHandler.xcodeproj */;
 				},
@@ -1261,13 +1238,6 @@
 			fileType = archive.ar;
 			path = libRNImagePicker.a;
 			remoteRef = 2C4D902E22672D4C006D1CB4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		2C55122E22A0875C002BBB52 /* libRNGeocoder.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNGeocoder.a;
-			remoteRef = 2C55122D22A0875C002BBB52 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		2C55127922A08935002BBB52 /* libRNCAsyncStorage.a */ = {
