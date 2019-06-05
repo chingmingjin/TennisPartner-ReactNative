@@ -149,11 +149,11 @@ class UserDetails extends Component {
             <CardItem>
               <Body>
               <View style={{ flex: 1, flexDirection: 'row' }}>
-              <View style={{ flex: 1, alignItems: 'center' }}>
+              <View style={{ flex: 1 }}>
                 <Text>Pula</Text>
                 <Text style={{ fontWeight: 'bold', fontSize: 30 }}>#20</Text>
                 </View>
-              <View style={{ flex: 1, alignItems: 'center' }}>
+              <View style={{ flex: 1 }}>
                 <Text>Croatia</Text>
                 <Text style={{ fontWeight: 'bold', fontSize: 30 }}>#120</Text>
                 </View>
