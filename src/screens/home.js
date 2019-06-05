@@ -122,9 +122,9 @@ class HomeScreen extends Component {
 
   getCity = (lat, lon) => {
     Geocoder.geocodePosition({ lat: lat, lng: lon }).then(res => {
-      console.log(res);
       for(var i = res.length-1; i >= 0; i--) {
         if(res[i].locality !== null) {
+          console.log(res[i]);
           this.setState({
             title: 'Players in ' + res[i].locality,
             city: res[i].locality

@@ -8,6 +8,7 @@ import * as Progress from 'react-native-progress';
 import ButtonBack from '../components/ButtonBack';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
 import Modal from "react-native-modal";
+import { getAge } from '../sendbirdActions/user';
 
 import firebase from 'react-native-firebase';
 
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
   },
   navBar: {
     height: NAV_BAR_HEIGHT,
-    marginTop: IS_IPHONE_X ? 40 : 0
+    marginTop: IS_IPHONE_X ? 40 : 25
   },
   titleStyle: {
     color: 'white',
@@ -60,6 +61,12 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
+  info: {
+     flex: 1, 
+     flexDirection: 'row', 
+     justifyContent: 'center',
+     margin: 5
+  }
 });
 
 class UserDetails extends Component {
@@ -92,8 +99,15 @@ class UserDetails extends Component {
 
   getUser = (userId) => {
     firebase.firestore().collection('players').doc(userId).get().then((snapshot) => {
-        const{ avatarUrl, firstName, lastName } = snapshot.data();
-        this.setState({ userId: snapshot.id, firstName: firstName, lastName: lastName, avatarUrl: avatarUrl });
+        const{ avatarUrl, firstName, lastName, birthday, gender } = snapshot.data();
+        this.setState({
+          userId: snapshot.id, 
+          firstName: firstName, 
+          lastName: lastName, 
+          avatarUrl: avatarUrl, 
+          birthday: birthday,
+          gender: gender 
+        });
     });
   }
 
@@ -113,21 +127,40 @@ class UserDetails extends Component {
   renderContent = () => (
     <View style={{ flex: 1 }}>
       <Card>
-        <CardItem header bordered>
-          <Text style={{ color: '#999' }}>INFO</Text>
-        </CardItem>
         <CardItem bordered>
           <Body>
-            <Text>
-              NativeBase is a free and open source framework that enable
-              developers to build
-              high-quality mobile apps using React Native iOS and Android
-              apps
-              with a fusion of ES6.
-                </Text>
+            <View style={{ flex: 1 }}>
+              <View style={styles.info}>
+                <Text>Age</Text>
+                <Text style={{ fontWeight: 'bold', marginLeft: 10 }}>{getAge(this.state.birthday)}</Text>
+                </View>
+              <View style={styles.info}>
+                <Text>Gender</Text>
+                <Text style={{ fontWeight: 'bold', marginLeft: 10 }}>{this.state.gender}</Text>
+                </View>
+            </View>
           </Body>
         </CardItem>
       </Card>
+      <Card>
+            <CardItem header>
+              <Text>RANKING</Text>
+            </CardItem>
+            <CardItem>
+              <Body>
+              <View style={{ flex: 1, flexDirection: 'row' }}>
+              <View style={{ flex: 1, alignItems: 'center' }}>
+                <Text>Pula</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 30 }}>#20</Text>
+                </View>
+              <View style={{ flex: 1, alignItems: 'center' }}>
+                <Text>Croatia</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 30 }}>#120</Text>
+                </View>
+            </View>
+              </Body>
+            </CardItem>
+         </Card>
     </View>
   )
 

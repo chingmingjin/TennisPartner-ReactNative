@@ -3,19 +3,9 @@ import { Image, View, StyleSheet, TouchableHighlight, Text } from 'react-native'
 import { ListItem } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
 import LinearGradient from 'react-native-linear-gradient';
+import { getAge } from '../sendbirdActions/user';
 
 import { withNavigation } from 'react-navigation';
-
-function getAge(dateString) {
-  var today = new Date();
-  var birthDate = new Date(dateString);
-  var age = today.getFullYear() - birthDate.getFullYear();
-  var m = today.getMonth() - birthDate.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-  }
-  return age;
-}
 
 class PlayerCard extends Component {
   constructor(props) {
