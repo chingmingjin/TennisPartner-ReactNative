@@ -6,13 +6,16 @@ import { Header } from 'react-native-elements';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from '../config.json';
 
+import firebase from 'react-native-firebase';
+
 import Geolocation from 'react-native-geolocation-service';
 import Geocoder from 'react-native-geocoding';
-import AsyncStorage from '@react-native-community/async-storage';
+//import AsyncStorage from '@react-native-community/async-storage';
 
 import color from "color";
 import PlayersList from '../components/PlayersList';
 import CourtList from '../components/CourtList';
+import Ranking from '../components/Ranking';
 import Settings from './userSettings';
 import PlacesScreen from './places';
 
@@ -89,6 +92,7 @@ class HomeScreen extends Component {
     this.state = {
       tabPlayers: true,
       tabCourts: false,
+      tabRanking: false,
       tabSettings: false,
       latitude: 0,
       longitude: 0,
@@ -108,6 +112,7 @@ class HomeScreen extends Component {
       title: 'Players in ' + this.state.city,
       tabPlayers: true,
       tabCourts: false,
+      tabRanking: false,
       tabSettings: false
     });
   }
@@ -116,6 +121,16 @@ class HomeScreen extends Component {
       title: 'Courts in ' + this.state.city,
       tabPlayers: false,
       tabCourts: true,
+      tabRanking: false,
+      tabSettings: false
+    });
+  }
+  toggleTabRanking() {
+    this.setState({
+      title: 'Rankings',
+      tabPlayers: false,
+      tabCourts: false,
+      tabRanking: true,
       tabSettings: false
     });
   }
@@ -124,10 +139,11 @@ class HomeScreen extends Component {
       title: 'Settings',
       tabPlayers: false,
       tabCourts: false,
+      tabRanking: false,
       tabSettings: true,
     });
   }
-
+/* If you want to kepp showing the selected remote city then uncomment these lines
   storeLocation = async (lat, lng) => {
     try {
       await AsyncStorage.setItem('lat', lat.toString());
@@ -136,12 +152,12 @@ class HomeScreen extends Component {
       console.error(e)
     }
   }
-
+*/
   getLocationCoord = async (lat = null, lng  = null) => {
     try {
-      if(lat !== null && lng !== null) this.storeLocation(lat, lng);
-      var latitude = lat ? lat : await AsyncStorage.getItem('lat');
-      var longitude = lng ? lng : await AsyncStorage.getItem('lng');
+      //if(lat !== null && lng !== null) this.storeLocation(lat, lng);
+      var latitude = lat //? lat : await AsyncStorage.getItem('lat');
+      var longitude = lng //? lng : await AsyncStorage.getItem('lng');
       if (latitude !== null && longitude !== null) {
         latitude = parseFloat(latitude);
         longitude = parseFloat(longitude);
@@ -167,7 +183,6 @@ class HomeScreen extends Component {
       (position) => {
         let lat = position.coords.latitude;
         let lon = position.coords.longitude;
-        this.storeLocation(lat, lon);
         this.getCity(lat, lon);
         this.setState({
           latitude: lat,
@@ -184,14 +199,24 @@ class HomeScreen extends Component {
 
   getCity = (lat, lon) => {
     Geocoder.from(lat, lon)
-		.then(json => {
-      const res = format(json.results[0]);
-      this.setState({
-        title: 'Players in ' + res.locality,
-        city: res.locality
-      });
-		})
-    .catch(error => console.warn(error));
+      .then(json => {
+        const res = format(json.results[0]);
+        this.setState({
+          title: 'Players in ' + res.locality,
+          city: res.locality,
+          country: res.country,
+          placeId: res.placeId
+        });
+        const uid = firebase.auth().currentUser.uid;
+        const location = new firebase.firestore.GeoPoint(lat, lon);
+        const city = new firebase.firestore.FieldValue.arrayUnion(res.placeId);
+        const playerData = {
+          cities: city,
+          l: location
+        };
+        firebase.firestore().collection('players').doc(uid).update(playerData).catch(error => console.error(error));
+      })
+      .catch(error => console.warn(error));
   }
 
   async requestLocationPermission() {
@@ -222,7 +247,7 @@ class HomeScreen extends Component {
   }
 
   render() {
-    const { tabPlayers, tabCourts, tabSettings, showPicker } = this.state;
+    const { tabPlayers, tabCourts, tabRanking, tabSettings, showPicker } = this.state;
 
     if(showPicker) {
     return (
@@ -255,6 +280,7 @@ class HomeScreen extends Component {
         {this.state.latitude == 0 && (<Content padder />)}
         {tabPlayers && this.state.latitude != 0 && (<PlayersList latitude={this.state.latitude} longitude={this.state.longitude} city={this.state.city} />)}
         {tabCourts && this.state.latitude != 0 && (<CourtList latitude={this.state.latitude} longitude={this.state.longitude} />)}
+        {tabRanking && this.state.latitude != 0 && (<Ranking city={this.state.city} country={this.state.country}placeId={this.state.placeId}/>)}
         {tabSettings && (<Settings />)}
         <Footer>
           <FooterTab>
@@ -265,6 +291,10 @@ class HomeScreen extends Component {
             <Button vertical active={this.state.tabCourts} onPress={() => this.toggleTabCourts()}>
               <TennisIcons color={Platform.OS === 'android' ? 'white' : '#666'} size={26} name="tennis-court" />
               <Text>Courts</Text>
+            </Button>
+            <Button vertical active={this.state.tabRanking} onPress={() => this.toggleTabRanking()}>
+              <Icon color={Platform.OS === 'android' ? 'white' : '#666'} type='FontAwesome' name="list-ol" />
+              <Text>Ranking</Text>
             </Button>
             <Button vertical active={this.state.tabSettings} onPress={() => this.toggleTabSettings()}>
               <Icon name="cog" />

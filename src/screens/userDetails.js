@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Dimensions, StyleSheet, Platform, StatusBar } from "react-native";
 import { withNavigation, Header } from "react-navigation";
-import { Card, CardItem, Body, Text, Button, Toast } from 'native-base';
+import { Card, CardItem, Body, Text, Button, Icon as NBIcon } from 'native-base';
 import { Icon } from 'react-native-elements';
 import color from "color";
 import * as Progress from 'react-native-progress';
@@ -64,9 +64,8 @@ const styles = StyleSheet.create({
   info: {
      flex: 1, 
      flexDirection: 'row', 
-     justifyContent: 'center',
-     margin: 5
-  }
+     justifyContent: 'flex-start'
+    }
 });
 
 class UserDetails extends Component {
@@ -127,17 +126,25 @@ class UserDetails extends Component {
   renderContent = () => (
     <View style={{ flex: 1 }}>
       <Card>
+      <CardItem header>
+              <Text>INFO</Text>
+            </CardItem>
         <CardItem bordered>
           <Body>
-            <View style={{ flex: 1 }}>
-              <View style={styles.info}>
-                <Text>Age</Text>
-                <Text style={{ fontWeight: 'bold', marginLeft: 10 }}>{getAge(this.state.birthday)}</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+              <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
+                <Icon size={40} type='font-awesome' color='#CCC' name='address-card' />
+              </View>
+              <View style={{ flex: 4, justifyContent: 'center' }}>
+                <View style={styles.info}>
+                  <Text>Age</Text>
+                  <Text style={{ fontWeight: 'bold', marginLeft: 10 }}>{getAge(this.state.birthday)}</Text>
                 </View>
-              <View style={styles.info}>
-                <Text>Gender</Text>
-                <Text style={{ fontWeight: 'bold', marginLeft: 10 }}>{this.state.gender}</Text>
+                <View style={styles.info}>
+                  <Text>Gender</Text>
+                  <Text style={{ fontWeight: 'bold', marginLeft: 10 }}>{this.state.gender}</Text>
                 </View>
+              </View>
             </View>
           </Body>
         </CardItem>
@@ -149,6 +156,9 @@ class UserDetails extends Component {
             <CardItem>
               <Body>
               <View style={{ flex: 1, flexDirection: 'row' }}>
+              <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
+                <NBIcon size={60} type='FontAwesome' name='list-ol' color='#CCC' />
+              </View>
               <View style={{ flex: 1 }}>
                 <Text>Pula</Text>
                 <Text style={{ fontWeight: 'bold', fontSize: 30 }}>#20</Text>
@@ -217,8 +227,8 @@ class UserDetails extends Component {
           backdropTransitionOutTiming={0}
           style={ styles.bottomModal }>
             <View style={ styles.modalContent }>
-            <Icon style={{ paddingTop: 20, fontSize: 30 }} type="FontAwesome5" name="user-edit" />
-            <Text style={{ padding: 20, fontSize: 20 }}>You need to sign in to continue</Text>
+            <Icon containerStyle={{ paddingTop: 20 }} size={40} type='font-awesome' name='sign-in' />
+            <Text style={{ paddingBottom: 20, fontSize: 20 }}>You need to sign in to continue</Text>
             <Button full warning onPress={() => {
               this.toggleModal();
               this.props.navigation.navigate('Login')
