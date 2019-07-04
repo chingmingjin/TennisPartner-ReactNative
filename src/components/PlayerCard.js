@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, View, StyleSheet, TouchableHighlight, Text } from 'react-native';
+import { Image, View, StyleSheet, Platform, Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
 import LinearGradient from 'react-native-linear-gradient';
@@ -38,7 +38,15 @@ class PlayerCard extends Component {
         ViewComponent={LinearGradient} // Only if no expo
         leftAvatar={{ avatarStyle: styles.avatar, rounded: true, size: 'large', title: this.props.firstName[0], source: { uri: this.props.avatarUrl } }}
         title={this._renderNameAge(this.props.firstName, getAge(this.props.birthday))}
-        chevron={{ color: '#666', size: 30 }}
+        chevron={{ 
+          color: '#666', 
+          size: 30,
+          ...Platform.select({
+            ios: {
+                marginRight: 10
+            },
+        })
+        }}
         onPress={() => this.props.navigation.navigate('UserDetails', {userId: this.props.doc.id})}
       />
     );
