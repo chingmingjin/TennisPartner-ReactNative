@@ -31,9 +31,9 @@ class PlayerCard extends Component {
         tension={100} // These props are passed to the parent component (here TouchableScale)
         activeScale={0.95} //
         linearGradientProps={{
-          colors: ['#eaeaea', '#fff'],
-          start: { x: 0.8, y: 0 },
-          end: { x: 0.07, y: 0 },
+          colors: ['#ffebd1', '#fff'],
+          start: { x: 0.9, y: 0 },
+          end: { x: 0.3, y: 0 },
         }}
         ViewComponent={LinearGradient} // Only if no expo
         leftAvatar={{ avatarStyle: styles.avatar, rounded: true, size: 'large', title: this.props.firstName[0], source: { uri: this.props.avatarUrl } }}
@@ -47,12 +47,13 @@ class PlayerCard extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 20,
-    padding: 8,
-    marginTop: 10,
+    borderRadius: 40,
+    padding: 4,
+    marginTop: 4,
+    marginBottom: 4,
     marginStart: 8,
     marginEnd: 8,
-   
+    elevation: 5
   },
   avatar: {
     borderRadius: 20

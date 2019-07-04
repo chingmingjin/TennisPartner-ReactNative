@@ -294,7 +294,7 @@ class HomeScreen extends Component {
             </Button>
             <Button vertical active={this.state.tabRanking} onPress={() => this.toggleTabRanking()}>
               <Icon color={Platform.OS === 'android' ? 'white' : '#666'} type='FontAwesome' name="list-ol" />
-              <Text>Ranking</Text>
+              <Text>Rankings</Text>
             </Button>
             <Button vertical active={this.state.tabSettings} onPress={() => this.toggleTabSettings()}>
               <Icon name="cog" />
