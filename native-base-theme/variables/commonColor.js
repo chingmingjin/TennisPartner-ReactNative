@@ -136,7 +136,7 @@ export default {
 
   // Footer
   footerHeight: 55,
-  footerDefaultBg: "#F8F8F8",
+  footerDefaultBg: "#1976d2",
   footerPaddingBottom: 0,
 
   // FooterTab

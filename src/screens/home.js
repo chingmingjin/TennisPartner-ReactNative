@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { View, Platform, Dimensions, PermissionsAndroid } from 'react-native';
 
-import { Footer, FooterTab, Button, Icon, Text, Content } from 'native-base';
+import { Footer, FooterTab, Button, Icon, Text, Content, StyleProvider } from 'native-base';
 import { Header } from 'react-native-elements';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from '../config.json';
+import getTheme from '../../native-base-theme/components';
+import platform from '../../native-base-theme/variables/platform';
+
+import BottomSheet from 'reanimated-bottom-sheet';
+import Slider from '@react-native-community/slider';
 
 import firebase from 'react-native-firebase';
 
@@ -246,6 +251,19 @@ class HomeScreen extends Component {
     else this.setState({ showPicker: true })
   }
 
+  renderInner = () => (
+    <View style={{ flex: 1, padding: 20 }}>
+      <Slider
+        minimumValue={1}
+        maximumValue={100}
+      />
+    </View>
+  )
+
+  renderHeader = () => {
+    /* render */
+  }
+
   render() {
     const { tabPlayers, tabCourts, tabRanking, tabSettings, showPicker } = this.state;
 
@@ -254,6 +272,7 @@ class HomeScreen extends Component {
       <PlacesScreen getNewLocation={this.getLocationCoord} togglePicker={this.togglePicker} />
     ) } else {
     return (
+      <StyleProvider style={getTheme(platform)}>
       <View style={{ flex: 1 }}>
         <Header
           statusBarProps={{
@@ -282,6 +301,12 @@ class HomeScreen extends Component {
         {tabCourts && this.state.latitude != 0 && (<CourtList latitude={this.state.latitude} longitude={this.state.longitude} />)}
         {tabRanking && this.state.latitude != 0 && (<Ranking city={this.state.city} country={this.state.country}placeId={this.state.placeId}/>)}
         {tabSettings && (<Settings />)}
+        <BottomSheet
+          style={{ marginBottom: 55 }}
+          snapPoints = {[250, 100, 0]}
+          renderContent = {this.renderInner}
+          renderHeader = {this.renderHeader}
+        />
         <Footer>
           <FooterTab>
             <Button vertical active={this.state.tabPlayers} onPress={() => this.toggleTabPlayers()}>
@@ -303,6 +328,7 @@ class HomeScreen extends Component {
           </FooterTab>
         </Footer>
       </View>
+      </StyleProvider>
     )}
   }
 }

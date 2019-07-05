@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Image, View, StyleSheet, Platform, Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
-import LinearGradient from 'react-native-linear-gradient';
 import { getAge } from '../sendbirdActions/user';
 
 import { withNavigation } from 'react-navigation';
@@ -30,12 +29,6 @@ class PlayerCard extends Component {
         friction={90} //
         tension={100} // These props are passed to the parent component (here TouchableScale)
         activeScale={0.95} //
-        linearGradientProps={{
-          colors: ['#ffebd1', '#fff'],
-          start: { x: 0.9, y: 0 },
-          end: { x: 0.3, y: 0 },
-        }}
-        ViewComponent={LinearGradient} // Only if no expo
         leftAvatar={{ avatarStyle: styles.avatar, rounded: true, size: 'large', title: this.props.firstName[0], source: { uri: this.props.avatarUrl } }}
         title={this._renderNameAge(this.props.firstName, getAge(this.props.birthday))}
         chevron={{ 

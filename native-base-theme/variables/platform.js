@@ -105,7 +105,7 @@ export default {
   checkboxTickColor: "#fff",
 
   // Color
-  brandPrimary: platform === "ios" ? "#007aff" : "#3F51B5",
+  brandPrimary: platform === "ios" ? "#007aff" : "#1976d2",
   brandInfo: "#62B1F6",
   brandSuccess: "#5cb85c",
   brandDanger: "#d9534f",
@@ -135,8 +135,8 @@ export default {
   },
 
   // Footer
-  footerHeight: 55,
-  footerDefaultBg: platform === "ios" ? "#F8F8F8" : "#3F51B5",
+  footerHeight: 52,
+  footerDefaultBg: platform === "ios" ? "#F8F8F8" : color("#1976d2").darken(0.2).hex(),
   footerPaddingBottom: 0,
 
   // FooterTab
@@ -145,7 +145,7 @@ export default {
   activeTab: platform === "ios" ? "#007aff" : "#fff",
   sTabBarActiveTextColor: "#007aff",
   tabBarActiveTextColor: platform === "ios" ? "#007aff" : "#fff",
-  tabActiveBgColor: platform === "ios" ? "#cde1f9" : "#3F51B5",
+  tabActiveBgColor: platform === "ios" ? "#cde1f9" : color("#ffa737").lighten(0.07).hex(),
 
   // Header
   toolbarBtnColor: platform === "ios" ? "#007aff" : "#fff",

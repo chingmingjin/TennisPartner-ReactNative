@@ -31,6 +31,10 @@ target 'TennisPartner' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
+  pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
+
   target 'TennisPartnerTests' do
     inherit! :search_paths
     # Pods for testing
