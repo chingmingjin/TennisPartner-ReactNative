@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Platform, Dimensions, PermissionsAndroid } from 'react-native';
+import { View, Platform, Dimensions, PermissionsAndroid, StyleSheet } from 'react-native';
 
 import { Footer, FooterTab, Button, Icon, Text, Content, StyleProvider } from 'native-base';
 import { Header } from 'react-native-elements';
@@ -10,6 +10,7 @@ import platform from '../../native-base-theme/variables/platform';
 
 import BottomSheet from 'reanimated-bottom-sheet';
 import Slider from '@react-native-community/slider';
+import Animated from 'react-native-reanimated'
 
 import firebase from 'react-native-firebase';
 
@@ -23,73 +24,12 @@ import CourtList from '../components/CourtList';
 import Ranking from '../components/Ranking';
 import Settings from './userSettings';
 import PlacesScreen from './places';
+import { format } from '../utils/format';
 
 const d = Dimensions.get("window");
 const isX = Platform.OS === "ios" && (d.height > 800 || d.width > 800) ? true : false;
 
 const TennisIcons = createIconSetFromFontello(fontelloConfig);
-
-function format(raw) {
-  const address = {
-    position: {},
-    formattedAddress: raw.formatted_address || '',
-    feature: null,
-    streetNumber: null,
-    streetName: null,
-    postalCode: null,
-    locality: null,
-    country: null,
-    countryCode: null,
-    adminArea: null,
-    subAdminArea: null,
-    subLocality: null,
-    placeId: null
-  };
-
-  if (raw.geometry && raw.geometry.location) {
-    address.position = {
-      lat: raw.geometry.location.lat,
-      lng: raw.geometry.location.lng,
-    }
-  }
-  
-  if(raw.place_id) {
-    address.placeId = raw.place_id;
-  }
-  
-  raw.address_components.forEach(component => {
-    if (component.types.indexOf('route') !== -1) {
-      address.streetName = component.long_name;
-    }
-    else if (component.types.indexOf('street_number') !== -1) {
-      address.streetNumber = component.long_name;
-    }
-    else if (component.types.indexOf('country') !== -1) {
-      address.country = component.long_name;
-      address.countryCode = component.short_name;
-    }
-    else if (component.types.indexOf('locality') !== -1) {
-      address.locality = component.long_name;
-    }
-    else if (component.types.indexOf('postal_code') !== -1) {
-      address.postalCode = component.long_name;
-    }
-    else if (component.types.indexOf('administrative_area_level_1') !== -1) {
-      address.adminArea = component.long_name;
-    }
-    else if (component.types.indexOf('administrative_area_level_2') !== -1) {
-      address.subAdminArea = component.long_name;
-    }
-    else if (component.types.indexOf('sublocality') !== -1 || component.types.indexOf('sublocality_level_1') !== -1) {
-      address.subLocality = component.long_name;
-    }
-    else if (component.types.indexOf('point_of_interest') !== -1 || component.types.indexOf('colloquial_area') !== -1) {
-      address.feature = component.long_name;
-    }
-  });
-
-  return address;
-}
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -99,8 +39,10 @@ class HomeScreen extends Component {
       tabCourts: false,
       tabRanking: false,
       tabSettings: false,
+      openFilter: false,
       latitude: 0,
       longitude: 0,
+      distance: 50,
       title: 'Players nearby',
       showPicker: false
     }
@@ -252,17 +194,40 @@ class HomeScreen extends Component {
   }
 
   renderInner = () => (
-    <View style={{ flex: 1, padding: 20 }}>
+    <View style={styles.panel}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text>Distance</Text>
+        <Text>{this.state.distance} km</Text>
+      </View>
       <Slider
         minimumValue={1}
         maximumValue={100}
+        value={50}
+        minimumTrackTintColor='#ffa737'
+        thumbTintColor='#DC851F'
+        onValueChange={value => this.setState({distance: value})}
       />
     </View>
   )
 
-  renderHeader = () => {
-    /* render */
+  renderHeader = () => (
+    <View style={styles.header}>
+      <View style={styles.panelHeader}>
+        <View style={styles.panelHandle} />
+      </View>
+    </View>
+  )
+
+  toggleFilter = () => {
+    const { openFilter } = this.state;
+    this.setState({
+      openFilter: !openFilter
+    });
+    this.bs.current.snapTo((openFilter) ? 0 : 1);
   }
+
+  slider = React.createRef();
+  bs = React.createRef();
 
   render() {
     const { tabPlayers, tabCourts, tabRanking, tabSettings, showPicker } = this.state;
@@ -294,7 +259,7 @@ class HomeScreen extends Component {
           placement="left"
           leftComponent={{ icon: 'room', underlayColor: "#1976d2", color: '#fff', onPress: () => this.togglePicker() }}
           centerComponent={{ text: this.state.title, style: { color: '#fff', fontSize: 18 }, onPress: () => this.togglePicker() }}
-          rightComponent={{ icon: 'search', underlayColor: "#1976d2", color: '#fff', onPress: () => alert("You pressed the button") }}
+          rightComponent={{ icon: 'search', underlayColor: "#1976d2", color: '#fff', onPress: () => this.toggleFilter() }}
         />
         {this.state.latitude == 0 && (<Content padder />)}
         {tabPlayers && this.state.latitude != 0 && (<PlayersList latitude={this.state.latitude} longitude={this.state.longitude} city={this.state.city} />)}
@@ -302,10 +267,11 @@ class HomeScreen extends Component {
         {tabRanking && this.state.latitude != 0 && (<Ranking city={this.state.city} country={this.state.country}placeId={this.state.placeId}/>)}
         {tabSettings && (<Settings />)}
         <BottomSheet
-          style={{ marginBottom: 55 }}
-          snapPoints = {[250, 100, 0]}
+          ref={this.bs}
+          snapPoints = {[0, 200]}
           renderContent = {this.renderInner}
           renderHeader = {this.renderHeader}
+          enabledInnerScrolling={false}
         />
         <Footer>
           <FooterTab>
@@ -332,4 +298,29 @@ class HomeScreen extends Component {
     )}
   }
 }
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: '#f7f5eee8',
+    shadowColor: '#000000',
+    paddingTop: 10,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  panelHeader: {
+    alignItems: 'center',
+  },
+  panelHandle: {
+    width: 40,
+    height: 5,
+    borderRadius: 4,
+    backgroundColor: '#00000040',
+    marginBottom: 10,
+  },
+  panel: {
+    height: 200,
+    padding: 20,
+    backgroundColor: '#f7f5eee8',
+  }
+});
 export default HomeScreen;
