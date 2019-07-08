@@ -197,7 +197,7 @@ class HomeScreen extends Component {
     <View style={styles.panel}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text>Distance</Text>
-        <Text>{this.state.distance} km</Text>
+        <Text>{this.state.distance.toFixed(0)} km</Text>
       </View>
       <Slider
         minimumValue={1}
