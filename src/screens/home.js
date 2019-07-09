@@ -8,9 +8,8 @@ import fontelloConfig from '../config.json';
 import getTheme from '../../native-base-theme/components';
 import platform from '../../native-base-theme/variables/platform';
 
-import BottomSheet from 'reanimated-bottom-sheet';
+import RBSheet from "react-native-raw-bottom-sheet";
 import Slider from '@react-native-community/slider';
-import Animated from 'react-native-reanimated'
 
 import firebase from 'react-native-firebase';
 
@@ -194,43 +193,14 @@ class HomeScreen extends Component {
     else this.setState({ showPicker: true })
   }
 
-  renderInner = () => (
-    <View style={styles.panel}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text>Distance</Text>
-        <Text>{this.state.distanceSlide && +this.state.distanceSlide.toFixed(0)} km</Text>
-      </View>
-      <Slider
-        style={{ marginTop: 15, marginBottom: 15 }}
-        minimumValue={1}
-        maximumValue={100}
-        value={this.state.distance}
-        minimumTrackTintColor='#ffa737'
-        thumbTintColor='#DC851F'
-        onValueChange={value => this.setState({distanceSlide: value})}
-        onSlidingComplete={value => this.setState({distance: value})}
-      />
-    </View>
-  )
-
-  renderHeader = () => (
-    <View style={styles.header}>
-      <View style={styles.panelHeader}>
-        <View style={styles.panelHandle} />
-      </View>
-    </View>
-  )
-
   toggleFilter = () => {
     const { openFilter } = this.state;
     this.setState({
       openFilter: !openFilter
     });
-    this.bs.current.snapTo((openFilter) ? 0 : 1);
+    if(openFilter == false) this.RBSheet.open();
+    else this.RBSheet.close();
   }
-
-  slider = React.createRef();
-  bs = React.createRef();
 
   render() {
     const { tabPlayers, tabCourts, tabRanking, tabSettings, showPicker } = this.state;
@@ -260,22 +230,65 @@ class HomeScreen extends Component {
             })
           }}
           placement="left"
-          leftComponent={{ icon: 'room', underlayColor: "#1976d2", color: '#fff', onPress: () => this.togglePicker() }}
-          centerComponent={{ text: this.state.title, style: { color: '#fff', fontSize: 18 }, onPress: () => this.togglePicker() }}
-          rightComponent={{ icon: 'search', underlayColor: "#1976d2", color: '#fff', onPress: () => this.toggleFilter() }}
+          leftComponent={{ 
+            icon: (!this.state.tabSettings) ? 'room' : 'settings', 
+            underlayColor: "#1976d2", color: '#fff', 
+            onPress: () => (this.state.tabSettings) ? null : this.togglePicker() 
+          }}
+          centerComponent={{ 
+            text: this.state.title, 
+            style: { color: '#fff', fontSize: 18 }, 
+            onPress: () => (this.state.tabSettings) ? null : this.togglePicker() 
+          }}
+          rightComponent={{ 
+            iconStyle: { display: (this.state.tabPlayers || this.state.tabCourts) ? 'flex' : 'none' }, 
+            icon: 'search', 
+            underlayColor: "#1976d2", color: '#fff', 
+            onPress: () => this.toggleFilter() }}
         />
         {this.state.latitude == 0 && (<Content padder />)}
         {tabPlayers && this.state.latitude != 0 && (<PlayersList latitude={this.state.latitude} longitude={this.state.longitude} city={this.state.city} distance={this.state.distance} />)}
         {tabCourts && this.state.latitude != 0 && (<CourtList latitude={this.state.latitude} longitude={this.state.longitude} />)}
         {tabRanking && this.state.latitude != 0 && (<Ranking city={this.state.city} country={this.state.country}placeId={this.state.placeId}/>)}
         {tabSettings && (<Settings />)}
-        <BottomSheet
-          ref={this.bs}
-          snapPoints = {[0, 200]}
-          renderContent = {this.renderInner}
-          renderHeader = {this.renderHeader}
-          enabledInnerScrolling={false}
-        />
+          <RBSheet
+            ref={ref => {
+              this.RBSheet = ref;
+            }}
+            height={200}
+            duration={250}
+            closeOnDragDown={true}
+            onClose={() => this.setState({openFilter: false})}
+            customStyles={{
+              container: {
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+                padding: 20,
+                backgroundColor: '#f7f7f7',
+                justifyContent: "center",
+              }
+            }}
+          >
+            <View style={{ flex: 1 }}>
+                <View style={styles.panelHeader}>
+                  <View style={styles.panelHandle} />
+                </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text>Distance</Text>
+              <Text>{this.state.distanceSlide.toFixed(0)} km / {(this.state.distanceSlide*0.621371192).toFixed(0)} mi</Text>
+            </View>
+            <Slider
+              style={{ marginTop: 15, marginBottom: 15 }}
+              minimumValue={1}
+              maximumValue={100}
+              value={this.state.distance}
+              minimumTrackTintColor='#ffa737'
+              thumbTintColor='#DC851F'
+              onValueChange={value => this.setState({ distanceSlide: value })}
+              onSlidingComplete={value => this.setState({ distance: value })}
+            />
+            </View>
+          </RBSheet>
         <Footer>
           <FooterTab>
             <Button vertical active={this.state.tabPlayers} onPress={() => this.toggleTabPlayers()}>
@@ -291,7 +304,7 @@ class HomeScreen extends Component {
               <Text>Rankings</Text>
             </Button>
             <Button vertical active={this.state.tabSettings} onPress={() => this.toggleTabSettings()}>
-              <Icon name="cog" />
+              <Icon type="MaterialIcons" name="settings" />
               <Text>Settings</Text>
             </Button>
           </FooterTab>
@@ -303,15 +316,9 @@ class HomeScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: '#f7f5eee8',
-    shadowColor: '#000000',
-    paddingTop: 10,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
   panelHeader: {
     alignItems: 'center',
+    paddingBottom: 20
   },
   panelHandle: {
     width: 40,
@@ -322,7 +329,7 @@ const styles = StyleSheet.create({
   },
   panel: {
     height: 200,
-    padding: 20,
+    padding: 10,
     backgroundColor: '#f7f5eee8',
   }
 });

@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.reactnativecommunity.slider.ReactSliderPackage;
-import com.swmansion.reanimated.ReanimatedPackage;
+
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -48,7 +48,6 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new ReactSliderPackage(),
-            new ReanimatedPackage(),
             new AsyncStoragePackage(),
             new VectorIconsPackage(),
             new ImagePickerPackage(),
