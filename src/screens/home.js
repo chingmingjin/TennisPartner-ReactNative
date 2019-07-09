@@ -46,6 +46,7 @@ class HomeScreen extends Component {
       title: 'Players nearby',
       showPicker: false
     }
+    this.state.distanceSlide = this.state.distance;
     Geocoder.init("AIzaSyACKQQQmNubjsitW4kE-cH4Leee7Kg-gYE");
     this.requestLocationPermission = this.requestLocationPermission.bind(this);
   }
@@ -197,16 +198,17 @@ class HomeScreen extends Component {
     <View style={styles.panel}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text>Distance</Text>
-        <Text>{this.state.distance && +this.state.distance.toFixed(0)} km</Text>
+        <Text>{this.state.distanceSlide && +this.state.distanceSlide.toFixed(0)} km</Text>
       </View>
       <Slider
         style={{ marginTop: 15, marginBottom: 15 }}
         minimumValue={1}
         maximumValue={100}
-        value={50}
+        value={this.state.distance}
         minimumTrackTintColor='#ffa737'
         thumbTintColor='#DC851F'
-        onValueChange={value => this.setState({distance: value})}
+        onValueChange={value => this.setState({distanceSlide: value})}
+        onSlidingComplete={value => this.setState({distance: value})}
       />
     </View>
   )

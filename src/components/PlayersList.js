@@ -9,6 +9,7 @@ import PlayerCard from '../components/PlayerCard';
 import { GeoFirestore } from 'geofirestore';
 
 import { withNavigation } from 'react-navigation';
+import { equal } from "uri-js";
 
 class PlayersList extends Component {
   constructor(props) {
@@ -24,8 +25,8 @@ class PlayersList extends Component {
 
   componentDidMount() {
     this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) this.setState({ user: user, loading: true }, () => this.getNearbyPlayers()); 
-      else this.setState({ user: null, loading: true }, () => this.getNearbyPlayers());
+      if (user) this.setState({ user: user, loading: true }, () => this.getNearbyPlayers(this.props.distance)); 
+      else this.setState({ user: null, loading: true }, () => this.getNearbyPlayers(this.props.distance));
     });
   }
 
@@ -33,7 +34,13 @@ class PlayersList extends Component {
     if (this.unsubscribe) this.unsubscribe();
   }
 
-  getNearbyPlayers = () => {
+  componentDidUpdate(prevProps) {
+    if(!equal(this.props.distance, prevProps.distance)) {
+      this.setState({ loading: true }, () => this.getNearbyPlayers(this.props.distance));
+    }
+  }
+
+  getNearbyPlayers = (distance) => {
     const { latitude, longitude } = this.props;
     const { user } = this.state;
     const geofirestore = new GeoFirestore(firebase.firestore());
@@ -44,7 +51,7 @@ class PlayersList extends Component {
     // Create a GeoQuery based on a location
     const query = geocollection.near({
       center: new firebase.firestore.GeoPoint(latitude, longitude),
-      radius: this.props.distance
+      radius: distance
     });
 
     // Get query (as Promise)
