@@ -197,9 +197,10 @@ class HomeScreen extends Component {
     <View style={styles.panel}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text>Distance</Text>
-        <Text>{this.state.distance.toFixed(0)} km</Text>
+        <Text>{this.state.distance && +this.state.distance.toFixed(0)} km</Text>
       </View>
       <Slider
+        style={{ marginTop: 15, marginBottom: 15 }}
         minimumValue={1}
         maximumValue={100}
         value={50}
@@ -262,7 +263,7 @@ class HomeScreen extends Component {
           rightComponent={{ icon: 'search', underlayColor: "#1976d2", color: '#fff', onPress: () => this.toggleFilter() }}
         />
         {this.state.latitude == 0 && (<Content padder />)}
-        {tabPlayers && this.state.latitude != 0 && (<PlayersList latitude={this.state.latitude} longitude={this.state.longitude} city={this.state.city} />)}
+        {tabPlayers && this.state.latitude != 0 && (<PlayersList latitude={this.state.latitude} longitude={this.state.longitude} city={this.state.city} distance={this.state.distance} />)}
         {tabCourts && this.state.latitude != 0 && (<CourtList latitude={this.state.latitude} longitude={this.state.longitude} />)}
         {tabRanking && this.state.latitude != 0 && (<Ranking city={this.state.city} country={this.state.country}placeId={this.state.placeId}/>)}
         {tabSettings && (<Settings />)}

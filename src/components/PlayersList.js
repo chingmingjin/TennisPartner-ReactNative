@@ -44,7 +44,7 @@ class PlayersList extends Component {
     // Create a GeoQuery based on a location
     const query = geocollection.near({
       center: new firebase.firestore.GeoPoint(latitude, longitude),
-      radius: 50
+      radius: this.props.distance
     });
 
     // Get query (as Promise)
