@@ -15,6 +15,7 @@ import firebase from 'react-native-firebase';
 
 import Geolocation from 'react-native-geolocation-service';
 import Geocoder from 'react-native-geocoding';
+import { Geokit } from 'geokit';
 //import AsyncStorage from '@react-native-community/async-storage';
 
 import color from "color";
@@ -159,7 +160,8 @@ class HomeScreen extends Component {
         const city = new firebase.firestore.FieldValue.arrayUnion(res.placeId);
         const playerData = {
           cities: city,
-          l: location
+          l: location,
+          g: Geokit.hash({ lat: lat,  lng: lon })
         };
         firebase.firestore().collection('players').doc(uid).update(playerData).catch(error => console.error(error));
       })
@@ -275,7 +277,7 @@ class HomeScreen extends Component {
                 </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text>Distance</Text>
-              <Text>{this.state.distanceSlide.toFixed(0)} km / {(this.state.distanceSlide*0.621371192).toFixed(0)} mi</Text>
+              <Text>{this.state.distanceSlide.toFixed(0)} km</Text>
             </View>
             <Slider
               style={{ marginTop: 15, marginBottom: 15 }}

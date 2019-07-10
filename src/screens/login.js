@@ -53,6 +53,13 @@ class LoginScreen extends Component {
     this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({ user: user });
+        var uid = firebase.auth().currentUser.uid;
+        var userStatusDatabaseRef = firebase.database().ref('/presence/' + uid);
+        var isOnlineForDatabase = {
+          state: 'online',
+          last_changed: firebase.database.ServerValue.TIMESTAMP,
+        };
+        userStatusDatabaseRef.set(isOnlineForDatabase);
       }
     });
   }

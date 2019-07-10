@@ -8,7 +8,9 @@ import * as Progress from 'react-native-progress';
 import ButtonBack from '../components/ButtonBack';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
 import Modal from "react-native-modal";
-import { getAge } from '../sendbirdActions/user';
+import { getAge } from '../utils/age';
+import { haversine } from '../utils/haversine';
+import moment from 'moment';
 
 import firebase from 'react-native-firebase';
 
@@ -98,14 +100,16 @@ class UserDetails extends Component {
 
   getUser = (userId) => {
     firebase.firestore().collection('players').doc(userId).get().then((snapshot) => {
-        const{ avatarUrl, firstName, lastName, birthday, gender } = snapshot.data();
+        const{ avatarUrl, firstName, lastName, birthday, gender, l, presence } = snapshot.data();
         this.setState({
           userId: snapshot.id, 
           firstName: firstName, 
           lastName: lastName, 
           avatarUrl: avatarUrl, 
           birthday: birthday,
-          gender: gender 
+          gender: gender,
+          //distance: haversine(this..latitude, this.props.longitude, l.latitude, l.longitude).toFixed(1);,
+          last_changed: presence.last_changed
         });
     });
   }
@@ -138,11 +142,15 @@ class UserDetails extends Component {
               <View style={{ flex: 4, justifyContent: 'center' }}>
                 <View style={styles.info}>
                   <Text>Age</Text>
-                  <Text style={{ fontWeight: 'bold', marginLeft: 10 }}>{getAge(this.state.birthday)}</Text>
+                  <Text style={{ fontWeight: 'bold', marginLeft: 5 }}>{getAge(this.state.birthday)}</Text>
                 </View>
                 <View style={styles.info}>
                   <Text>Gender</Text>
-                  <Text style={{ fontWeight: 'bold', marginLeft: 10 }}>{this.state.gender}</Text>
+                  <Text style={{ fontWeight: 'bold', marginLeft: 5 }}>{this.state.gender}</Text>
+                </View>
+                <View style={styles.info}>
+                  <Text>Last active</Text>
+                  <Text style={{ fontWeight: 'bold', marginLeft: 5 }}>{ moment.unix(this.state.last_changed.seconds).fromNow() }</Text>
                 </View>
               </View>
             </View>

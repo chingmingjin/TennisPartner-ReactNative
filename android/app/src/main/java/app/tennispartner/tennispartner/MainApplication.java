@@ -15,6 +15,7 @@ import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.storage.RNFirebaseStoragePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
+import io.invertase.firebase.database.RNFirebaseDatabasePackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
@@ -59,6 +60,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RNFusedLocationPackage(),
             new RNFirebaseMessagingPackage(),
             new RNFirebaseNotificationsPackage(),
+            new RNFirebaseDatabasePackage(),
             new MapsPackage(),
             new FBSDKPackage(mCallbackManager)
       );

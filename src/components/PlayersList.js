@@ -3,6 +3,7 @@ import { FlatList, View, Text, Platform, StyleSheet } from 'react-native';
 import { Content, Icon } from 'native-base';
 import * as Progress from 'react-native-progress';
 import firebase from 'react-native-firebase';
+import { haversine } from '../utils/haversine';
 
 import PlayerCard from '../components/PlayerCard';
 
@@ -59,8 +60,11 @@ class PlayersList extends Component {
       if (!snapshot.empty) {
         var players = [];
         snapshot.docs.forEach(doc => {
-          const { firstName, lastName, gender, birthday, avatarUrl } = doc.data();
-          if (!user || user.uid !== doc.id)
+          const { firstName, lastName, gender, birthday, avatarUrl, l, presence } = doc.data();
+          if (!user || user.uid !== doc.id) {
+            var distance = haversine(this.props.latitude, this.props.longitude, l.latitude, l.longitude).toFixed(1);
+            var state = presence.state;
+            var last_changed = presence.last_changed;
             players.push({
               key: doc.id,
               doc, // DocumentSnapshot
@@ -68,11 +72,15 @@ class PlayersList extends Component {
               lastName,
               gender,
               birthday,
-              avatarUrl
+              avatarUrl,
+              distance,
+              state,
+              last_changed
             });
+          }
         });
       } else this.setState({ noPlayersNearby: true });
-
+      players.sort((a,b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)); 
       this.setState({
         players,
         loading: false,

@@ -53,6 +53,13 @@ class UserSettings extends Component {
     dialogTitle: 'Invite via…'
   });
   if(item == 'Logout') if(user) {
+    var uid = firebase.auth().currentUser.uid;
+    var userStatusDatabaseRef = firebase.database().ref('/presence/' + uid);
+    var isOfflineForDatabase = {
+      state: 'offline',
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+    userStatusDatabaseRef.set(isOfflineForDatabase);
     firebase.auth().signOut();
     sbDisconnect();
   }

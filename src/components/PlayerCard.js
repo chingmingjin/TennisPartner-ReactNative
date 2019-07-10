@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Image, View, StyleSheet, Platform, Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
-import { getAge } from '../sendbirdActions/user';
+import { getAge } from '../utils/age';
 
 import { withNavigation } from 'react-navigation';
 
@@ -11,11 +11,14 @@ class PlayerCard extends Component {
     super(props);
   }
 
-  _renderNameAge = (name, age) => {
+  _renderNameAge = (name, age, distance, state, last_changed) => {
     return (
+      <View style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ flexDirection: 'row' }}>
         <Text style={ styles.firstName }>{name}</Text>
         <Text style={ styles.age }>{age}</Text>
+      </View>
+      <Text>{ distance } km away</Text>
       </View>
     );
   }
@@ -30,7 +33,7 @@ class PlayerCard extends Component {
         tension={100} // These props are passed to the parent component (here TouchableScale)
         activeScale={0.95} //
         leftAvatar={{ avatarStyle: styles.avatar, rounded: true, size: 'large', title: this.props.firstName[0], source: { uri: this.props.avatarUrl } }}
-        title={this._renderNameAge(this.props.firstName, getAge(this.props.birthday))}
+        title={this._renderNameAge(this.props.firstName, getAge(this.props.birthday), this.props.distance, this.props.state, this.props.last_changed)}
         chevron={{ 
           color: '#666', 
           size: 30,
