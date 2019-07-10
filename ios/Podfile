@@ -12,12 +12,12 @@ target 'TennisPartner' do
   rn_path = '../node_modules/react-native'
   rn_maps_path = '../node_modules/react-native-maps'
 
-  pod 'Firebase/Core'
-  pod 'Firebase/Firestore'
-  pod 'Firebase/Auth'
-  pod 'Firebase/Storage'
-  pod 'Firebase/Messaging'
-
+  pod 'Firebase/Core', '~> 5.20.2'
+  pod 'Firebase/Firestore', '~> 5.20.2'
+  pod 'Firebase/Auth', '~> 5.20.2'
+  pod 'Firebase/Storage', '~> 5.20.2'
+  pod 'Firebase/Messaging', '~> 5.20.2'
+  pod 'Firebase/Database', '~> 5.20.2'
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
@@ -27,13 +27,9 @@ target 'TennisPartner' do
     'ART'
   ]
 
-  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+  # pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
-  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
-
-  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
-
-  pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
+  # pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
 
   target 'TennisPartnerTests' do
     inherit! :search_paths
