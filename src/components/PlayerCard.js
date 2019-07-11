@@ -61,7 +61,7 @@ class PlayerCard extends Component {
             },
         })
         }}
-        onPress={() => this.props.navigation.navigate('UserDetails', {userId: this.props.doc.id})}
+        onPress={() => this.props.navigation.navigate('UserDetails', {userId: this.props.doc.id, distance: this.props.distance})}
       />
     );
   }

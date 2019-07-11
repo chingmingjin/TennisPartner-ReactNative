@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Dimensions, StyleSheet, Platform, StatusBar } from "react-native";
-import { withNavigation, Header } from "react-navigation";
+import { withNavigation } from "react-navigation";
 import { Card, CardItem, Body, Text, Button, Icon as NBIcon } from 'native-base';
 import { Icon } from 'react-native-elements';
 import color from "color";
@@ -9,7 +9,6 @@ import ButtonBack from '../components/ButtonBack';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
 import Modal from "react-native-modal";
 import { getAge } from '../utils/age';
-import { haversine } from '../utils/haversine';
 import moment from 'moment';
 
 import firebase from 'react-native-firebase';
@@ -44,6 +43,9 @@ const styles = StyleSheet.create({
   titleStyle: {
     color: 'white',
     fontSize: 36,
+    textShadowColor: 'rgba(0, 0, 0, 0.80)',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10
   },
   headerTitle: {
     justifyContent: 'flex-end',
@@ -64,10 +66,10 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   info: {
-     flex: 1, 
-     flexDirection: 'row', 
-     justifyContent: 'flex-start'
-    }
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  }
 });
 
 class UserDetails extends Component {
@@ -92,6 +94,7 @@ class UserDetails extends Component {
     });
 
     const userId = this.props.navigation.getParam('userId', null);
+    this.distance = this.props.navigation.getParam('distance', null);
     this.getUser(userId);
   }
   componentWillUnmount() {
@@ -100,17 +103,16 @@ class UserDetails extends Component {
 
   getUser = (userId) => {
     firebase.firestore().collection('players').doc(userId).get().then((snapshot) => {
-        const{ avatarUrl, firstName, lastName, birthday, gender, l, presence } = snapshot.data();
-        this.setState({
-          userId: snapshot.id, 
-          firstName: firstName, 
-          lastName: lastName, 
-          avatarUrl: avatarUrl, 
-          birthday: birthday,
-          gender: gender,
-          //distance: haversine(this..latitude, this.props.longitude, l.latitude, l.longitude).toFixed(1);,
-          last_changed: presence.last_changed
-        });
+      const { avatarUrl, firstName, lastName, birthday, gender, l, presence } = snapshot.data();
+      this.setState({
+        userId: snapshot.id,
+        firstName: firstName,
+        lastName: lastName,
+        avatarUrl: avatarUrl,
+        birthday: birthday,
+        gender: gender,
+        last_changed: presence.last_changed
+      });
     });
   }
 
@@ -130,27 +132,28 @@ class UserDetails extends Component {
   renderContent = () => (
     <View style={{ flex: 1 }}>
       <Card>
-      <CardItem header>
-              <Text>INFO</Text>
-            </CardItem>
         <CardItem bordered>
           <Body>
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-              <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Icon size={40} type='font-awesome' color='#CCC' name='address-card' />
               </View>
-              <View style={{ flex: 4, justifyContent: 'center' }}>
+              <View style={{ flex: 2, justifyContent: 'center' }}>
                 <View style={styles.info}>
                   <Text>Age</Text>
-                  <Text style={{ fontWeight: 'bold', marginLeft: 5 }}>{getAge(this.state.birthday)}</Text>
+                  <Text style={{ fontWeight: 'bold' }}>{getAge(this.state.birthday)}</Text>
                 </View>
                 <View style={styles.info}>
                   <Text>Gender</Text>
-                  <Text style={{ fontWeight: 'bold', marginLeft: 5 }}>{this.state.gender}</Text>
+                  <Text style={{ fontWeight: 'bold' }}>{this.state.gender}</Text>
                 </View>
                 <View style={styles.info}>
                   <Text>Last active</Text>
-                  <Text style={{ fontWeight: 'bold', marginLeft: 5 }}>{ moment.unix(this.state.last_changed.seconds).fromNow() }</Text>
+                  <Text style={{ fontWeight: 'bold' }}>{moment.unix(this.state.last_changed.seconds).fromNow()}</Text>
+                </View>
+                <View style={styles.info}>
+                  <Text>Distance</Text>
+                  <Text style={{ fontWeight: 'bold' }}>{this.distance} km away</Text>
                 </View>
               </View>
             </View>
@@ -158,27 +161,24 @@ class UserDetails extends Component {
         </CardItem>
       </Card>
       <Card>
-            <CardItem header>
-              <Text>RANKING</Text>
-            </CardItem>
-            <CardItem>
-              <Body>
-              <View style={{ flex: 1, flexDirection: 'row' }}>
+        <CardItem>
+          <Body>
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
               <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
-                <NBIcon size={60} type='FontAwesome' name='list-ol' color='#CCC' />
+                <NBIcon type='FontAwesome' name='list-ol' style={{ fontSize: 35, color: '#b0b0b0' }} />
               </View>
               <View style={{ flex: 1 }}>
                 <Text>Pula</Text>
                 <Text style={{ fontWeight: 'bold', fontSize: 30 }}>#20</Text>
-                </View>
+              </View>
               <View style={{ flex: 1 }}>
                 <Text>Croatia</Text>
                 <Text style={{ fontWeight: 'bold', fontSize: 30 }}>#120</Text>
-                </View>
+              </View>
             </View>
-              </Body>
-            </CardItem>
-         </Card>
+          </Body>
+        </CardItem>
+      </Card>
     </View>
   )
 
@@ -186,67 +186,67 @@ class UserDetails extends Component {
     const { userId, firstName, lastName, avatarUrl } = this.state;
     const currentUser = firebase.auth().currentUser;
 
-    if(!firstName || !lastName)
+    if (!firstName || !lastName)
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Progress.Circle style={ styles.progressCircle } color="#ffa737" size={50} borderWidth={4} indeterminate={true} />
+          <Progress.Circle style={styles.progressCircle} color="#ffa737" size={50} borderWidth={4} indeterminate={true} />
         </View>
       )
-   else 
-    return (
-      <View style={styles.container}>
-      <ReactNativeParallaxHeader
-        headerMinHeight={HEADER_HEIGHT}
-        headerMaxHeight={300}
-        extraScrollHeight={20}
-        navbarColor="#1976d2"
-        statusBarColor={color('#1976d2').darken(0.2).hex()}
-        title={ firstName + ' ' + lastName }
-        titleStyle={styles.titleStyle}
-        headerTitleStyle={styles.headerTitle}
-        backgroundImage={{ uri: avatarUrl }}
-        backgroundImageScale={1.2}
-        renderNavBar={this.renderNavBar}
-        renderContent={this.renderContent}
-        containerStyle={styles.container}
-        contentContainerStyle={styles.contentContainer}
-        innerContainerStyle={styles.container}
-      />
-        {(!currentUser || (currentUser !== null && userId !== currentUser.uid)) && (
-          <Icon reverse={true} 
-          containerStyle={{
-            alignItems: 'flex-end',
-            paddingBottom: 15,
-            paddingRight: 15          
-        }}
-          color='#ffa737' 
-          size={32}
-          type='font-awesome' 
-          name='comments'
-            onPress={() => {
-              currentUser ?
-                this.props.navigation.navigate('Chat', { userId: currentUser.uid, otherUserId: userId }) :
-                this.toggleModal()
-            }} />
-        )}
-        <Modal
-          isVisible={this.state.isModalVisible}
-          onBackdropPress={() => this.setState({ isModalVisible: false })}
-          backdropTransitionOutTiming={0}
-          style={ styles.bottomModal }>
-            <View style={ styles.modalContent }>
-            <Icon containerStyle={{ paddingTop: 20 }} size={40} type='font-awesome' name='sign-in' />
-            <Text style={{ paddingBottom: 20, fontSize: 20 }}>You need to sign in to continue</Text>
-            <Button full warning onPress={() => {
-              this.toggleModal();
-              this.props.navigation.navigate('Login')
+    else
+      return (
+        <View style={styles.container}>
+          <ReactNativeParallaxHeader
+            headerMinHeight={HEADER_HEIGHT}
+            headerMaxHeight={300}
+            extraScrollHeight={20}
+            navbarColor="#1976d2"
+            statusBarColor={color('#1976d2').darken(0.2).hex()}
+            title={firstName + ' ' + lastName}
+            titleStyle={styles.titleStyle}
+            headerTitleStyle={styles.headerTitle}
+            backgroundImage={{ uri: avatarUrl }}
+            backgroundImageScale={1.2}
+            renderNavBar={this.renderNavBar}
+            renderContent={this.renderContent}
+            containerStyle={styles.container}
+            contentContainerStyle={styles.contentContainer}
+            innerContainerStyle={styles.container}
+          />
+          {(!currentUser || (currentUser !== null && userId !== currentUser.uid)) && (
+            <Icon reverse={true}
+              containerStyle={{
+                alignItems: 'flex-end',
+                paddingBottom: 15,
+                paddingRight: 15
+              }}
+              color='#ffa737'
+              size={32}
+              type='font-awesome'
+              name='comments'
+              onPress={() => {
+                currentUser ?
+                  this.props.navigation.navigate('Chat', { userId: currentUser.uid, otherUserId: userId }) :
+                  this.toggleModal()
+              }} />
+          )}
+          <Modal
+            isVisible={this.state.isModalVisible}
+            onBackdropPress={() => this.setState({ isModalVisible: false })}
+            backdropTransitionOutTiming={0}
+            style={styles.bottomModal}>
+            <View style={styles.modalContent}>
+              <Icon containerStyle={{ paddingTop: 20 }} size={40} type='font-awesome' name='sign-in' />
+              <Text style={{ paddingBottom: 20, fontSize: 20 }}>You need to sign in to continue</Text>
+              <Button full warning onPress={() => {
+                this.toggleModal();
+                this.props.navigation.navigate('Login')
               }}>
-              <Text>Sign In</Text>
-            </Button>
+                <Text>Sign In</Text>
+              </Button>
             </View>
-        </Modal>
-    </View>
-    );
+          </Modal>
+        </View>
+      );
   }
 }
 
