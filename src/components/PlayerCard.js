@@ -32,7 +32,15 @@ class PlayerCard extends Component {
         friction={90} //
         tension={100} // These props are passed to the parent component (here TouchableScale)
         activeScale={0.95} //
-        leftAvatar={{ avatarStyle: styles.avatar, rounded: true, size: 'large', title: this.props.firstName[0], source: { uri: this.props.avatarUrl } }}
+        leftAvatar={{ 
+          avatarStyle: styles.avatar, 
+          showEditButton: (this.props.state=='online') ? true : false, 
+          editButton: { name: 'tennis', type: 'material-community', color: '#2f9c2f', containerStyle: { borderRadius: 40, backgroundColor: '#EEFFFFFF'} },
+          rounded: true, 
+          size: 'large', 
+          title: this.props.firstName[0], 
+          source: { uri: this.props.avatarUrl } 
+        }}
         title={this._renderNameAge(this.props.firstName, getAge(this.props.birthday), this.props.distance, this.props.state, this.props.last_changed)}
         chevron={{ 
           color: '#666', 
