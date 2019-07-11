@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Dimensions, StyleSheet, Platform, StatusBar } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Card, CardItem, Body, Text, Button, Icon as NBIcon } from 'native-base';
-import { Icon } from 'react-native-elements';
+import { Icon, Badge } from 'react-native-elements';
 import color from "color";
 import * as Progress from 'react-native-progress';
 import ButtonBack from '../components/ButtonBack';
@@ -10,6 +10,8 @@ import ReactNativeParallaxHeader from 'react-native-parallax-header';
 import Modal from "react-native-modal";
 import { getAge } from '../utils/age';
 import moment from 'moment';
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+import fontelloConfig from '../config.json';
 
 import firebase from 'react-native-firebase';
 
@@ -21,6 +23,8 @@ const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
 const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 44 : 20) : 0;
 const HEADER_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 88 : 64) : 64;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
+
+const TennisIcons = createIconSetFromFontello(fontelloConfig);
 
 const styles = StyleSheet.create({
   container: {
@@ -69,6 +73,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  playButton: {
+    alignSelf: 'flex-end',
+    marginBottom: 20,
+    marginEnd: 20,
+    borderRadius: 30,
+    height: 50,
+    padding: 10,
+    backgroundColor: '#1976d2'
   }
 });
 
@@ -103,7 +116,7 @@ class UserDetails extends Component {
 
   getUser = (userId) => {
     firebase.firestore().collection('players').doc(userId).get().then((snapshot) => {
-      const { avatarUrl, firstName, lastName, birthday, gender, l, presence } = snapshot.data();
+      const { avatarUrl, firstName, lastName, birthday, gender, presence } = snapshot.data();
       this.setState({
         userId: snapshot.id,
         firstName: firstName,
@@ -111,6 +124,7 @@ class UserDetails extends Component {
         avatarUrl: avatarUrl,
         birthday: birthday,
         gender: gender,
+        state: presence.state,
         last_changed: presence.last_changed
       });
     });
@@ -183,7 +197,7 @@ class UserDetails extends Component {
   )
 
   render() {
-    const { userId, firstName, lastName, avatarUrl } = this.state;
+    const { userId, firstName, lastName, avatarUrl, state } = this.state;
     const currentUser = firebase.auth().currentUser;
 
     if (!firstName || !lastName)
@@ -201,8 +215,17 @@ class UserDetails extends Component {
             extraScrollHeight={20}
             navbarColor="#1976d2"
             statusBarColor={color('#1976d2').darken(0.2).hex()}
-            title={firstName + ' ' + lastName}
-            titleStyle={styles.titleStyle}
+            title={(
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.titleStyle}>{ firstName }</Text>
+              {state == 'online' && (
+              <Badge
+                status="success"
+                badgeStyle={{ width: 25, height: 25, borderRadius: 40 }}
+                //containerStyle={{ position: 'absolute', bottom: 2, right: 2 }}
+              />)}
+              </View>
+            )}
             headerTitleStyle={styles.headerTitle}
             backgroundImage={{ uri: avatarUrl }}
             backgroundImageScale={1.2}
@@ -213,21 +236,16 @@ class UserDetails extends Component {
             innerContainerStyle={styles.container}
           />
           {(!currentUser || (currentUser !== null && userId !== currentUser.uid)) && (
-            <Icon reverse={true}
-              containerStyle={{
-                alignItems: 'flex-end',
-                paddingBottom: 15,
-                paddingRight: 15
-              }}
-              color='#ffa737'
-              size={32}
-              type='font-awesome'
-              name='comments'
+            <Button
+              style={styles.playButton}
               onPress={() => {
                 currentUser ?
                   this.props.navigation.navigate('Chat', { userId: currentUser.uid, otherUserId: userId }) :
                   this.toggleModal()
-              }} />
+              }} iconLeft primary>
+              <TennisIcons color='white' size={26} name='squash-rackets' />
+              <Text style={{ fontSize: 18 }}>Play</Text>
+            </Button>
           )}
           <Modal
             isVisible={this.state.isModalVisible}
