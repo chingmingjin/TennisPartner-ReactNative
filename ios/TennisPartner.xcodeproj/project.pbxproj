@@ -31,6 +31,7 @@
 		2C55127F22A0894E002BBB52 /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C55127922A08935002BBB52 /* libRNCAsyncStorage.a */; };
 		2C64A63A225F64F8005D4684 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C64A639225F64F8005D4684 /* GoogleService-Info.plist */; };
 		2C8BC8FE22969E9B0019209F /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C8BC8D122969E830019209F /* libAirMaps.a */; };
+		2CA89B4322D7532400A9DE8B /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2CA89B4222D7532400A9DE8B /* fontello.ttf */; };
 		2CAEC5E622CFA192002B5C0F /* libRNCSlider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CAEC5E122CFA17F002B5C0F /* libRNCSlider.a */; };
 		2CB0E68E22725BCB00DC2E58 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CB0E66122725B9700DC2E58 /* libART.a */; };
 		2CD8A714225F79C700BF27B1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C64A639225F64F8005D4684 /* GoogleService-Info.plist */; };
@@ -40,7 +41,6 @@
 		2CDE7A34226633FA008F2F4A /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CDE7A30226633F9008F2F4A /* Bolts.framework */; };
 		2CDE7A35226633FA008F2F4A /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CDE7A31226633F9008F2F4A /* FBSDKLoginKit.framework */; };
 		2CDE7A36226633FA008F2F4A /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CDE7A32226633F9008F2F4A /* FBSDKShareKit.framework */; };
-		2CEB25EC22A540030018F9D3 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2CEB25EA22A53FEC0018F9D3 /* fontello.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -462,13 +462,13 @@
 		2C55124722A08935002BBB52 /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
 		2C64A639225F64F8005D4684 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2C8BC8CC22969E820019209F /* AirMaps.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
+		2CA89B4222D7532400A9DE8B /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		2CAEC5B222CFA17F002B5C0F /* RNCSlider.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCSlider.xcodeproj; path = "../node_modules/@react-native-community/slider/ios/RNCSlider.xcodeproj"; sourceTree = "<group>"; };
 		2CB0E65B22725B9700DC2E58 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		2CDE7A2F226633F9008F2F4A /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Frameworks/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		2CDE7A30226633F9008F2F4A /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Frameworks/Bolts.framework; sourceTree = "<group>"; };
 		2CDE7A31226633F9008F2F4A /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Frameworks/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		2CDE7A32226633F9008F2F4A /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Frameworks/FBSDKShareKit.framework; sourceTree = "<group>"; };
-		2CEB25EA22A53FEC0018F9D3 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* TennisPartner-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TennisPartner-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* TennisPartner-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TennisPartner-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D8D188FB80544BB9E5C989C /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
@@ -710,7 +710,7 @@
 		28D7A7D27C1A4BDCB4C6426C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				2CEB25EA22A53FEC0018F9D3 /* fontello.ttf */,
+				2CA89B4222D7532400A9DE8B /* fontello.ttf */,
 				FFA2DA97626E47CEAF4A3706 /* AntDesign.ttf */,
 				A96238828A034DC19AC6C1C3 /* Entypo.ttf */,
 				BA3286DE7FA447B5AABD2E6D /* EvilIcons.ttf */,
@@ -1506,10 +1506,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2CEB25EC22A540030018F9D3 /* fontello.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				2923A111573B4301B0A33B2F /* AntDesign.ttf in Resources */,
+				2CA89B4322D7532400A9DE8B /* fontello.ttf in Resources */,
 				C873F3D3C3BB454CA36026C0 /* Entypo.ttf in Resources */,
 				F7D21FDF80A4406B9555E1FE /* EvilIcons.ttf in Resources */,
 				E92150A7A2AC4470AFFE88B5 /* Feather.ttf in Resources */,

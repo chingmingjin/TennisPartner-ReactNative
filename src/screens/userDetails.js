@@ -216,12 +216,12 @@ class UserDetails extends Component {
             navbarColor="#1976d2"
             statusBarColor={color('#1976d2').darken(0.2).hex()}
             title={(
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={styles.titleStyle}>{ firstName }</Text>
               {state == 'online' && (
               <Badge
                 status="success"
-                badgeStyle={{ width: 25, height: 25, borderRadius: 40 }}
+                badgeStyle={{ width: 15, height: 15, borderRadius: 40, marginStart: 10 }}
                 //containerStyle={{ position: 'absolute', bottom: 2, right: 2 }}
               />)}
               </View>
