@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Image, View, StyleSheet, Platform, Text } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { ListItem, Avatar, Badge } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
 import { getAge } from '../utils/age';
 
@@ -32,15 +32,25 @@ class PlayerCard extends Component {
         friction={90} //
         tension={100} // These props are passed to the parent component (here TouchableScale)
         activeScale={0.95} //
-        leftAvatar={{ 
-          avatarStyle: styles.avatar, 
-          showEditButton: (this.props.state=='online') ? true : false, 
-          editButton: { name: 'tennis', type: 'material-community', color: '#2f9c2f', containerStyle: { borderRadius: 40, backgroundColor: '#EEFFFFFF'} },
-          rounded: true, 
-          size: 'large', 
-          title: this.props.firstName[0], 
-          source: { uri: this.props.avatarUrl } 
-        }}
+        leftElement={
+          <View>
+            <Avatar
+              avatarStyle={styles.avatar}
+              rounded
+              title={this.props.firstName[0]}
+              source={{
+                uri: this.props.avatarUrl,
+              }}
+              size="large"
+            />
+
+            <Badge
+              status="success"
+              badgeStyle={{ width: 18, height: 18, borderRadius: 40 }}
+              containerStyle={{ position: 'absolute', bottom: 2, right: 2 }}
+            />
+          </View>
+        }
         title={this._renderNameAge(this.props.firstName, getAge(this.props.birthday), this.props.distance, this.props.state, this.props.last_changed)}
         chevron={{ 
           color: '#666', 
