@@ -153,7 +153,7 @@ class UserDetails extends Component {
                 </View>
                 <View style={styles.info}>
                   <Text>Distance</Text>
-                  <Text style={{ fontWeight: 'bold' }}>{this.distance} km away</Text>
+                  <Text style={{ fontWeight: 'bold' }}>{this.distance} km</Text>
                 </View>
               </View>
             </View>
