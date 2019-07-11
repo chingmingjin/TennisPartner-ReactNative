@@ -11,7 +11,7 @@ class PlayerCard extends Component {
     super(props);
   }
 
-  _renderNameAge = (name, age, distance, state, last_changed) => {
+  _renderNameAge = (name, age, distance, last_changed) => {
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ flexDirection: 'row' }}>
@@ -43,15 +43,15 @@ class PlayerCard extends Component {
               }}
               size="large"
             />
-
-            <Badge
-              status="success"
-              badgeStyle={{ width: 18, height: 18, borderRadius: 40 }}
-              containerStyle={{ position: 'absolute', bottom: 2, right: 2 }}
-            />
+            {this.props.state == 'online' && (
+              <Badge
+                status="success"
+                badgeStyle={{ width: 18, height: 18, borderRadius: 40 }}
+                containerStyle={{ position: 'absolute', bottom: 2, right: 2 }}
+              />)}
           </View>
         }
-        title={this._renderNameAge(this.props.firstName, getAge(this.props.birthday), this.props.distance, this.props.state, this.props.last_changed)}
+        title={this._renderNameAge(this.props.firstName, getAge(this.props.birthday), this.props.distance, this.props.last_changed)}
         chevron={{ 
           color: '#666', 
           size: 30,
