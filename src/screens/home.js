@@ -42,6 +42,8 @@ class HomeScreen extends Component {
       openFilter: false,
       latitude: 0,
       longitude: 0,
+      remoteLat: 0,
+      remoteLon: 0,
       distance: 50,
       title: 'Players nearby',
       showPicker: false
@@ -110,8 +112,8 @@ class HomeScreen extends Component {
         latitude = parseFloat(latitude);
         longitude = parseFloat(longitude);
         this.setState({
-          latitude: latitude,
-          longitude: longitude
+          remoteLat: latitude,
+          remoteLon: longitude
         });
         this.getCity(latitude, longitude);
       } else {
@@ -155,15 +157,15 @@ class HomeScreen extends Component {
           country: res.country,
           placeId: res.placeId
         });
-        const uid = firebase.auth().currentUser.uid;
-        const location = new firebase.firestore.GeoPoint(lat, lon);
-        const city = new firebase.firestore.FieldValue.arrayUnion(res.placeId);
-        const playerData = {
-          cities: city,
-          l: location,
-          g: Geokit.hash({ lat: lat,  lng: lon })
-        };
-        firebase.firestore().collection('players').doc(uid).update(playerData).catch(error => console.error(error));
+        const currentUser = firebase.auth().currentUser;
+        if (currentUser) {
+          const uid = currentUser.uid;
+          const city = new firebase.firestore.FieldValue.arrayUnion(res.placeId);
+          const playerData = {
+            cities: city,
+          };
+          firebase.firestore().collection('players').doc(uid).update(playerData).catch(error => console.error(error));
+        }
       })
       .catch(error => console.warn(error));
   }
@@ -249,9 +251,29 @@ class HomeScreen extends Component {
             onPress: () => this.toggleFilter() }}
         />
         {this.state.latitude == 0 && (<Content padder />)}
-        {tabPlayers && this.state.latitude != 0 && (<PlayersList latitude={this.state.latitude} longitude={this.state.longitude} city={this.state.city} distance={this.state.distance} />)}
-        {tabCourts && this.state.latitude != 0 && (<CourtList latitude={this.state.latitude} longitude={this.state.longitude} />)}
-        {tabRanking && this.state.latitude != 0 && (<Ranking city={this.state.city} country={this.state.country}placeId={this.state.placeId}/>)}
+          {tabPlayers && this.state.latitude != 0 && (
+            <PlayersList
+              latitude={this.state.latitude}
+              longitude={this.state.longitude}
+              remoteLat={this.state.remoteLat}
+              remoteLon={this.state.remoteLon}
+              city={this.state.city}
+              placeId={this.state.placeId}
+              distance={this.state.distance} />
+          )}
+          {tabCourts && this.state.latitude != 0 && (
+            <CourtList
+              latitude={this.state.latitude}
+              longitude={this.state.longitude}
+              remoteLat={this.state.remoteLat}
+              remoteLon={this.state.remoteLon} />
+          )}
+          {tabRanking && this.state.latitude != 0 && (
+            <Ranking
+              city={this.state.city}
+              country={this.state.country}
+              placeId={this.state.placeId} />
+          )}
         {tabSettings && (<Settings />)}
           <RBSheet
             ref={ref => {

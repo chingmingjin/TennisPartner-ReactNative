@@ -108,6 +108,8 @@ class UserDetails extends Component {
 
     const userId = this.props.navigation.getParam('userId', null);
     this.distance = this.props.navigation.getParam('distance', null);
+    this.city = this.props.navigation.getParam('city', null);
+    this.placeId = this.props.navigation.getParam('placeId', null);
     this.getUser(userId);
   }
   componentWillUnmount() {
@@ -117,6 +119,8 @@ class UserDetails extends Component {
   getUser = (userId) => {
     firebase.firestore().collection('players').doc(userId).get().then((snapshot) => {
       const { avatarUrl, firstName, lastName, birthday, gender, presence } = snapshot.data();
+      const cityRating = (snapshot.data().ratings) ? '#' + ratings[this.placeId] : '--';
+        //const countryRating = ratings[this.props.country];
       this.setState({
         userId: snapshot.id,
         firstName: firstName,
@@ -125,7 +129,8 @@ class UserDetails extends Component {
         birthday: birthday,
         gender: gender,
         state: presence.state,
-        last_changed: presence.last_changed
+        last_changed: presence.last_changed,
+        cityRating: cityRating
       });
     });
   }
@@ -182,8 +187,8 @@ class UserDetails extends Component {
                 <NBIcon type='FontAwesome' name='list-ol' style={{ fontSize: 35, color: '#b0b0b0' }} />
               </View>
               <View style={{ flex: 1 }}>
-                <Text>Pula</Text>
-                <Text style={{ fontWeight: 'bold', fontSize: 30 }}>#20</Text>
+                <Text>{ this.city }</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 30 }}>{this.state.cityRating}</Text>
               </View>
               <View style={{ flex: 1 }}>
                 <Text>Croatia</Text>

@@ -42,16 +42,19 @@ class PlayersList extends Component {
   }
 
   getNearbyPlayers = (distance) => {
-    const { latitude, longitude } = this.props;
+    const { latitude, longitude, remoteLat, remoteLon } = this.props;
     const { user } = this.state;
     const geofirestore = new GeoFirestore(firebase.firestore());
 
     // Create a GeoCollection reference
     const geocollection = geofirestore.collection('players');
-
+    const center =
+      (remoteLat != 0 && remoteLon != 0) ?
+        new firebase.firestore.GeoPoint(remoteLat, remoteLon) :
+        new firebase.firestore.GeoPoint(latitude, longitude);
     // Create a GeoQuery based on a location
     const query = geocollection.near({
-      center: new firebase.firestore.GeoPoint(latitude, longitude),
+      center: center,
       radius: distance
     });
 
@@ -79,8 +82,8 @@ class PlayersList extends Component {
             });
           }
         });
+        players.sort((a,b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)); 
       } else this.setState({ noPlayersNearby: true });
-      players.sort((a,b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)); 
       this.setState({
         players,
         loading: false,
@@ -124,7 +127,7 @@ class PlayersList extends Component {
           <View style={{ flex: 1 }}>
               <FlatList
                   data={this.state.players}
-                  renderItem={({item}) => <PlayerCard {...item} />}
+                  renderItem={({item}) => <PlayerCard city={this.props.city} placeId={this.props.placeId} {...item} />}
               />
           </View>
         </Content>);
