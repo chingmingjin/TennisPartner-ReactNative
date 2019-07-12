@@ -10,7 +10,7 @@ import PlayerCard from '../components/PlayerCard';
 import { GeoFirestore } from 'geofirestore';
 
 import { withNavigation } from 'react-navigation';
-import { equal } from "uri-js";
+import equal from "fast-deep-equal";
 
 class PlayersList extends Component {
   constructor(props) {

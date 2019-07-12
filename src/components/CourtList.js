@@ -7,6 +7,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { GeoFirestore } from 'geofirestore';
 
 import { withNavigation } from 'react-navigation';
+import equal from "fast-deep-equal";
 
 class CourtList extends Component {
   
@@ -15,6 +16,7 @@ class CourtList extends Component {
 
     this.state = {
       courts: [],
+      mapType: this.props.mapType
     };
   }
     
@@ -61,6 +63,13 @@ class CourtList extends Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    if(!equal(this.props.mapType, prevProps.mapType)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
+    {
+      this.setState({ mapType: this.props.mapType });
+    }
+  }
+
   render() {
     return (
         <Content contentContainerStyle={{...StyleSheet.absoluteFillObject }}>
@@ -71,7 +80,9 @@ class CourtList extends Component {
             longitude: (this.props.remoteLon != 0) ? this.props.remoteLon : this.props.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
-            }}>
+            }}
+            mapType={this.state.mapType}
+            >
             {this.state.courts && this.state.courts.map(court => (
                 <Marker
                 key={court.key}

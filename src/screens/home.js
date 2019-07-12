@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Platform, Dimensions, PermissionsAndroid, StyleSheet } from 'react-native';
 
 import { Footer, FooterTab, Button, Icon, Text, Content, StyleProvider } from 'native-base';
-import { Header } from 'react-native-elements';
+import { Header, Icon as RNEIcon } from 'react-native-elements';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from '../config.json';
 import getTheme from '../../native-base-theme/components';
@@ -10,12 +10,12 @@ import platform from '../../native-base-theme/variables/platform';
 
 import RBSheet from "react-native-raw-bottom-sheet";
 import Slider from '@react-native-community/slider';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 import firebase from 'react-native-firebase';
 
 import Geolocation from 'react-native-geolocation-service';
 import Geocoder from 'react-native-geocoding';
-import { Geokit } from 'geokit';
 //import AsyncStorage from '@react-native-community/async-storage';
 
 import color from "color";
@@ -46,7 +46,8 @@ class HomeScreen extends Component {
       remoteLon: 0,
       distance: 50,
       title: 'Players nearby',
-      showPicker: false
+      showPicker: false,
+      mapType: 'standard',
     }
     this.state.distanceSlide = this.state.distance;
     Geocoder.init("AIzaSyACKQQQmNubjsitW4kE-cH4Leee7Kg-gYE");
@@ -235,7 +236,8 @@ class HomeScreen extends Component {
           }}
           placement="left"
           leftComponent={{ 
-            icon: (!this.state.tabSettings) ? 'room' : 'settings', 
+            icon: (!tabSettings) ? 'map-marker-radius' : 'settings',
+            type: (!tabSettings) ? 'material-community' : 'material', 
             underlayColor: "#1976d2", color: '#fff', 
             onPress: () => (this.state.tabSettings) ? null : this.togglePicker() 
           }}
@@ -244,12 +246,49 @@ class HomeScreen extends Component {
             style: { color: '#fff', fontSize: 18 }, 
             onPress: () => (this.state.tabSettings) ? null : this.togglePicker() 
           }}
-          rightComponent={{ 
-            iconStyle: { display: (this.state.tabPlayers || this.state.tabCourts) ? 'flex' : 'none' }, 
-            icon: 'search', 
-            underlayColor: "#1976d2", color: '#fff', 
-            onPress: () => this.toggleFilter() }}
-        />
+            rightComponent={(
+              <View>
+                {tabPlayers &&
+                  <RNEIcon
+                    name='search'
+                    underlayColor='#1976d2'
+                    color='#fff'
+                    onPress={() => this.toggleFilter()}
+                  />}
+                {tabCourts &&
+                  <View style={{ flexDirection: 'row' }}>
+                    <RNEIcon
+                      name='map-marker-plus'
+                      type='material-community'
+                      underlayColor='#1976d2'
+                      color='#fff'
+                      containerStyle={{ marginEnd: 16 }}
+                    //onPress={() => this.toggleFilter()}
+                    />
+                    <ModalDropdown
+                      ref={el => this.mapType = el}
+                      defaultValue=''
+                      dropdownStyle={{
+                        marginTop: 25,
+                        width: 100,
+                        height: 85
+                      }}
+                      onSelect={(idx, value) => {
+                        this.setState({ mapType: value.toLowerCase() });
+                      }}
+                      dropdownTextStyle={{ fontSize: 16, color: '#000' }}
+                      options={['Standard', 'Hybrid']}>
+                      <RNEIcon
+                        name='layers'
+                        underlayColor='#1976d2'
+                        color='#fff'
+                        onPress={() => this.mapType.show()}
+                      />
+                    </ModalDropdown>
+                  </View>}
+              </View>
+            )}
+      />
         {this.state.latitude == 0 && (<Content padder />)}
           {tabPlayers && this.state.latitude != 0 && (
             <PlayersList
@@ -266,7 +305,8 @@ class HomeScreen extends Component {
               latitude={this.state.latitude}
               longitude={this.state.longitude}
               remoteLat={this.state.remoteLat}
-              remoteLon={this.state.remoteLon} />
+              remoteLon={this.state.remoteLon}
+              mapType={this.state.mapType} />
           )}
           {tabRanking && this.state.latitude != 0 && (
             <Ranking
