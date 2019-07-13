@@ -16,7 +16,7 @@ class CourtList extends Component {
 
     this.state = {
       courts: [],
-      mapType: this.props.mapType
+      mapType: this.props.mapType,
     };
   }
     
@@ -68,32 +68,49 @@ class CourtList extends Component {
     {
       this.setState({ mapType: this.props.mapType });
     }
+    if(!equal(this.props.addMarker, prevProps.addMarker)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
+    {
+      this.setState({ addMarker: this.props.addMarker });
+    }
+  }
+
+  addMarker = (coordinates) => {
+    console.log(coordinates);
   }
 
   render() {
+    const lat = (this.props.remoteLat != 0) ? this.props.remoteLat : this.props.latitude;
+    const lon = (this.props.remoteLon != 0) ? this.props.remoteLon : this.props.longitude;
     return (
-        <Content contentContainerStyle={{...StyleSheet.absoluteFillObject }}>
-          <MapView
-            style={{ ...StyleSheet.absoluteFillObject }}
-            region={{
-            latitude: (this.props.remoteLat != 0) ? this.props.remoteLat : this.props.latitude,
-            longitude: (this.props.remoteLon != 0) ? this.props.remoteLon : this.props.longitude,
+      <Content contentContainerStyle={{ ...StyleSheet.absoluteFillObject }}>
+        <MapView
+          style={{ ...StyleSheet.absoluteFillObject }}
+          region={{
+            latitude: lat,
+            longitude: lon,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
-            }}
-            mapType={this.state.mapType}
-            >
-            {this.state.courts && this.state.courts.map(court => (
-                <Marker
-                key={court.key}
-                coordinate={{latitude: court.l.latitude, longitude: court.l.longitude}}
-                centerOffset={{ x: 0, y: -45 }}
-                title={court.name}
-                image={require('../images/tennis_court_marker.png')}
-                />
-            ))}
-            </MapView>
-        </Content>
+          }}
+          mapType={this.state.mapType}
+        >
+          {this.state.addMarker && (
+            <Marker draggable
+            coordinate={{ latitude: lat, longitude: lon }}
+            image={require('../images/tennis_court_marker_add.png')}
+            onDragEnd={(e) => this.addMarker(e.nativeEvent.coordinate)}
+          />
+              )}
+          {this.state.courts && this.state.courts.map(court => (
+            <Marker
+              key={court.key}
+              coordinate={{ latitude: court.l.latitude, longitude: court.l.longitude }}
+              centerOffset={{ x: 0, y: -45 }}
+              title={court.name}
+              image={require('../images/tennis_court_marker.png')}
+            />
+          ))}
+        </MapView>
+      </Content>
     );
   }
 }

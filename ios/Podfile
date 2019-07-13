@@ -31,6 +31,8 @@ target 'TennisPartner' do
 
   # pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
 
+  pod 'RNSnackbar', :path => '../node_modules/react-native-snackbar'
+
   target 'TennisPartnerTests' do
     inherit! :search_paths
     # Pods for testing

@@ -8,6 +8,7 @@ import fontelloConfig from '../config.json';
 import getTheme from '../../native-base-theme/components';
 import platform from '../../native-base-theme/variables/platform';
 
+import Snackbar from 'react-native-snackbar';
 import RBSheet from "react-native-raw-bottom-sheet";
 import Slider from '@react-native-community/slider';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -48,6 +49,7 @@ class HomeScreen extends Component {
       title: 'Players nearby',
       showPicker: false,
       mapType: 'standard',
+      addMarker: false
     }
     this.state.distanceSlide = this.state.distance;
     Geocoder.init("AIzaSyACKQQQmNubjsitW4kE-cH4Leee7Kg-gYE");
@@ -263,7 +265,18 @@ class HomeScreen extends Component {
                       underlayColor='#1976d2'
                       color='#fff'
                       containerStyle={{ marginEnd: 16 }}
-                    //onPress={() => this.toggleFilter()}
+                      onPress={() => {
+                        Snackbar.show({
+                          title: 'Drag the marker to court location',
+                          duration: Snackbar.LENGTH_INDEFINITE,
+                          action: {
+                            title: 'CANCEL',
+                            color: '#ffa737',
+                            onPress: () => { /* Do something. */ },
+                          },
+                        });
+                        this.setState({ addMarker: true })
+                      }}
                     />
                     <ModalDropdown
                       ref={el => this.mapType = el}
@@ -306,7 +319,8 @@ class HomeScreen extends Component {
               longitude={this.state.longitude}
               remoteLat={this.state.remoteLat}
               remoteLon={this.state.remoteLon}
-              mapType={this.state.mapType} />
+              mapType={this.state.mapType}
+              addMarker={this.state.addMarker} />
           )}
           {tabRanking && this.state.latitude != 0 && (
             <Ranking

@@ -39,6 +39,7 @@
     "react-native-phone-input": "^0.2.1",
     "react-native-progress": "^3.6.0",
     "react-native-raw-bottom-sheet": "^2.0.2",
+    "react-native-snackbar": "^1.0.1",
     "react-native-touchable-scale": "^2.0.0",
     "react-navigation": "^3.7.1",
     "react-redux": "^7.0.3",
