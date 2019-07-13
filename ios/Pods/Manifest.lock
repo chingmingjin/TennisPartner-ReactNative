@@ -133,6 +133,8 @@ PODS:
     - React/Core
   - React/Core (0.59.10):
     - yoga (= 0.59.10.React)
+  - RNSnackbar (1.0.1):
+    - React
   - RNVectorIcons (6.1.0):
     - React
   - yoga (0.59.10.React)
@@ -145,6 +147,7 @@ DEPENDENCIES:
   - Firebase/Messaging (~> 5.20.2)
   - Firebase/Storage (~> 5.20.2)
   - React/ART (from `../node_modules/react-native`)
+  - RNSnackbar (from `../node_modules/react-native-snackbar`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
@@ -174,6 +177,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   React:
     :path: "../node_modules/react-native"
+  RNSnackbar:
+    :path: "../node_modules/react-native-snackbar"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   yoga:
@@ -201,9 +206,10 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 3f617b9a6e73605565086864c9bc26b2bf2dd5a3
   React: 36d0768f9e93be2473b37e7fa64f92c1d5341eef
+  RNSnackbar: 8a0b1826b7a4320276e017d68fd124d7720f5f03
   RNVectorIcons: ac7bf6bfeafaf3ad34552cdc6eed6fb8c4b7c940
   yoga: 684513b14b03201579ba3cee20218c9d1298b0cc
 
-PODFILE CHECKSUM: ea636646d34d6e4e8c90792819419af1ab35b5e8
+PODFILE CHECKSUM: 2257f4e0edbfeb29123490abc97f65aff69168fb
 
 COCOAPODS: 1.6.1
