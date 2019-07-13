@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { StyleSheet, Alert } from 'react-native';
-import { Content } from 'native-base';
+import { StyleSheet, Alert, View } from 'react-native';
+import { Content, Item, Label, Form } from 'native-base';
+import { Overlay, Text, Button, Input } from 'react-native-elements'
 import firebase from 'react-native-firebase';
 import MapView, { Marker } from 'react-native-maps';
 
@@ -17,6 +18,7 @@ class CourtList extends Component {
     this.state = {
       courts: [],
       mapType: this.props.mapType,
+      courtInfo: false
     };
   }
     
@@ -75,7 +77,9 @@ class CourtList extends Component {
   }
 
   addMarker = (coordinates) => {
-    console.log(coordinates);
+    this.setState({ courtInfo: true }, () => {
+
+    })
   }
 
   render() {
@@ -95,11 +99,11 @@ class CourtList extends Component {
         >
           {this.state.addMarker && (
             <Marker draggable
-            coordinate={{ latitude: lat, longitude: lon }}
-            image={require('../images/tennis_court_marker_add.png')}
-            onDragEnd={(e) => this.addMarker(e.nativeEvent.coordinate)}
-          />
-              )}
+              coordinate={{ latitude: lat, longitude: lon }}
+              image={require('../images/tennis_court_marker_add.png')}
+              onDragEnd={(e) => this.addMarker(e.nativeEvent.coordinate)}
+            />
+          )}
           {this.state.courts && this.state.courts.map(court => (
             <Marker
               key={court.key}
@@ -110,6 +114,49 @@ class CourtList extends Component {
             />
           ))}
         </MapView>
+        {
+          this.state.courtInfo && (
+            <Overlay isVisible height={260}>
+              <Form>
+                <Text style={{
+                  fontSize: 20,
+                  marginTop: 8,
+                  marginStart: 8,
+                  fontWeight: 'bold'
+                }}>Court Info</Text>
+                <Input
+                  placeholder='Name *'
+                />
+                <Input
+                  placeholder='Phone Number'
+                  keyboardType='phone-pad'
+                />
+                <Input
+                  placeholder='Number of courts'
+                  keyboardType='number-pad'
+                />
+                <View style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  marginTop: 16,
+                  marginBottom: 16
+                }}>
+                  <Button
+                    buttonStyle={{ marginEnd: 16, width: 70 }}
+                    titleStyle={{ color: '#ffa737' }}
+                    title="Cancel"
+                    type="outline"
+                    onPress={() => this.setState({ courtInfo: false })}
+                  />
+                  <Button
+                    buttonStyle={{ backgroundColor: '#ffa737', width: 70 }}
+                    title="Add"
+                  />
+                </View>
+              </Form>
+            </Overlay>
+          )
+        }
       </Content>
     );
   }

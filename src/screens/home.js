@@ -272,7 +272,7 @@ class HomeScreen extends Component {
                           action: {
                             title: 'CANCEL',
                             color: '#ffa737',
-                            onPress: () => { /* Do something. */ },
+                            onPress: () => { this.setState({ addMarker: false }) },
                           },
                         });
                         this.setState({ addMarker: true })
