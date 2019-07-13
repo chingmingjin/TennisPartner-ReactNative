@@ -53,7 +53,7 @@ class CourtList extends Component {
         'No courts nearby',
         'We don\'t have any courts listed in your city yet. Can you help us and add them on the map?',
         [
-          { text: 'Add court', onPress: () => console.log('Ask me later pressed') },
+          { text: 'Add court', onPress: () => this.setState({ addMarker: true }) },
           {
             text: 'Cancel',
             style: 'cancel',
@@ -142,14 +142,14 @@ class CourtList extends Component {
                   marginBottom: 16
                 }}>
                   <Button
-                    buttonStyle={{ marginEnd: 16, width: 70 }}
+                    buttonStyle={{ marginEnd: 16, width: 75 }}
                     titleStyle={{ color: '#ffa737' }}
                     title="Cancel"
                     type="outline"
                     onPress={() => this.setState({ courtInfo: false })}
                   />
                   <Button
-                    buttonStyle={{ backgroundColor: '#ffa737', width: 70 }}
+                    buttonStyle={{ backgroundColor: '#ffa737', width: 75 }}
                     title="Add"
                   />
                 </View>
