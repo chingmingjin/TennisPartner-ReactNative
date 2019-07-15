@@ -67,7 +67,9 @@ class PlayerCard extends Component {
               userId: this.props.doc.id,
               distance: this.props.distance,
               city: this.props.city,
-              placeId: this.props.placeId
+              country: this.props.country,
+              placeId: this.props.placeId,
+              countryId: this.props.countryId
             })}
       />
     );

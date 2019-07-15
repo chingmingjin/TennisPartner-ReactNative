@@ -136,7 +136,7 @@ class CourtList extends Component {
         {
           this.state.courtInfo && (
             <Overlay isVisible height={300}>
-              <View>
+              <View style={{ flex: 1, justifyContent: 'space-evenly' }}>
                 <Text style={{
                   fontSize: 20,
                   marginTop: 8,

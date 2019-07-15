@@ -127,7 +127,7 @@ class PlayersList extends Component {
           <View style={{ flex: 1 }}>
               <FlatList
                   data={this.state.players}
-                  renderItem={({item}) => <PlayerCard city={this.props.city} placeId={this.props.placeId} {...item} />}
+                  renderItem={({item}) => <PlayerCard {...this.props} {...item} />}
               />
           </View>
         </Content>);

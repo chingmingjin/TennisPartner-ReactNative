@@ -160,15 +160,23 @@ class HomeScreen extends Component {
           country: res.country,
           placeId: res.placeId
         });
-        const currentUser = firebase.auth().currentUser;
-        if (currentUser) {
-          const uid = currentUser.uid;
-          const city = new firebase.firestore.FieldValue.arrayUnion(res.placeId);
-          const playerData = {
-            cities: city,
-          };
-          firebase.firestore().collection('players').doc(uid).update(playerData).catch(error => console.error(error));
-        }
+        Geocoder.from(res.country)
+          .then(json => {
+            const currentUser = firebase.auth().currentUser;
+            const countryId = json.results[0].place_id;
+            this.setState({ countryId: countryId })
+            if (currentUser) {
+              const uid = currentUser.uid;
+              const city = new firebase.firestore.FieldValue.arrayUnion(res.placeId);
+              const country = new firebase.firestore.FieldValue.arrayUnion(countryId);
+              const playerData = {
+                cities: city,
+                countries: country
+              };
+              firebase.firestore().collection('players').doc(uid).update(playerData).catch(error => console.error(error));
+            }
+          })
+          .catch(error => console.warn(error));
       })
       .catch(error => console.warn(error));
   }
@@ -324,7 +332,9 @@ class HomeScreen extends Component {
               remoteLat={this.state.remoteLat}
               remoteLon={this.state.remoteLon}
               city={this.state.city}
+              country={this.state.country}
               placeId={this.state.placeId}
+              countryId={this.state.countryId}
               distance={this.state.distance} />
           )}
           {tabCourts && this.state.latitude != 0 && (

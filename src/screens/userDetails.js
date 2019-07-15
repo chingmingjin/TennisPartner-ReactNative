@@ -109,7 +109,9 @@ class UserDetails extends Component {
     const userId = this.props.navigation.getParam('userId', null);
     this.distance = this.props.navigation.getParam('distance', null);
     this.city = this.props.navigation.getParam('city', null);
+    this.country = this.props.navigation.getParam('country', null);
     this.placeId = this.props.navigation.getParam('placeId', null);
+    this.countryId = this.props.navigation.getParam('countryId', null);
     this.getUser(userId);
   }
   componentWillUnmount() {
@@ -120,7 +122,7 @@ class UserDetails extends Component {
     firebase.firestore().collection('players').doc(userId).get().then((snapshot) => {
       const { avatarUrl, firstName, lastName, birthday, gender, presence } = snapshot.data();
       const cityRating = (snapshot.data().ratings) ? '#' + ratings[this.placeId] : '--';
-        //const countryRating = ratings[this.props.country];
+      const countryRating = (snapshot.data().ratings) ? '#' + ratings[this.countryId] : '--';
       this.setState({
         userId: snapshot.id,
         firstName: firstName,
@@ -130,7 +132,8 @@ class UserDetails extends Component {
         gender: gender,
         state: presence.state,
         last_changed: presence.last_changed,
-        cityRating: cityRating
+        cityRating: cityRating,
+        countryRating: countryRating
       });
     });
   }
@@ -191,8 +194,8 @@ class UserDetails extends Component {
                 <Text style={{ fontWeight: 'bold', fontSize: 30 }}>{this.state.cityRating}</Text>
               </View>
               <View style={{ flex: 1 }}>
-                <Text>Croatia</Text>
-                <Text style={{ fontWeight: 'bold', fontSize: 30 }}>#120</Text>
+                <Text>{ this.country }</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 30 }}>{this.state.countryRating}</Text>
               </View>
             </View>
           </Body>
