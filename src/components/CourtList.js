@@ -6,6 +6,7 @@ import firebase from 'react-native-firebase';
 import MapView, { Marker } from 'react-native-maps';
 
 import { GeoFirestore } from 'geofirestore';
+import { Geokit } from 'geokit';
 
 import { withNavigation } from 'react-navigation';
 import equal from "fast-deep-equal";
@@ -18,7 +19,9 @@ class CourtList extends Component {
     this.state = {
       courts: [],
       mapType: this.props.mapType,
-      courtInfo: false
+      courtInfo: false,
+      addMarkerCoord: null,
+      courtNameEmpty: ''
     };
   }
     
@@ -53,7 +56,10 @@ class CourtList extends Component {
         'No courts nearby',
         'We don\'t have any courts listed in your city yet. Can you help us and add them on the map?',
         [
-          { text: 'Add court', onPress: () => this.setState({ addMarker: true }) },
+          { text: 'Add court', 
+            onPress: () => {
+              this.props.addMarker();
+            } },
           {
             text: 'Cancel',
             style: 'cancel',
@@ -66,19 +72,26 @@ class CourtList extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(!equal(this.props.mapType, prevProps.mapType)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
-    {
-      this.setState({ mapType: this.props.mapType });
-    }
-    if(!equal(this.props.addMarker, prevProps.addMarker)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
-    {
-      this.setState({ addMarker: this.props.addMarker });
-    }
+    if (!equal(this.props.mapType, prevProps.mapType)) this.setState({ mapType: this.props.mapType });
   }
 
-  addMarker = (coordinates) => {
-    this.setState({ courtInfo: true }, () => {
-
+  addMarker = () => {
+    const { addMarkerCoord, courtName, courtPhone, courtNo } = this.state;
+    if(!courtName){
+      this.setState({ courtNameEmpty: 'Name cannot be empty!' })
+      return
+    }
+    firebase.firestore().collection('courts').add({
+      name: courtName,
+      phone: courtPhone,
+      number: courtNo,
+      l: new firebase.firestore.GeoPoint(addMarkerCoord.latitude, addMarkerCoord.longitude),
+      g: Geokit.hash({ lat: addMarkerCoord.latitude,  lng: addMarkerCoord.longitude })
+    }).then((value) => {
+      this.setState({
+        courtInfo: false,
+        courtNameEmpty: ''
+      }, () => this.props.markerAdded())
     })
   }
 
@@ -97,11 +110,17 @@ class CourtList extends Component {
           }}
           mapType={this.state.mapType}
         >
-          {this.state.addMarker && (
+          {this.props.marker && (
             <Marker draggable
               coordinate={{ latitude: lat, longitude: lon }}
               image={require('../images/tennis_court_marker_add.png')}
-              onDragEnd={(e) => this.addMarker(e.nativeEvent.coordinate)}
+              onDragEnd={(e) => {
+                this.setState({ 
+                  courtInfo: true,
+                  addMarkerCoord: e.nativeEvent.coordinate
+                });
+              }
+              }
             />
           )}
           {this.state.courts && this.state.courts.map(court => (
@@ -116,8 +135,8 @@ class CourtList extends Component {
         </MapView>
         {
           this.state.courtInfo && (
-            <Overlay isVisible height={260}>
-              <Form>
+            <Overlay isVisible height={300}>
+              <View>
                 <Text style={{
                   fontSize: 20,
                   marginTop: 8,
@@ -126,14 +145,21 @@ class CourtList extends Component {
                 }}>Court Info</Text>
                 <Input
                   placeholder='Name *'
+                  name='name'
+                  onChangeText={(text) => this.setState({courtName: text})}
+                  errorMessage={this.state.courtNameEmpty}
                 />
                 <Input
                   placeholder='Phone Number'
                   keyboardType='phone-pad'
+                  name='phone'
+                  onChangeText={(text) => this.setState({courtPhone: text})}
                 />
                 <Input
                   placeholder='Number of courts'
                   keyboardType='number-pad'
+                  name='num_courts'
+                  onChangeText={(text) => this.setState({courtNo: text})}
                 />
                 <View style={{
                   flexDirection: 'row',
@@ -151,9 +177,10 @@ class CourtList extends Component {
                   <Button
                     buttonStyle={{ backgroundColor: '#ffa737', width: 75 }}
                     title="Add"
+                    onPress={() => this.addMarker() }
                   />
                 </View>
-              </Form>
+                </View>
             </Overlay>
           )
         }

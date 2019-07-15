@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Platform, Dimensions, PermissionsAndroid, StyleSheet } from 'react-native';
 
-import { Footer, FooterTab, Button, Icon, Text, Content, StyleProvider } from 'native-base';
+import { Footer, FooterTab, Button, Icon, Text, Content, StyleProvider, Toast } from 'native-base';
 import { Header, Icon as RNEIcon } from 'react-native-elements';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from '../config.json';
@@ -49,7 +49,7 @@ class HomeScreen extends Component {
       title: 'Players nearby',
       showPicker: false,
       mapType: 'standard',
-      addMarker: false
+      marker: false
     }
     this.state.distanceSlide = this.state.distance;
     Geocoder.init("AIzaSyACKQQQmNubjsitW4kE-cH4Leee7Kg-gYE");
@@ -209,6 +209,31 @@ class HomeScreen extends Component {
     else this.RBSheet.close();
   }
 
+  markerAdded = () => {
+    this.setState({ marker: false }, () => {
+      Snackbar.dismiss();
+      Toast.show({
+        text: "Court succesfully added!",
+        duration: 3000,
+        type: "success"
+      });
+    })
+  }
+
+  addMarker = () => {
+    this.setState({ marker: true }, () => {
+      Snackbar.show({
+        title: 'Drag and drop the marker to court location',
+        duration: Snackbar.LENGTH_INDEFINITE,
+        action: {
+          title: 'CANCEL',
+          color: '#ffa737',
+          onPress: () => { this.setState({ marker: false }) },
+        },
+      });
+    })
+  }
+
   render() {
     const { tabPlayers, tabCourts, tabRanking, tabSettings, showPicker } = this.state;
 
@@ -265,18 +290,7 @@ class HomeScreen extends Component {
                       underlayColor='#1976d2'
                       color='#fff'
                       containerStyle={{ marginEnd: 16 }}
-                      onPress={() => {
-                        Snackbar.show({
-                          title: 'Drag the marker to court location',
-                          duration: Snackbar.LENGTH_INDEFINITE,
-                          action: {
-                            title: 'CANCEL',
-                            color: '#ffa737',
-                            onPress: () => { this.setState({ addMarker: false }) },
-                          },
-                        });
-                        this.setState({ addMarker: true })
-                      }}
+                      onPress={() => this.addMarker() }
                     />
                     <ModalDropdown
                       ref={el => this.mapType = el}
@@ -320,7 +334,9 @@ class HomeScreen extends Component {
               remoteLat={this.state.remoteLat}
               remoteLon={this.state.remoteLon}
               mapType={this.state.mapType}
-              addMarker={this.state.addMarker} />
+              marker={this.state.marker}
+              addMarker={() => this.addMarker()}
+              markerAdded={() => this.markerAdded()} />
           )}
           {tabRanking && this.state.latitude != 0 && (
             <Ranking
