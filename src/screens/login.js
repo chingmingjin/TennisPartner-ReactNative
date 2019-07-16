@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Platform, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, Image, StatusBar, StyleSheet, TouchableHighlight } from 'react-native';
 import { Container, Header, Title, Content, Button, Left, Right, Body, Icon, Text, StyleProvider, Toast, Item, Input, Label, Spinner, ListItem, Radio } from 'native-base';
 
 import firebase from 'react-native-firebase';
@@ -396,6 +396,7 @@ class LoginScreen extends Component {
     return (
         <StyleProvider style={getTheme(commonColor)}>
         <Container>
+        <StatusBar translucent={false} />
           <Header>
           <Left>
             <ButtonBack />

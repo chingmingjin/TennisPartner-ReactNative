@@ -131,7 +131,7 @@ class UserDetails extends Component {
         birthday: birthday,
         gender: gender,
         state: presence.state,
-        last_changed: presence.last_changed,
+        last_changed: moment.unix(presence.last_changed.seconds).fromNow(),
         cityRating: cityRating,
         countryRating: countryRating
       });
@@ -156,11 +156,11 @@ class UserDetails extends Component {
       <Card>
         <CardItem bordered>
           <Body>
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
               <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Icon size={40} type='font-awesome' color='#CCC' name='address-card' />
+                <Icon size={45} type='font-awesome' color='#CCC' name='address-card' />
               </View>
-              <View style={{ flex: 2, justifyContent: 'center' }}>
+              <View style={{ flex: 3, justifyContent: 'center' }}>
                 <View style={styles.info}>
                   <Text>Age</Text>
                   <Text style={{ fontWeight: 'bold' }}>{getAge(this.state.birthday)}</Text>
@@ -168,10 +168,10 @@ class UserDetails extends Component {
                 <View style={styles.info}>
                   <Text>Gender</Text>
                   <Text style={{ fontWeight: 'bold' }}>{this.state.gender}</Text>
-                </View>
+                </View> 
                 <View style={styles.info}>
                   <Text>Last active</Text>
-                  <Text style={{ fontWeight: 'bold' }}>{moment.unix(this.state.last_changed.seconds).fromNow()}</Text>
+                  <Text style={{ fontWeight: 'bold' }}>{this.state.last_changed}</Text>
                 </View>
                 <View style={styles.info}>
                   <Text>Distance</Text>
@@ -185,15 +185,15 @@ class UserDetails extends Component {
       <Card>
         <CardItem>
           <Body>
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-              <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
-                <NBIcon type='FontAwesome' name='list-ol' style={{ fontSize: 35, color: '#b0b0b0' }} />
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <NBIcon type='FontAwesome' name='list-ol' style={{ fontSize: 40, color: '#b0b0b0' }} />
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 2, alignItems: 'center' }}>
                 <Text>{ this.city }</Text>
                 <Text style={{ fontWeight: 'bold', fontSize: 30 }}>{this.state.cityRating}</Text>
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 2, alignItems: 'center'  }}>
                 <Text>{ this.country }</Text>
                 <Text style={{ fontWeight: 'bold', fontSize: 30 }}>{this.state.countryRating}</Text>
               </View>
@@ -205,7 +205,7 @@ class UserDetails extends Component {
   )
 
   render() {
-    const { userId, firstName, lastName, avatarUrl, state } = this.state;
+    const { userId, firstName, lastName, avatarUrl, state, last_changed } = this.state;
     const currentUser = firebase.auth().currentUser;
 
     if (!firstName || !lastName)
@@ -248,7 +248,12 @@ class UserDetails extends Component {
               style={styles.playButton}
               onPress={() => {
                 currentUser ?
-                  this.props.navigation.navigate('Chat', { userId: currentUser.uid, otherUserId: userId }) :
+                  this.props.navigation.navigate('Chat', { 
+                    userId: currentUser.uid, 
+                    otherUserId: userId,
+                    avatarUrl: avatarUrl,
+                    last_changed: last_changed
+                  }) :
                   this.toggleModal()
               }} iconLeft primary>
               <TennisIcons color='white' size={26} name='squash-rackets' />
