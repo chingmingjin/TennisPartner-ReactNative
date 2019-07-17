@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Dimensions, View, FlatList, Text, Alert, Platform, Image } from "react-native";
 import { Container, Left, Right, Body, Title, StyleProvider } from "native-base";
-import { Header, Avatar } from 'react-native-elements'
+import { Header, Avatar, Badge } from 'react-native-elements'
 import color from "color";
 import ButtonBack from "../components/ButtonBack";
 import getTheme from '../../native-base-theme/components';
@@ -64,7 +64,7 @@ class Chat extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const { list, exit, title } = props;
+    const { list, exit } = props;
 
     if (list !== this.props.list) {
       this.setState({ isLoading: false });
@@ -183,7 +183,9 @@ class Chat extends Component {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start' }}>
         <View style={{ flexDirection: 'row' }}>
+          <View>
           <Avatar
+            containerStyle={{ alignSelf: 'center' }}
             rounded
             source={{
               uri:
@@ -191,6 +193,13 @@ class Chat extends Component {
             }}
             title={ this.props.title[0] }
           />
+          {this.props.navigation.getParam('state', 'offline') == 'offline' && (
+              <Badge
+                status="success"
+                badgeStyle={{ width: 12, height: 12, borderRadius: 40 }}
+                containerStyle={{ position: 'absolute', bottom: 4, right: 0 }}
+              />)}
+          </View>
           <View style={{ marginStart: 8 }}>
             <Text style={{ color: 'white', fontSize: 18 }}>{this.props.title}</Text>
             <Text style={{ color: '#eee', fontSize: 12 }}>active {this.props.navigation.getParam('last_changed', 'unknown')}</Text>
@@ -229,6 +238,11 @@ class Chat extends Component {
               centerComponent={this._renderTitle()}
             />
             <View style={styles.messageListViewStyle}>
+              {isLoading && (
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Progress.Circle style={styles.progressCircle} color="#ffa737" size={50} borderWidth={4} indeterminate={true} />
+              </View>
+              )}
               <FlatList
                 ref={elem => this.flatList = elem}
                 renderItem={this._renderList}

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Dimensions, StyleSheet, Platform, StatusBar } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Card, CardItem, Body, Text, Button, Icon as NBIcon } from 'native-base';
-import { Icon, Badge } from 'react-native-elements';
+import { Icon, Badge, Button as PlayButton } from 'react-native-elements';
 import color from "color";
 import * as Progress from 'react-native-progress';
 import ButtonBack from '../components/ButtonBack';
@@ -12,6 +12,7 @@ import { getAge } from '../utils/age';
 import moment from 'moment';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from '../config.json';
+import TouchableScale from 'react-native-touchable-scale';
 
 import firebase from 'react-native-firebase';
 
@@ -72,14 +73,25 @@ const styles = StyleSheet.create({
   info: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginEnd: 20,
+    marginStart: 20
+  },
+  infoTextLabel: {
+    textAlign: 'left'
+  },
+  infoText: {
+    textAlign: 'right',
+    fontWeight: 'bold'
   },
   playButton: {
     alignSelf: 'flex-end',
+    justifyContent: 'space-evenly',
     marginBottom: 20,
     marginEnd: 20,
     borderRadius: 30,
-    height: 50,
+    width: 110,
+    height: 60,
     padding: 10,
     backgroundColor: '#1976d2'
   }
@@ -157,25 +169,31 @@ class UserDetails extends Component {
         <CardItem bordered>
           <Body>
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Icon size={45} type='font-awesome' color='#CCC' name='address-card' />
+              <View style={{ 
+                flex: 1, 
+                justifyContent: 'center', 
+                alignItems: 'center',
+                borderRightWidth: 1,
+                borderRightColor: '#CCC'
+                 }}>
+                <Icon size={43} type='font-awesome' color='#CCC' name='address-card' />
               </View>
               <View style={{ flex: 3, justifyContent: 'center' }}>
                 <View style={styles.info}>
-                  <Text>Age</Text>
-                  <Text style={{ fontWeight: 'bold' }}>{getAge(this.state.birthday)}</Text>
+                  <Text style={styles.infoTextLabel}>Age</Text>
+                  <Text style={styles.infoText}>{getAge(this.state.birthday)}</Text>
                 </View>
                 <View style={styles.info}>
-                  <Text>Gender</Text>
-                  <Text style={{ fontWeight: 'bold' }}>{this.state.gender}</Text>
+                  <Text style={styles.infoTextLabel}>Gender</Text>
+                  <Text style={styles.infoText}>{this.state.gender}</Text>
                 </View> 
                 <View style={styles.info}>
-                  <Text>Last active</Text>
-                  <Text style={{ fontWeight: 'bold' }}>{this.state.last_changed}</Text>
+                  <Text style={styles.infoTextLabel}>Active</Text>
+                  <Text style={styles.infoText}>{this.state.last_changed}</Text>
                 </View>
                 <View style={styles.info}>
-                  <Text>Distance</Text>
-                  <Text style={{ fontWeight: 'bold' }}>{this.distance} km</Text>
+                  <Text style={styles.infoTextLabel}>Distance</Text>
+                  <Text style={styles.infoText}>{this.distance} km</Text>
                 </View>
               </View>
             </View>
@@ -185,17 +203,19 @@ class UserDetails extends Component {
       <Card>
         <CardItem>
           <Body>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderRightWidth: 1, borderRightColor: '#CCC'}}>
                 <NBIcon type='FontAwesome' name='list-ol' style={{ fontSize: 40, color: '#b0b0b0' }} />
               </View>
-              <View style={{ flex: 2, alignItems: 'center' }}>
+              <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
+              <View>
                 <Text>{ this.city }</Text>
                 <Text style={{ fontWeight: 'bold', fontSize: 30 }}>{this.state.cityRating}</Text>
               </View>
-              <View style={{ flex: 2, alignItems: 'center'  }}>
+              <View>
                 <Text>{ this.country }</Text>
                 <Text style={{ fontWeight: 'bold', fontSize: 30 }}>{this.state.countryRating}</Text>
+              </View>
               </View>
             </View>
           </Body>
@@ -244,21 +264,30 @@ class UserDetails extends Component {
             innerContainerStyle={styles.container}
           />
           {(!currentUser || (currentUser !== null && userId !== currentUser.uid)) && (
-            <Button
-              style={styles.playButton}
+            <PlayButton
+              TouchableComponent={TouchableScale}
+              friction={90} //
+              tension={100}
+              activeScale={0.97}
+              buttonStyle={styles.playButton}
               onPress={() => {
                 currentUser ?
-                  this.props.navigation.navigate('Chat', { 
-                    userId: currentUser.uid, 
+                  this.props.navigation.navigate('Chat', {
+                    userId: currentUser.uid,
                     otherUserId: userId,
                     avatarUrl: avatarUrl,
+                    state: state,
                     last_changed: last_changed
                   }) :
                   this.toggleModal()
-              }} iconLeft primary>
-              <TennisIcons color='white' size={26} name='squash-rackets' />
-              <Text style={{ fontSize: 18 }}>Play</Text>
-            </Button>
+              }}
+
+              icon={
+                <TennisIcons color='white' size={26} name='squash-rackets' />
+              }
+              title="Play"
+              titleStyle={{ fontSize: 20 }}
+            />
           )}
           <Modal
             isVisible={this.state.isModalVisible}

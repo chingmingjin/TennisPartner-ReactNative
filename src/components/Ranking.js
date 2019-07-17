@@ -124,7 +124,7 @@ class Ranking extends Component {
                             onPress={this.updateIndex}
                             selectedIndex={selectedIndex}
                             buttons={buttons}
-                            containerStyle={{ height: 30 }}
+                            containerStyle={{ height: 35 }}
                         />
                         <FlatList
                             keyExtractor={this.keyExtractor}
