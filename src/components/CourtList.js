@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Alert, View, Linking } from 'react-native';
+import { StyleSheet, Alert, View, Linking, Platform } from 'react-native';
 import { Content } from 'native-base';
 import { Overlay, Text, Button, Input, Icon } from 'react-native-elements'
 import firebase from 'react-native-firebase';
@@ -133,7 +133,7 @@ class CourtList extends Component {
               image={require('../images/tennis_court_marker.png')}
             >
               <Callout
-              onPress={() => Linking.openURL('tel:' + court.phone.replace(/\s/g, ''))}>
+              onPress={() => Linking.openURL(Platform.OS === 'ios' ? 'tel://' : 'tel:' + court.phone)}>
                 <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginEnd: 8 }}>
                     <Icon name='phone' />
