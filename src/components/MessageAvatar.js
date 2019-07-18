@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 
-const _renderAvatar = (isShow, uri, onImagePress) => {
+const _renderAvatar = (isShow, uri, nickname, onImagePress) => {
     if (!isShow) {
         uri = '';
     }
@@ -11,7 +11,8 @@ const _renderAvatar = (isShow, uri, onImagePress) => {
         <Avatar 
             small
             rounded
-            source={uri === 'default-image' ? require('../images/user.png') : { uri } }
+            title={nickname[0]}
+            source={!uri ? '' : { uri } }
             onPress={onImagePress}
         />
     ) : null;
@@ -20,7 +21,7 @@ const _renderAvatar = (isShow, uri, onImagePress) => {
 const MessageAvatar = (props) => {
     return (
         <View style={styles.viewStyle}>
-            {_renderAvatar(props.isShow, props.uri, props.onPress)}
+            {_renderAvatar(props.isShow, props.uri, props.nickname, props.onPress)}
         </View>
     )
 }
@@ -30,7 +31,8 @@ const styles = {
         backgroundColor: 'transparent',
         marginRight: 8,
         width: 34,
-        height: 34
+        height: 34,
+        alignSelf: 'flex-end'
     }
 }
 

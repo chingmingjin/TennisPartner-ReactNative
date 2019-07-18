@@ -27,6 +27,7 @@ class CourtList extends Component {
     
   componentDidMount() {
     const { latitude, longitude, remoteLat, remoteLon } = this.props;
+    const currentUser = firebase.auth().currentUser;
 
     const geofirestore = new GeoFirestore(firebase.firestore());
 
@@ -59,7 +60,7 @@ class CourtList extends Component {
         [
           { text: 'Add court', 
             onPress: () => {
-              this.props.addMarker();
+              currentUser ? this.props.addMarker() : this.props.toggleModal()
             } },
           {
             text: 'Cancel',
@@ -99,6 +100,7 @@ class CourtList extends Component {
   render() {
     const lat = (this.props.remoteLat != 0) ? this.props.remoteLat : this.props.latitude;
     const lon = (this.props.remoteLon != 0) ? this.props.remoteLon : this.props.longitude;
+    
     return (
       <Content contentContainerStyle={{ ...StyleSheet.absoluteFillObject }}>
         <MapView
@@ -140,7 +142,7 @@ class CourtList extends Component {
                   </View>
                   <View>
                     <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{court.name}</Text>
-                    <Text>Phone: {court.phone}</Text>
+                    <Text>{court.phone}</Text>
                     {court.number && (
                       <Text>{court.number} courts</Text>
                     )}

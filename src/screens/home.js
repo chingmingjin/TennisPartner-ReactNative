@@ -367,7 +367,9 @@ class HomeScreen extends Component {
               mapType={this.state.mapType}
               marker={this.state.marker}
               addMarker={() => this.addMarker()}
-              markerAdded={() => this.markerAdded()} />
+              markerAdded={() => this.markerAdded()}
+              toggleModal={() => this.toggleModal()}
+           />
           )}
           {tabRanking && this.state.latitude != 0 && (
             <Ranking

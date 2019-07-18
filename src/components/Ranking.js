@@ -75,10 +75,10 @@ class Ranking extends Component {
 
     renderItem = ({ item }) => (
         <ListItem
-            title={item.firstName + ' ' + item.lastName}
+            title={item.firstName}
             leftAvatar={{
                 source: item.avatarUrl && { uri: item.avatarUrl },
-                title: item.firstName[0] + item.lastName[0]
+                title: item.firstName[0]
             }}
         />
     )

@@ -157,7 +157,7 @@ class Chat extends Component {
           onPress={() => this._onUserBlockPress(message.sender.userId)}
           nickname={message.sender.nickname}
           time={message.time}
-          readCount={false || !channel ? 0 : channel.getReadReceipt(message)}
+          readCount={false || channel.getReadReceipt(message) === channel.memberCount}
           message={this._renderFileMessageItem(rowData)}
         />
       );
@@ -180,9 +180,11 @@ class Chat extends Component {
   };
 
   _renderTitle = () => {
+    const { channel } = this.state;
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start' }}>
-        <View style={{ flexDirection: 'row' }}>
+        {channel.memberCount === 2 &&
+        (<View style={{ flexDirection: 'row' }}>
           <View>
           <Avatar
             containerStyle={{ alignSelf: 'center' }}
@@ -204,7 +206,10 @@ class Chat extends Component {
             <Text style={{ color: 'white', fontSize: 18 }}>{this.props.title}</Text>
             <Text style={{ color: '#eee', fontSize: 12 }}>active {this.props.navigation.getParam('last_changed', 'unknown')}</Text>
           </View>
-        </View>
+        </View>)}
+        {channel.memberCount > 2 && (
+          <Text style={{ color: 'white', fontSize: 18 }}>{this.props.title}</Text>
+        )}
       </View>
     );
   }

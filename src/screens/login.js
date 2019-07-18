@@ -225,10 +225,9 @@ class LoginScreen extends Component {
   }
 
   logIn() {
-    const { user, avatarSelected, avatarSource, fullName, date, male, female, phoneNumber, fbLogin, gender } = this.state;
+    const { user, avatarSelected, avatarSource, firstName, date, male, female, phoneNumber, fbLogin, gender } = this.state;
     if(fbLogin) {
       this.setState({ loading: true, loadingText: 'Signing in...' });
-      var fullNameArr = fullName.split(' ');
       Geolocation.getCurrentPosition(
         (position) => {
           const lat = position.coords.latitude;
@@ -236,8 +235,7 @@ class LoginScreen extends Component {
           const location = new firebase.firestore.GeoPoint(lat, lon);
           const playerData = {
             avatarUrl: avatarSource,
-            firstName: fullNameArr[0],
-            lastName: fullNameArr[fullNameArr.length-1],
+            firstName: firstName,
             phoneNumber: phoneNumber,
             gender: gender,
             birthday: date,
@@ -246,9 +244,9 @@ class LoginScreen extends Component {
           }
           firebase.firestore().collection('players').doc(user.uid).set(playerData)
           .then((userRef) => {
-            sbUpdateProfile(fullName, avatarSource)
+            sbUpdateProfile(firstName, avatarSource)
               .then(() => {
-                user.updateProfile({ displayName: fullName, photoURL: avatarSource }).then(() => {
+                user.updateProfile({ displayName: firstName, photoURL: avatarSource }).then(() => {
                   this.setState({ loading: false });
                   Toast.show({
                     text: "Login successful!",
@@ -271,7 +269,6 @@ class LoginScreen extends Component {
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
     } else {
-      const fullNameRegex = new RegExp("^[^\d-]([-']?[a-z]+)*( [^\d-]([-']?.+)+)+$");
       if(!avatarSelected) {
         Toast.show({
           text: 'You didn\'t select your avatar!',
@@ -279,9 +276,9 @@ class LoginScreen extends Component {
           type: 'danger',
           duration: 3500
         });
-      } else if(!fullName || !fullNameRegex.test(fullName)) {
+      } else if(!firstName) {
         Toast.show({
-          text: 'You didn\'t enter your full name!',
+          text: 'You didn\'t enter your name!',
           textStyle: { textAlign: 'center' },
           type: 'danger',
           duration: 3500
@@ -303,8 +300,6 @@ class LoginScreen extends Component {
       } else {
         this.setState({ loadingProgress: true, uploadProgress: 0, loadingText: 'Signing in...' });
 
-        var fullNameArr = fullName.split(' ');
-
         Geolocation.getCurrentPosition(
           (position) => {
             const ref = firebase.storage().ref('/images/avatars/' + user.uid + '.jpg');
@@ -321,8 +316,7 @@ class LoginScreen extends Component {
                   const location = new firebase.firestore.GeoPoint(lat, lon);
                   const playerData = {
                     avatarUrl: snapshot.downloadURL,
-                    firstName: fullNameArr[0],
-                    lastName: fullNameArr[fullNameArr.length-1],
+                    firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
                     phoneNumber: phoneNumber,
                     gender: (male) ? 'male' : 'female',
                     birthday: moment(date, "DD.MM.YYYY").format("YYYY-MM-DD"),
@@ -331,9 +325,9 @@ class LoginScreen extends Component {
                   }
                   firebase.firestore().collection('players').doc(user.uid).set(playerData)
                   .then((userRef) => {
-                    sbUpdateProfile(fullName, avatarSource)
+                    sbUpdateProfile(firstName, avatarSource)
                       .then(() => {
-                        user.updateProfile({ displayName: fullName, photoURL: snapshot.downloadURL }).then(() => {
+                        user.updateProfile({ displayName: firstName, photoURL: snapshot.downloadURL }).then(() => {
                           this.setState({ loadingProgress: false });
                           Toast.show({
                             text: "Login successful!",
@@ -434,8 +428,8 @@ class LoginScreen extends Component {
                     <Image source={this.state.avatarSource} style={styles.profileImg} />
                   </TouchableHighlight>
                   <Item style={{ marginTop: 10, marginBottom: 10 }} floatingLabel>
-                    <Label>Full name</Label>
-                    <Input onChangeText={value => this.setState({ fullName: value })} />
+                    <Label>Your name</Label>
+                    <Input onChangeText={value => this.setState({ firstName: value.trim() })} />
                   </Item>
                     <DatePicker
                         style={{ alignSelf: 'stretch', marginTop: 5, marginBottom: 5 }}
@@ -519,7 +513,7 @@ class LoginScreen extends Component {
                                   } else {
                                     this.setState({ 
                                       fbLogin: true, 
-                                      fullName: result.name, 
+                                      firstName: result.first_name, 
                                       avatarSource: 'https://graph.facebook.com/' + result.id + '/picture?width=300',
                                       gender: result.gender,
                                       date: moment(result.birthday, "MM/DD/YYYY").format("YYYY-MM-DD")
