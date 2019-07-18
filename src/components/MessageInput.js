@@ -6,7 +6,8 @@ const { width } = Dimensions.get('window');
 
 const MessageInput = (props) => {
     return (
-        <KeyboardAvoidingView style={styles.containerStyle} behavior={Platform.OS === "ios" ? "padding" : null}>
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : null}>
+        <View style={styles.containerStyle}>
             <View style={styles.inputViewStyle}>
                 <TextInput
                     style={{
@@ -40,13 +41,13 @@ const MessageInput = (props) => {
                 size={30}
                 onPress={props.onRightPress}
             />
+        </View>
         </KeyboardAvoidingView>
     )
 }
 
 const styles = {
     containerStyle: {
-        flex: 1,
         borderTopWidth: 1,
         borderTopColor: '#EEE',
         flexDirection: 'row',
