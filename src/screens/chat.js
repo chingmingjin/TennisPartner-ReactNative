@@ -193,7 +193,7 @@ class Chat extends Component {
             }}
             title={ this.props.title[0] }
           />
-          {this.props.navigation.getParam('state', 'offline') == 'offline' && (
+          {this.props.navigation.getParam('state', 'offline') == 'online' && (
               <Badge
                 status="success"
                 badgeStyle={{ width: 12, height: 12, borderRadius: 40 }}

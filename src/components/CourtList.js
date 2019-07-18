@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { StyleSheet, Alert, View } from 'react-native';
-import { Content, Item, Label, Form } from 'native-base';
-import { Overlay, Text, Button, Input } from 'react-native-elements'
+import { StyleSheet, Alert, View, Linking } from 'react-native';
+import { Content } from 'native-base';
+import { Overlay, Text, Button, Input, Icon } from 'react-native-elements'
 import firebase from 'react-native-firebase';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Callout } from 'react-native-maps';
 
 import { GeoFirestore } from 'geofirestore';
 import { Geokit } from 'geokit';
@@ -21,7 +21,7 @@ class CourtList extends Component {
       mapType: this.props.mapType,
       courtInfo: false,
       addMarkerCoord: null,
-      courtNameEmpty: ''
+      courtNameEmpty: '',
     };
   }
     
@@ -47,9 +47,10 @@ class CourtList extends Component {
         var courts = [];
         snapshot.docs.forEach(doc => {
           const { name, phone, l } = doc.data();
+          const number = doc.data().number ? doc.data().number : null;
           courts.push({
             key: doc.id,
-            name, phone, l
+            name, phone, number, l
           });
         });
       } else Alert.alert(
@@ -130,7 +131,23 @@ class CourtList extends Component {
               centerOffset={{ x: 0, y: -45 }}
               title={court.name}
               image={require('../images/tennis_court_marker.png')}
-            />
+            >
+              <Callout
+              onPress={() => Linking.openURL(`tel:${court.phone}`)}>
+                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginEnd: 8 }}>
+                    <Icon name='phone' />
+                  </View>
+                  <View>
+                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{court.name}</Text>
+                    <Text>Phone: {court.phone}</Text>
+                    {court.number && (
+                      <Text>{court.number} courts</Text>
+                    )}
+                  </View>
+                </View>
+              </Callout>
+            </Marker>
           ))}
         </MapView>
         {

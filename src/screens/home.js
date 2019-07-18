@@ -12,6 +12,7 @@ import Snackbar from 'react-native-snackbar';
 import RBSheet from "react-native-raw-bottom-sheet";
 import Slider from '@react-native-community/slider';
 import ModalDropdown from 'react-native-modal-dropdown';
+import Modal from "react-native-modal";
 
 import firebase from 'react-native-firebase';
 
@@ -49,7 +50,8 @@ class HomeScreen extends Component {
       title: 'Players nearby',
       showPicker: false,
       mapType: 'standard',
-      marker: false
+      marker: false,
+      isModalVisible: false
     }
     this.state.distanceSlide = this.state.distance;
     Geocoder.init("AIzaSyACKQQQmNubjsitW4kE-cH4Leee7Kg-gYE");
@@ -57,7 +59,21 @@ class HomeScreen extends Component {
   }
 
   componentDidMount() {
+    this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user: user });
+      } else {
+        this.setState({
+          user: null,
+        });
+      }
+    });
+
     this.getLocationCoord();
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribe) this.unsubscribe();
   }
 
   toggleTabPlayers() {
@@ -217,6 +233,10 @@ class HomeScreen extends Component {
     else this.RBSheet.close();
   }
 
+  toggleModal = () => {
+    this.setState({ isModalVisible: !this.state.isModalVisible });
+  };
+
   markerAdded = () => {
     this.setState({ marker: false }, () => {
       Snackbar.dismiss();
@@ -244,6 +264,7 @@ class HomeScreen extends Component {
 
   render() {
     const { tabPlayers, tabCourts, tabRanking, tabSettings, showPicker } = this.state;
+    const currentUser = firebase.auth().currentUser;
 
     if(showPicker) {
     return (
@@ -298,7 +319,7 @@ class HomeScreen extends Component {
                       underlayColor='#1976d2'
                       color='#fff'
                       containerStyle={{ marginEnd: 16 }}
-                      onPress={() => this.addMarker() }
+                      onPress={() => currentUser ? this.addMarker() : this.toggleModal() }
                     />
                     <ModalDropdown
                       ref={el => this.mapType = el}
@@ -413,6 +434,22 @@ class HomeScreen extends Component {
             </Button>
           </FooterTab>
         </Footer>
+        <Modal
+            isVisible={this.state.isModalVisible}
+            onBackdropPress={() => this.setState({ isModalVisible: false })}
+            backdropTransitionOutTiming={0}
+            style={styles.bottomModal}>
+            <View style={styles.modalContent}>
+              <RNEIcon containerStyle={{ paddingTop: 20 }} size={40} type='font-awesome' name='sign-in' />
+              <Text style={{ paddingBottom: 20, fontSize: 20 }}>You need to sign in to continue</Text>
+              <Button full warning onPress={() => {
+                this.toggleModal();
+                this.props.navigation.navigate('Login')
+              }}>
+                <Text>Sign In</Text>
+              </Button>
+            </View>
+          </Modal>
       </View>
       </StyleProvider>
     )}
@@ -435,6 +472,18 @@ const styles = StyleSheet.create({
     height: 200,
     padding: 10,
     backgroundColor: '#f7f5eee8',
+  },
+  bottomModal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+    paddingBottom: isX ? 35 : 0
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
   }
 });
 export default HomeScreen;
