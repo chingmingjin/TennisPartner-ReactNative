@@ -133,7 +133,7 @@ class CourtList extends Component {
               image={require('../images/tennis_court_marker.png')}
             >
               <Callout
-              onPress={() => Linking.openURL(`tel:${court.phone}`)}>
+              onPress={() => Linking.openURL('tel:' + court.phone)}>
                 <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginEnd: 8 }}>
                     <Icon name='phone' />
