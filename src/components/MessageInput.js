@@ -49,7 +49,9 @@ const styles = {
         borderTopWidth: 1,
         borderTopColor: '#EEE',
         flexDirection: 'row',
-        backgroundColor:'#fff'
+        backgroundColor:'#fff',
+        position: 'absolute',
+        bottom: 0
     },
     inputViewStyle: {
         paddingLeft: 8
