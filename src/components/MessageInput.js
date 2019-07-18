@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, TextInput, Dimensions, Platform } from 'react-native';
+import { View, TextInput, Dimensions, Platform, KeyboardAvoidingView } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 const { width } = Dimensions.get('window');
 
 const MessageInput = (props) => {
     return (
-        <View style={styles.containerStyle}>
+        <KeyboardAvoidingView style={styles.containerStyle}>
             <View style={styles.inputViewStyle}>
                 <TextInput
                     style={{
@@ -40,7 +40,7 @@ const MessageInput = (props) => {
                 size={30}
                 onPress={props.onRightPress}
             />
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 
