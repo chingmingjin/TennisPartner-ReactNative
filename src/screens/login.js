@@ -330,7 +330,7 @@ class LoginScreen extends Component {
                   }
                   firebase.firestore().collection('players').doc(user.uid).set(playerData)
                   .then((userRef) => {
-                    sbUpdateProfile(firstName, snapshot.downloadUR)
+                    sbUpdateProfile(firstName, snapshot.downloadURL)
                       .then(() => {
                         user.updateProfile({ displayName: firstName, photoURL: snapshot.downloadURL }).then(() => {
                           this.setState({ loadingProgress: false });
