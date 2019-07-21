@@ -20,7 +20,8 @@ import commonColor from '../../native-base-theme/variables/commonColor';
 import { withNavigation } from 'react-navigation';
 import {
   sbConnect,
-  sbUpdateProfile
+  sbUpdateProfile,
+  sbRegisterPushToken
 } from '../sendbirdActions';
 
 class LoginScreen extends Component {
@@ -66,6 +67,7 @@ class LoginScreen extends Component {
 
   componentWillUnmount() {
      if (this.unsubscribe) this.unsubscribe();
+     this.onTokenRefreshListener();
   }
 
   signIn = () => {
@@ -94,6 +96,9 @@ class LoginScreen extends Component {
         .then((user) => {
           sbConnect(user.uid)
             .then(() => {
+              this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
+                sbRegisterPushToken()
+              });
               if (user.metadata.creationTime === user.metadata.lastSignInTime)
                 this.setState({ loading: false, message: '', title: 'Your Info' });
               else  {

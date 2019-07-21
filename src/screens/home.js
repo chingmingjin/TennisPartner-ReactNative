@@ -420,19 +420,15 @@ class HomeScreen extends Component {
           <FooterTab>
             <Button vertical active={this.state.tabPlayers} onPress={() => this.toggleTabPlayers()}>
               <Icon type="FontAwesome" name="users" />
-              <Text>Players</Text>
             </Button>
             <Button vertical active={this.state.tabCourts} onPress={() => this.toggleTabCourts()}>
               <TennisIcons color={Platform.OS === 'android' ? 'white' : '#666'} size={26} name="tennis-court" />
-              <Text>Courts</Text>
             </Button>
             <Button vertical active={this.state.tabRanking} onPress={() => this.toggleTabRanking()}>
               <Icon color={Platform.OS === 'android' ? 'white' : '#666'} type='FontAwesome' name="list-ol" />
-              <Text>Rankings</Text>
             </Button>
             <Button vertical active={this.state.tabSettings} onPress={() => this.toggleTabSettings()}>
               <Icon type="MaterialIcons" name="settings" />
-              <Text>Settings</Text>
             </Button>
           </FooterTab>
         </Footer>

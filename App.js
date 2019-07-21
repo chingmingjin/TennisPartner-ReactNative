@@ -18,7 +18,8 @@ import LoginScreen from "./src/screens/login";
 import Chat from "./src/screens/chat";
 import PlacesScreen from "./src/screens/places";
 import {
-  sbConnect
+  sbConnect,
+  sbRegisterPushToken
 } from './src/sendbirdActions';
 
 const AppNavigator = createStackNavigator(
@@ -48,6 +49,15 @@ export default class App extends Component {
       firebase.notifications.Android.Importance.Max
     );
     firebase.notifications().android.createChannel(channel);
+    
+    firebase.messaging().hasPermission()
+        .then(enabled => {
+          if (enabled) {
+            this.removeNotificationListener = firebase.notifications().onNotification((notification) => {
+              firebase.notifications().displayNotification(notification);
+            });
+          }
+        });
 
     //console.disableYellowBox = true;
     AppState.addEventListener("change", this._handleAppStateChange);
@@ -55,7 +65,12 @@ export default class App extends Component {
     if(firebase.auth().currentUser) {
       var uid = firebase.auth().currentUser.uid;
 
-      sbConnect(uid);
+      sbConnect(uid).then(() => {
+        this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
+          sbRegisterPushToken()
+        });
+      });
+
 
       var userStatusDatabaseRef = firebase.database().ref('/presence/' + uid);
       var userStatusFirestoreRef = firebase.firestore().doc('players/' + uid);
@@ -113,6 +128,7 @@ export default class App extends Component {
   }
   componentWillUnmount() {
     AppState.removeEventListener("change", this._handleAppStateChange);
+    this.onTokenRefreshListener();
   }
   render() {
     return (
@@ -129,7 +145,7 @@ export default class App extends Component {
     if (sb) {
       if (nextAppState === 'active') {
         if(Platform.OS === 'ios') {
-          //PushNotificationIOS.setApplicationIconBadgeNumber(0);
+          PushNotificationIOS.setApplicationIconBadgeNumber(0);
         }
         console.log('app is into foreground');
         sb.setForegroundState();

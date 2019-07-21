@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Dimensions, View, FlatList, Text, Alert, Platform, Image } from "react-native";
 import { Container, Left, Right, Body, Title, StyleProvider } from "native-base";
 import { Header, Avatar, Badge } from 'react-native-elements'
+import firebase from 'react-native-firebase'
 import color from "color";
 import ButtonBack from "../components/ButtonBack";
 import getTheme from '../../native-base-theme/components';
@@ -24,7 +25,7 @@ import {
 } from "../actions";
 import { Button, Spinner, TextItem, FileItem, MessageInput, Message, AdminMessage } from "../components";
 import { BarIndicator } from "react-native-indicators";
-import { sbCreateGroupChannel, sbCreatePreviousMessageListQuery, sbAdjustMessageList, sbIsImageMessage, sbMarkAsRead } from "../sendbirdActions";
+import { sbCreateGroupChannel, sbCreatePreviousMessageListQuery, sbAdjustMessageList, sbIsImageMessage, sbMarkAsRead, sbRegisterPushToken } from "../sendbirdActions";
 
 const d = Dimensions.get("window");
 const isX = Platform.OS === "ios" && (d.height > 800 || d.width > 800) ? true : false;
@@ -51,6 +52,18 @@ class Chat extends Component {
     ];
     sbCreateGroupChannel(userIds, true).then(channel => {
       this.setState({ channel }, () => this._componentInit())
+      firebase.messaging().hasPermission()
+        .then(enabled => {
+          if (enabled) {
+
+          } else {
+            firebase.messaging().requestPermission()
+              .then(() => {
+              })
+              .catch(error => {
+              });
+          }
+        });
     }).catch(
       (error) => console.error(error)
     );
