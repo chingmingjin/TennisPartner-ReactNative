@@ -55,15 +55,14 @@ export default class App extends Component {
           if (enabled) {
             this.onMessageListener = firebase.messaging().onMessage(message => {
               if (Platform.OS === 'ios') {
-                const text = message.data.message;
                 const payload = JSON.parse(message.data.sendbird);
                 const localNotification = new firebase.notifications.Notification({
                   show_in_foreground: true
                 })
-                  .setNotificationId(message.messageId)
-                  .setTitle('New message')
-                  .setSubtitle(`Unread message: ${payload.unread_message_count}`)
-                  .setBody(text)
+                  .setNotificationId(payload.channel.channel_url)
+                  .setTitle(payload.sender.name)
+                  .setSubtitle(payload.unread_message_count + ' messages')
+                  .setBody(payload.message)
                   .setData(payload);
                 firebase.notifications().displayNotification(localNotification);
               }
@@ -72,6 +71,7 @@ export default class App extends Component {
               firebase.notifications().displayNotification(notification);
             });
           }
+          firebase.notifications().removeAllDeliveredNotifications();
         });
 
     //console.disableYellowBox = true;
@@ -81,6 +81,7 @@ export default class App extends Component {
       var uid = firebase.auth().currentUser.uid;
 
       sbConnect(uid).then(() => {
+        sbRegisterPushToken()
         this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
           sbRegisterPushToken()
         });
