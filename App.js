@@ -49,26 +49,25 @@ export default class App extends Component {
       firebase.notifications.Android.Importance.Max
     ).setDescription('Messages from other players');
     firebase.notifications().android.createChannel(channel);
-    
-    this.onMessageListener = firebase.messaging().onMessage(message => {
-      if (Platform.OS === 'ios') {
-        const text = message.data.message;
-        const payload = JSON.parse(message.data.sendbird);
-        const localNotification = new firebase.notifications.Notification({
-          show_in_foreground: true
-        })
-          .setNotificationId(message.messageId)
-          .setTitle('New message')
-          .setSubtitle(`Unread message: ${payload.unread_message_count}`)
-          .setBody(text)
-          .setData(payload);
-        firebase.notifications().displayNotification(localNotification);
-      }
-    });
 
     firebase.messaging().hasPermission()
         .then(enabled => {
           if (enabled) {
+            this.onMessageListener = firebase.messaging().onMessage(message => {
+              if (Platform.OS === 'ios') {
+                const text = message.data.message;
+                const payload = JSON.parse(message.data.sendbird);
+                const localNotification = new firebase.notifications.Notification({
+                  show_in_foreground: true
+                })
+                  .setNotificationId(message.messageId)
+                  .setTitle('New message')
+                  .setSubtitle(`Unread message: ${payload.unread_message_count}`)
+                  .setBody(text)
+                  .setData(payload);
+                firebase.notifications().displayNotification(localNotification);
+              }
+            });
             this.removeNotificationListener = firebase.notifications().onNotification((notification) => {
               firebase.notifications().displayNotification(notification);
             });
@@ -145,6 +144,7 @@ export default class App extends Component {
   componentWillUnmount() {
     AppState.removeEventListener("change", this._handleAppStateChange);
     this.onTokenRefreshListener();
+    //this.onMessageListener();
   }
   render() {
     return (
