@@ -55,7 +55,7 @@ class Chat extends Component {
       firebase.messaging().hasPermission()
         .then(enabled => {
           if (enabled) {
-
+            sbRegisterPushToken()
           } else {
             firebase.messaging().requestPermission()
               .then(() => {

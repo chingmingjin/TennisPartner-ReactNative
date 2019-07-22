@@ -144,7 +144,7 @@ export default class App extends Component {
   componentWillUnmount() {
     AppState.removeEventListener("change", this._handleAppStateChange);
     this.onTokenRefreshListener();
-    //this.onMessageListener();
+    this.onMessageListener();
   }
   render() {
     return (

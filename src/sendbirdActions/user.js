@@ -33,6 +33,7 @@ export const sbRegisterPushToken = () => {
             } else {
                 firebase.messaging().getToken()
                     .then(token => {
+                        console.log('Token:', token)
                         if (token) {
                             sb.registerGCMPushTokenForCurrentUser(token, (result, error) => {
                                 if(!error) {
