@@ -8,7 +8,7 @@ export default async (message) => {
     const localNotification = new firebase.notifications.Notification({
         show_in_foreground: true
       })
-      .android.setChannelId('app.tennispartner.messages')
+      .android.setChannelId('app.tennispartner.chat')
       .android.setSmallIcon('sendbird_ic_notification')
       .android.setPriority(firebase.notifications.Android.Priority.High)
       .setNotificationId(message.messageId)

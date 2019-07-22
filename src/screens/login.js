@@ -328,6 +328,10 @@ class LoginScreen extends Component {
                     l: location,
                     g: Geokit.hash({ lat: lat,  lng: lon })
                   }
+
+//UBACITI I PRESENCE U BAZU
+
+
                   firebase.firestore().collection('players').doc(user.uid).set(playerData)
                   .then((userRef) => {
                     sbUpdateProfile(firstName, snapshot.downloadURL)

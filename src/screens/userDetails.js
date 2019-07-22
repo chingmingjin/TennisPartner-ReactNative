@@ -132,13 +132,12 @@ class UserDetails extends Component {
 
   getUser = (userId) => {
     firebase.firestore().collection('players').doc(userId).get().then((snapshot) => {
-      const { avatarUrl, firstName, lastName, birthday, gender, presence } = snapshot.data();
+      const { avatarUrl, firstName, birthday, gender, presence } = snapshot.data();
       const cityRating = (snapshot.data().ratings) ? '#' + ratings[this.placeId] : '--';
       const countryRating = (snapshot.data().ratings) ? '#' + ratings[this.countryId] : '--';
       this.setState({
         userId: snapshot.id,
         firstName: firstName,
-        lastName: lastName,
         avatarUrl: avatarUrl,
         birthday: birthday,
         gender: gender,
@@ -225,10 +224,10 @@ class UserDetails extends Component {
   )
 
   render() {
-    const { userId, firstName, lastName, avatarUrl, state, last_changed } = this.state;
+    const { userId, firstName, avatarUrl, state, last_changed } = this.state;
     const currentUser = firebase.auth().currentUser;
 
-    if (!firstName || !lastName)
+    if (!firstName)
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Progress.Circle style={styles.progressCircle} color="#ffa737" size={50} borderWidth={4} indeterminate={true} />
