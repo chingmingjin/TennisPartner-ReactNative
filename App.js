@@ -54,8 +54,8 @@ export default class App extends Component {
       .then(enabled => {
         if (enabled) {
           this.onMessageListener = firebase.messaging().onMessage(message => {
-            const payload = JSON.parse(message.data.sendbird);
             if (Platform.OS === 'ios') {
+              const payload = JSON.parse(message.data.sendbird);
               const localNotification = new firebase.notifications.Notification({
                 show_in_foreground: true
               })
@@ -66,6 +66,7 @@ export default class App extends Component {
                 .setData(payload);
               firebase.notifications().displayNotification(localNotification);
             } else {
+              const payload = JSON.parse(message.data.sendbird);
               const localNotification = new firebase.notifications.Notification({
                 show_in_foreground: true
               })
