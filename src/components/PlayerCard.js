@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Platform, Text } from 'react-native';
-import { ListItem, Avatar, Badge } from 'react-native-elements';
+import { ListItem, Avatar, Badge, Icon } from 'react-native-elements';
 import firebase from 'react-native-firebase';
 
 import TouchableScale from 'react-native-touchable-scale';
@@ -19,8 +19,14 @@ class PlayerCard extends Component {
         <Text style={ styles.firstName }>{name}</Text>
         <Text style={ styles.age }>{age}</Text>
       </View>
-      <Text style={ styles.userInfo }>{ distance } km away</Text>
-      <Text style={ styles.userInfo }>active { this.props.last_changed }</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <Icon size={14} name="near-me" color="#666" />
+      <Text style={ styles.userInfo }> { distance } km</Text>
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <Icon size={14} name="schedule" color="#666" />
+      <Text style={ styles.userInfo }> { this.props.last_changed }</Text>
+      </View>
       </View>
     );
   }
