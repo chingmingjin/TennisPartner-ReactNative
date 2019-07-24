@@ -20,11 +20,11 @@ class PlayerCard extends Component {
         <Text style={ styles.age }>{age}</Text>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <Icon size={14} name="near-me" color="#666" />
+      <Icon size={16} name="near-me" color="#666" />
       <Text style={ styles.userInfo }> { distance } km</Text>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <Icon size={14} name="schedule" color="#666" />
+      <Icon size={16} name="history" color="#666" />
       <Text style={ styles.userInfo }> { this.props.last_changed }</Text>
       </View>
       </View>
