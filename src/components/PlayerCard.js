@@ -55,7 +55,7 @@ class PlayerCard extends Component {
           </View>
         }
         chevron={{ 
-          color: '#666', 
+          color: '#888', 
           size: 28,
           style: {
             margin: 0

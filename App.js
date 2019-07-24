@@ -59,6 +59,10 @@ export default class App extends Component {
                 const localNotification = new firebase.notifications.Notification({
                   show_in_foreground: true
                 })
+                .android.setChannelId('app.tennispartner.chat')
+                //.android.setSmallIcon('sendbird_ic_notification')
+                .android.setLargeIcon(payload.sender.profile_url)
+                .android.setPriority(firebase.notifications.Android.Priority.High)
                   .setNotificationId(payload.channel.channel_url)
                   .setTitle(payload.sender.name)
                   //.setSubtitle(payload.unread_message_count + ' messages')
