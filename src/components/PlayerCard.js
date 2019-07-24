@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     fontSize: 14,
+    color: '#888'
   }
 });
 
