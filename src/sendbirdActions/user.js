@@ -16,7 +16,6 @@ export const sbRegisterPushToken = () => {
                 // Use APNs token here instead.
                 firebase.messaging().ios.getAPNSToken()
                     .then(token => {
-                        console.log("Token:", token)
                         if(token) {
                             sb.registerAPNSPushTokenForCurrentUser(token, (result, error) => {
                                 if(!error) {
