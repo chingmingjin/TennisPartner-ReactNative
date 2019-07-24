@@ -51,37 +51,47 @@ export default class App extends Component {
     firebase.notifications().android.createChannel(channel);
 
     firebase.messaging().hasPermission()
-        .then(enabled => {
-          if (enabled) {
-            this.onMessageListener = firebase.messaging().onMessage(message => {
-              if (Platform.OS === 'ios') {
-                const payload = JSON.parse(message.data.sendbird);
-                const localNotification = new firebase.notifications.Notification({
-                  show_in_foreground: true
-                })
+      .then(enabled => {
+        if (enabled) {
+          this.onMessageListener = firebase.messaging().onMessage(message => {
+            const payload = JSON.parse(message.data.sendbird);
+            if (Platform.OS === 'ios') {
+              const localNotification = new firebase.notifications.Notification({
+                show_in_foreground: true
+              })
+                .setNotificationId(payload.channel.channel_url)
+                .setTitle(payload.sender.name)
+                //.setSubtitle(payload.unread_message_count + ' messages')
+                .setBody(payload.message)
+                .setData(payload);
+              firebase.notifications().displayNotification(localNotification);
+            } else {
+              const localNotification = new firebase.notifications.Notification({
+                show_in_foreground: true
+              })
                 .android.setChannelId('app.tennispartner.chat')
                 //.android.setSmallIcon('sendbird_ic_notification')
                 .android.setLargeIcon(payload.sender.profile_url)
                 .android.setPriority(firebase.notifications.Android.Priority.High)
-                  .setNotificationId(payload.channel.channel_url)
-                  .setTitle(payload.sender.name)
-                  //.setSubtitle(payload.unread_message_count + ' messages')
-                  .setBody(payload.message)
-                  .setData(payload);
-                firebase.notifications().displayNotification(localNotification);
-              }
-            });
-            this.removeNotificationListener = firebase.notifications().onNotification((notification) => {
-              firebase.notifications().displayNotification(notification);
-            });
-          }
-          firebase.notifications().removeAllDeliveredNotifications();
-        });
+                .setNotificationId(payload.channel.channel_url)
+                .setTitle(payload.sender.name)
+                .setSubtitle(payload.unread_message_count + ' messages')
+                .setBody(payload.message)
+                .setData(payload);
+              firebase.notifications().displayNotification(localNotification);
+            }
+          });
+          this.removeNotificationListener = firebase.notifications().onNotification((notification) => {
+            firebase.notifications().displayNotification(notification);
+          });
+        }
+        firebase.notifications().removeAllDeliveredNotifications();
+      });
 
     //console.disableYellowBox = true;
     AppState.addEventListener("change", this._handleAppStateChange);
 
-    if(firebase.auth().currentUser) {
+    if (firebase.auth().currentUser) {
       var uid = firebase.auth().currentUser.uid;
 
       sbConnect(uid).then(() => {
@@ -114,7 +124,7 @@ export default class App extends Component {
           last_changed: firebase.firestore.FieldValue.serverTimestamp()
         }
       };
-    
+
       var isOnlineForFirestore = {
         presence: {
           state: 'online',
@@ -131,7 +141,7 @@ export default class App extends Component {
           // Instead of simply returning, we'll also set Firestore's state
           // to 'offline'. This ensures that our Firestore cache is aware
           // of the switch to 'offline.'
-          userStatusFirestoreRef.set(isOfflineForFirestore, {merge: true});
+          userStatusFirestoreRef.set(isOfflineForFirestore, { merge: true });
           return;
         };
 
@@ -141,7 +151,7 @@ export default class App extends Component {
         // losing internet, or any other means.
         userStatusDatabaseRef.onDisconnect().set(isOfflineForDatabase).then(function () {
           userStatusDatabaseRef.set(isOnlineForDatabase);
-          userStatusFirestoreRef.set(isOnlineForFirestore, {merge: true});
+          userStatusFirestoreRef.set(isOnlineForFirestore, { merge: true });
         });
       });
     }
@@ -154,9 +164,9 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-          <Root>
-            <AppContainer />
-          </Root>
+        <Root>
+          <AppContainer />
+        </Root>
       </Provider>
     );
   }
@@ -165,7 +175,7 @@ export default class App extends Component {
     const sb = SendBird.getInstance();
     if (sb) {
       if (nextAppState === 'active') {
-        if(Platform.OS === 'ios') {
+        if (Platform.OS === 'ios') {
           PushNotificationIOS.setApplicationIconBadgeNumber(0);
         }
         console.log('app is into foreground');
