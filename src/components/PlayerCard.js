@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Image, View, StyleSheet, Platform, Text } from 'react-native';
+import { View, StyleSheet, Platform, Text } from 'react-native';
 import { ListItem, Avatar, Badge } from 'react-native-elements';
+import firebase from 'react-native-firebase';
+
 import TouchableScale from 'react-native-touchable-scale';
 import { getAge } from '../utils/age';
-
 import { withNavigation } from 'react-navigation';
 
 class PlayerCard extends Component {
@@ -11,19 +12,21 @@ class PlayerCard extends Component {
     super(props);
   }
 
-  _renderNameAge = (name, age, distance, last_changed) => {
+  _renderNameAge = (name, age, distance) => {
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ flexDirection: 'row' }}>
         <Text style={ styles.firstName }>{name}</Text>
         <Text style={ styles.age }>{age}</Text>
       </View>
-      <Text>{ distance } km away</Text>
+      <Text style={ styles.userInfo }>{ distance } km away</Text>
+      <Text style={ styles.userInfo }>active { this.props.last_changed }</Text>
       </View>
     );
   }
 
   render() {
+    const currentUser = firebase.auth().currentUser;
 
     return (
       <ListItem
@@ -51,26 +54,37 @@ class PlayerCard extends Component {
               />)}
           </View>
         }
-        title={this._renderNameAge(this.props.firstName, getAge(this.props.birthday), this.props.distance, this.props.last_changed)}
         chevron={{ 
           color: '#666', 
-          size: 30,
+          size: 28,
+          style: {
+            margin: 0
+          },
           ...Platform.select({
             ios: {
                 marginRight: 10
-            },
-        })
+            }
+          })
         }}
-        onPress={
-          () =>
-            this.props.navigation.navigate('UserDetails', {
-              userId: this.props.doc.id,
-              distance: this.props.distance,
-              city: this.props.city,
-              country: this.props.country,
-              placeId: this.props.placeId,
-              countryId: this.props.countryId
-            })}
+        title={this._renderNameAge(this.props.firstName, getAge(this.props.birthday), this.props.distance, this.props.last_changed)}
+        rightIcon={(
+          /// OVDJE STAVITI BROJ BODOVA
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#888' }}>200</Text>
+          <Text style={{ fontSize: 16, color: '#888' }}> pts</Text>
+          </View>
+        )}
+        onPress={() => {
+          currentUser ?
+            this.props.navigation.navigate('Chat', {
+              userId: currentUser.uid,
+              otherUserId: this.props.doc.id,
+              avatarUrl: this.props.avatarUrl,
+              state: this.props.state,
+              last_changed: this.props.last_changed
+            }) :
+            this.toggleModal()
+        }}
       />
     );
   }
@@ -90,15 +104,18 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
   firstName: {
-    fontSize: 22,
+    fontSize: 20,
     color: 'black',
     fontWeight: 'bold'
   },
   age: {
     alignSelf: 'center',
     marginStart: 5,
-    fontSize: 20,
+    fontSize: 18,
     color: '#888',
+  },
+  userInfo: {
+    fontSize: 14,
   }
 });
 

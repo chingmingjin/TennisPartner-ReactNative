@@ -61,7 +61,7 @@ export default class App extends Component {
                 })
                   .setNotificationId(payload.channel.channel_url)
                   .setTitle(payload.sender.name)
-                  .setSubtitle(payload.unread_message_count + ' messages')
+                  //.setSubtitle(payload.unread_message_count + ' messages')
                   .setBody(payload.message)
                   .setData(payload);
                 firebase.notifications().displayNotification(localNotification);

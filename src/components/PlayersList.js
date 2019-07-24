@@ -4,6 +4,7 @@ import { Content, Icon } from 'native-base';
 import * as Progress from 'react-native-progress';
 import firebase from 'react-native-firebase';
 import { haversine } from '../utils/haversine';
+import moment from 'moment';
 
 import PlayerCard from '../components/PlayerCard';
 
@@ -63,16 +64,15 @@ class PlayersList extends Component {
       if (!snapshot.empty) {
         var players = [];
         snapshot.docs.forEach(doc => {
-          const { firstName, lastName, gender, birthday, avatarUrl, l, presence } = doc.data();
+          const { firstName, gender, birthday, avatarUrl, l, presence } = doc.data();
           if (!user || user.uid !== doc.id) {
             var distance = haversine(this.props.latitude, this.props.longitude, l.latitude, l.longitude).toFixed(1);
             var state = presence.state;
-            var last_changed = presence.last_changed;
+            var last_changed = moment.unix(presence.last_changed.seconds).fromNow();
             players.push({
               key: doc.id,
               doc, // DocumentSnapshot
               firstName,
-              lastName,
               gender,
               birthday,
               avatarUrl,

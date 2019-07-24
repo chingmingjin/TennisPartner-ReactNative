@@ -23,7 +23,6 @@ import Geocoder from 'react-native-geocoding';
 import color from "color";
 import PlayersList from '../components/PlayersList';
 import CourtList from '../components/CourtList';
-import Ranking from '../components/Ranking';
 import Settings from './userSettings';
 import PlacesScreen from './places';
 import { format } from '../utils/format';
@@ -91,15 +90,6 @@ class HomeScreen extends Component {
       tabPlayers: false,
       tabCourts: true,
       tabRanking: false,
-      tabSettings: false
-    });
-  }
-  toggleTabRanking() {
-    this.setState({
-      title: 'Rankings',
-      tabPlayers: false,
-      tabCourts: false,
-      tabRanking: true,
       tabSettings: false
     });
   }
@@ -371,12 +361,6 @@ class HomeScreen extends Component {
               toggleModal={() => this.toggleModal()}
            />
           )}
-          {tabRanking && this.state.latitude != 0 && (
-            <Ranking
-              city={this.state.city}
-              country={this.state.country}
-              placeId={this.state.placeId} />
-          )}
         {tabSettings && (<Settings />)}
           <RBSheet
             ref={ref => {
@@ -418,16 +402,13 @@ class HomeScreen extends Component {
           </RBSheet>
         <Footer>
           <FooterTab>
-            <Button vertical active={this.state.tabPlayers} onPress={() => this.toggleTabPlayers()}>
+            <Button style={styles.footerButton} vertical active={this.state.tabPlayers} onPress={() => this.toggleTabPlayers()}>
               <Icon type="FontAwesome" name="users" />
             </Button>
-            <Button vertical active={this.state.tabCourts} onPress={() => this.toggleTabCourts()}>
+            <Button style={styles.footerButton} vertical active={this.state.tabCourts} onPress={() => this.toggleTabCourts()}>
               <TennisIcons color={Platform.OS === 'android' ? 'white' : '#666'} size={26} name="tennis-court" />
             </Button>
-            <Button vertical active={this.state.tabRanking} onPress={() => this.toggleTabRanking()}>
-              <Icon color={Platform.OS === 'android' ? 'white' : '#666'} type='FontAwesome' name="list-ol" />
-            </Button>
-            <Button vertical active={this.state.tabSettings} onPress={() => this.toggleTabSettings()}>
+            <Button style={styles.footerButton} vertical active={this.state.tabSettings} onPress={() => this.toggleTabSettings()}>
               <Icon type="MaterialIcons" name="settings" />
             </Button>
           </FooterTab>
@@ -475,6 +456,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     margin: 0,
     paddingBottom: isX ? 35 : 0
+  },
+  footerButton: {
+    height: 55
   },
   modalContent: {
     backgroundColor: 'white',
