@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Alert, View, Linking, Platform } from 'react-native';
+import { StyleSheet, Alert, View, Linking, Platform, Image } from 'react-native';
 import { Content } from 'native-base';
 import { Overlay, Text, Button, Input, Icon } from 'react-native-elements'
 import firebase from 'react-native-firebase';
@@ -11,16 +11,27 @@ import { Geokit } from 'geokit';
 import { withNavigation } from 'react-navigation';
 import equal from "fast-deep-equal";
 
+const latitudeDelta = 0.0922
+const longitudeDelta = 0.0421
+
 class CourtList extends Component {
   
   constructor(props) {
     super(props);
 
+    this.lat = (this.props.remoteLat != 0) ? this.props.remoteLat : this.props.latitude;
+    this.lon = (this.props.remoteLon != 0) ? this.props.remoteLon : this.props.longitude;
+
     this.state = {
       courts: [],
       mapType: this.props.mapType,
       courtInfo: false,
-      addMarkerCoord: null,
+      region: {
+        latitudeDelta,
+        longitudeDelta,
+        latitude: this.lat,
+        longitude: this.lon
+      },
       courtNameEmpty: '',
     };
   }
@@ -97,35 +108,24 @@ class CourtList extends Component {
     })
   }
 
+  onRegionChange = region => {
+    this.setState({
+      courtInfo: true,
+      region
+    })
+  }
+
   render() {
-    const lat = (this.props.remoteLat != 0) ? this.props.remoteLat : this.props.latitude;
-    const lon = (this.props.remoteLon != 0) ? this.props.remoteLon : this.props.longitude;
+    const { region } = this.state
     
     return (
       <Content contentContainerStyle={{ ...StyleSheet.absoluteFillObject }}>
         <MapView
           style={{ ...StyleSheet.absoluteFillObject }}
-          region={{
-            latitude: lat,
-            longitude: lon,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
+          initialRegion={region}
+          onRegionChangeComplete={this.onRegionChange}
           mapType={this.state.mapType}
         >
-          {this.props.marker && (
-            <Marker draggable
-              coordinate={{ latitude: lat, longitude: lon }}
-              image={require('../images/tennis_court_marker_add.png')}
-              onDragEnd={(e) => {
-                this.setState({ 
-                  courtInfo: true,
-                  addMarkerCoord: e.nativeEvent.coordinate
-                });
-              }
-              }
-            />
-          )}
           {this.state.courts && this.state.courts.map(court => (
             <Marker
               key={court.key}
@@ -152,8 +152,13 @@ class CourtList extends Component {
             </Marker>
           ))}
         </MapView>
+        {this.props.marker && (
+            <View style={styles.markerFixed}>
+            <Image style={styles.marker} source={require('../images/tennis_court_marker_add.png')} />
+          </View>
+          )}
         {
-          this.state.courtInfo && (
+          this.state.courtInfo && this.props.marker && this.props.marker && (
             <Overlay isVisible height={300}>
               <View style={{ flex: 1, justifyContent: 'space-evenly' }}>
                 <Text style={{
@@ -208,3 +213,17 @@ class CourtList extends Component {
   }
 }
 export default withNavigation(CourtList);
+
+const styles = StyleSheet.create({
+  markerFixed: {
+    left: '50%',
+    marginLeft: -24,
+    marginTop: -48,
+    position: 'absolute',
+    top: '50%'
+  },
+  marker: {
+    height: 50,
+    width: 50
+  }
+})

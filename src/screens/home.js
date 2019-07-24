@@ -241,7 +241,7 @@ class HomeScreen extends Component {
   addMarker = () => {
     this.setState({ marker: true }, () => {
       Snackbar.show({
-        title: 'Drag and drop the marker to court location',
+        title: 'Drag the map to court location',
         duration: Snackbar.LENGTH_INDEFINITE,
         action: {
           title: 'CANCEL',
