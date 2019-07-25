@@ -41,7 +41,15 @@ class PlacesScreen extends Component {
 
                 styles={{
                     textInputContainer: {
-                        height: isX ? 90 : 56,
+                        ...Platform.select({
+                            android: {
+                              height: 56,
+                            },
+                            ios: {
+                              height: isX ? 90 : 70,
+                              paddingTop: isX ? 0 : 20
+                            },
+                        }),
                         alignItems: isX ? 'flex-end' : 'center',
                         paddingBottom: isX ? 5 : 0,
                         width: '100%',
