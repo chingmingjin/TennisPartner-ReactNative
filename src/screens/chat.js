@@ -279,8 +279,8 @@ class Chat extends Component {
                 onEndReachedThreshold={0}
               />
             </View>
+            {this._renderTyping()}
             <View style={styles.messageInputViewStyle}>
-              {this._renderTyping()}
               <MessageInput
                 onRightPress={this._onSendButtonPress}
                 textMessage={this.state.textMessage}
@@ -348,6 +348,8 @@ const styles = {
   messageInputViewStyle: {
     flex: 1,
     marginBottom: 0,
+    borderTopWidth: 1,
+    borderTopColor: '#CCC',
     paddingBottom: isX ? 35 : 0,
     flexDirection: "column",
     justifyContent: "flex-start"

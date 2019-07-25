@@ -1,12 +1,11 @@
 import React from 'react';
-import { View, TextInput, Dimensions, Platform, KeyboardAvoidingView } from 'react-native';
+import { View, TextInput, Dimensions, Platform } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 const { width } = Dimensions.get('window');
 
 const MessageInput = (props) => {
     return (
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : null}>
         <View style={styles.containerStyle}>
             <View style={styles.inputViewStyle}>
                 <TextInput
@@ -15,7 +14,6 @@ const MessageInput = (props) => {
                         color: '#212529',
                         ...Platform.select({
                             android: {
-                                minHeight: 40,
                                 width: width - 45
                             },
                             ios: {
@@ -42,14 +40,11 @@ const MessageInput = (props) => {
                 onPress={props.onRightPress}
             />
         </View>
-        </KeyboardAvoidingView>
     )
 }
 
 const styles = {
     containerStyle: {
-        borderTopWidth: 1,
-        borderTopColor: '#EEE',
         flexDirection: 'row',
         backgroundColor:'#fff',
     },
