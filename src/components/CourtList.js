@@ -165,7 +165,10 @@ class CourtList extends Component {
           )}
         {
           this.state.courtInfo && (
-            <KeyboardAvoidingView>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : null}
+              style={{ flex: 1 }}
+            >
             <Overlay isVisible height={Dimensions.get('window').height*0.4}>
               <View style={{ flex: 1, justifyContent: 'center' }}>
                 <Text style={{
