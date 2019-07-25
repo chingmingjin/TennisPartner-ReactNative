@@ -174,7 +174,7 @@ class CourtList extends Component {
                 height={Dimensions.get('window').height * 0.4}
                 onBackdropPress={Keyboard.dismiss}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                <View style={{ flex: 1, justifyContent: 'center' }}>
                   <Text style={{
                     fontSize: 18,
                     marginTop: 8,
