@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Alert, View, Linking, Platform, Image, Dimensions } from 'react-native';
+import { StyleSheet, Alert, View, Linking, Platform, Image, Dimensions, KeyboardAvoidingView } from 'react-native';
 import { Content } from 'native-base';
 import { Overlay, Text, Button, Input, Icon } from 'react-native-elements'
 import firebase from 'react-native-firebase';
@@ -165,7 +165,8 @@ class CourtList extends Component {
           )}
         {
           this.state.courtInfo && (
-            <Overlay isVisible height={Dimensions.get('window').height*0.35}>
+            <KeyboardAvoidingView>
+            <Overlay isVisible height={Dimensions.get('window').height*0.4}>
               <View style={{ flex: 1, justifyContent: 'center' }}>
                 <Text style={{
                   fontSize: 18,
@@ -212,6 +213,7 @@ class CourtList extends Component {
                 </View>
                 </View>
             </Overlay>
+            </KeyboardAvoidingView>
           )
         }
       </Content>
