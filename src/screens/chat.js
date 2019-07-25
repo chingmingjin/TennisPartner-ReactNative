@@ -241,6 +241,7 @@ class Chat extends Component {
             behavior={Platform.OS === "ios" ? "padding" : null}
             style={{ flex: 1 }}>
             <Header
+<<<<<<< HEAD
             statusBarProps={{
               barStyle: 'light-content',
               backgroundColor: color("#1976d2").darken(0.2).hex()
@@ -258,6 +259,24 @@ class Chat extends Component {
                 }
               })
             }}
+=======
+              statusBarProps={{
+                barStyle: 'light-content',
+                backgroundColor: color("#1976d2").darken(0.2).hex()
+              }}
+              containerStyle={{
+                paddingLeft: 0,
+                backgroundColor: "#1976d2",
+                ...Platform.select({
+                  ios: {
+                    height: isX ? 97 : 64
+                  },
+                  android: {
+                    height: 56
+                  }
+                })
+              }}
+>>>>>>> 27843f071843907ffce4d70d3bbf960fd75913b4
               placement="left"
               leftComponent={<ButtonBack />}
               centerComponent={this._renderTitle()}
