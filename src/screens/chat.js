@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, View, FlatList, Text, Alert, Platform, Image } from "react-native";
+import { Dimensions, View, FlatList, Text, Alert, Platform, Image, KeyboardAvoidingView } from "react-native";
 import { Container, Left, Right, Body, Title, StyleProvider } from "native-base";
 import { Header, Avatar, Badge } from 'react-native-elements'
 import firebase from 'react-native-firebase'
@@ -197,29 +197,29 @@ class Chat extends Component {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start' }}>
         {channel.memberCount === 2 &&
-        (<View style={{ flexDirection: 'row' }}>
-          <View>
-          <Avatar
-            containerStyle={{ alignSelf: 'center' }}
-            rounded
-            source={{
-              uri:
-                this.props.navigation.getParam('avatarUrl', ''),
-            }}
-            title={ this.props.title[0] }
-          />
-          {this.props.navigation.getParam('state', 'offline') == 'online' && (
-              <Badge
-                status="success"
-                badgeStyle={{ width: 12, height: 12, borderRadius: 40 }}
-                containerStyle={{ position: 'absolute', bottom: 4, right: 0 }}
-              />)}
-          </View>
-          <View style={{ marginStart: 8 }}>
-            <Text style={{ color: 'white', fontSize: 18 }}>{this.props.title}</Text>
-            <Text style={{ color: '#eee', fontSize: 12 }}>active {this.props.navigation.getParam('last_changed', 'unknown')}</Text>
-          </View>
-        </View>)}
+          (<View style={{ flexDirection: 'row' }}>
+            <View>
+              <Avatar
+                containerStyle={{ alignSelf: 'center' }}
+                rounded
+                source={{
+                  uri:
+                    this.props.navigation.getParam('avatarUrl', ''),
+                }}
+                title={this.props.title[0]}
+              />
+              {this.props.navigation.getParam('state', 'offline') == 'online' && (
+                <Badge
+                  status="success"
+                  badgeStyle={{ width: 12, height: 12, borderRadius: 40 }}
+                  containerStyle={{ position: 'absolute', bottom: 4, right: 0 }}
+                />)}
+            </View>
+            <View style={{ marginStart: 8 }}>
+              <Text style={{ color: 'white', fontSize: 18 }}>{this.props.title}</Text>
+              <Text style={{ color: '#eee', fontSize: 12 }}>active {this.props.navigation.getParam('last_changed', 'unknown')}</Text>
+            </View>
+          </View>)}
         {channel.memberCount > 2 && (
           <Text style={{ color: 'white', fontSize: 18 }}>{this.props.title}</Text>
         )}
@@ -237,34 +237,36 @@ class Chat extends Component {
     else
       return (
         <StyleProvider style={getTheme(commonColor)}>
-          <View style={{ flex: 1 }}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : null}
+            style={{ flex: 1 }}>
             <Header
-            statusBarProps={{
-              barStyle: 'light-content',
-              backgroundColor: color("#1976d2").darken(0.2).hex()
-            }}
-            containerStyle={{
-              paddingTop: 0,
-              paddingLeft: 0,
-              backgroundColor: "#1976d2",
-              ...Platform.select({         
-                ios: {
-                  height: isX ? 97 : 64
-                },
-                android: {
-                  height: 56
-                }
-              })
-            }}
+              statusBarProps={{
+                barStyle: 'light-content',
+                backgroundColor: color("#1976d2").darken(0.2).hex()
+              }}
+              containerStyle={{
+                paddingTop: 0,
+                paddingLeft: 0,
+                backgroundColor: "#1976d2",
+                ...Platform.select({
+                  ios: {
+                    height: isX ? 97 : 64
+                  },
+                  android: {
+                    height: 56
+                  }
+                })
+              }}
               placement="left"
               leftComponent={<ButtonBack />}
               centerComponent={this._renderTitle()}
             />
             <View style={styles.messageListViewStyle}>
               {isLoading && (
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Progress.Circle style={styles.progressCircle} color="#ffa737" size={50} borderWidth={4} indeterminate={true} />
-              </View>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                  <Progress.Circle style={styles.progressCircle} color="#ffa737" size={50} borderWidth={4} indeterminate={true} />
+                </View>
               )}
               <FlatList
                 ref={elem => this.flatList = elem}
@@ -284,7 +286,7 @@ class Chat extends Component {
                 onChangeText={this._onTextMessageChanged}
               />
             </View>
-          </View>
+          </KeyboardAvoidingView>
         </StyleProvider>
       )
   }
