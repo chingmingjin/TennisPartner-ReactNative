@@ -350,7 +350,6 @@ const styles = {
     marginBottom: 0,
     borderTopWidth: 1,
     borderTopColor: '#CCC',
-    paddingBottom: isX ? 35 : 0,
     flexDirection: "column",
     justifyContent: "flex-start"
   }
