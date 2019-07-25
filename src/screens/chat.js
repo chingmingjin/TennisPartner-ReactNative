@@ -244,11 +244,16 @@ class Chat extends Component {
               backgroundColor: color("#1976d2").darken(0.2).hex()
             }}
             containerStyle={{
+              paddingTop: 0,
+              paddingLeft: 0,
               backgroundColor: "#1976d2",
               ...Platform.select({         
                 ios: {
                   height: isX ? 97 : 64
                 },
+                android: {
+                  height: 56
+                }
               })
             }}
               placement="left"
