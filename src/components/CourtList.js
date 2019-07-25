@@ -172,9 +172,9 @@ class CourtList extends Component {
               <Overlay
                 isVisible
                 height={Dimensions.get('window').height * 0.4}
-                onBackdropPress={Keyboard.dismiss}
-                style={{ justifyContent: 'flex-end' }}>
-                <View style={{ flex: 1, justifyContent: 'center' }}>
+                onBackdropPress={Keyboard.dismiss}>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                   <Text style={{
                     fontSize: 18,
                     marginTop: 8,
@@ -220,6 +220,7 @@ class CourtList extends Component {
                   </View>
                   <View style={{ flex: 1 }} />
                 </View>
+                </TouchableWithoutFeedback>
               </Overlay>
             </KeyboardAvoidingView>
           )
