@@ -195,7 +195,7 @@ class Chat extends Component {
   _renderTitle = () => {
     const { channel } = this.state;
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start' }}>
+      <View style={{ flex: 1, paddingBottom: 5, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
         {channel.memberCount === 2 &&
           (<View style={{ flexDirection: 'row' }}>
             <View>
@@ -251,7 +251,7 @@ class Chat extends Component {
                 backgroundColor: "#1976d2",
                 ...Platform.select({
                   ios: {
-                    height: isX ? 97 : 64
+                    height: isX ? 90 : 64,
                   },
                   android: {
                     height: 56
@@ -260,6 +260,7 @@ class Chat extends Component {
               }}
               placement="left"
               leftComponent={<ButtonBack />}
+              leftContainerStyle={{ alignSelf: 'flex-end' }}
               centerComponent={this._renderTitle()}
             />
             <View style={styles.messageListViewStyle}>
@@ -349,6 +350,6 @@ const styles = {
     marginBottom: 0,
     paddingBottom: isX ? 35 : 0,
     flexDirection: "column",
-    justifyContent: "center"
+    justifyContent: "flex-start"
   }
 };

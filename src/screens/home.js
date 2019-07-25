@@ -281,7 +281,7 @@ class HomeScreen extends Component {
                 paddingTop: -10
               },
               ios: {
-                height: isX ? 97 : 64
+                height: isX ? 90 : 64
               },
             })
           }}
