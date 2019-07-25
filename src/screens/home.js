@@ -50,6 +50,7 @@ class HomeScreen extends Component {
       showPicker: false,
       mapType: 'standard',
       marker: false,
+      courtInfo: false,
       isModalVisible: false
     }
     this.state.distanceSlide = this.state.distance;
@@ -241,19 +242,23 @@ class HomeScreen extends Component {
   addMarker = () => {
     this.setState({ marker: true }, () => {
       Snackbar.show({
-        title: 'Drag the map to court location',
+        title: 'Set the marker on court location',
         duration: Snackbar.LENGTH_INDEFINITE,
         action: {
-          title: 'CANCEL',
+          title: 'DONE',
           color: '#ffa737',
-          onPress: () => { this.setState({ marker: false }) },
+          onPress: () => { this.setState({ marker: false }, () => this.toggleCourtInfo()) },
         },
       });
     })
   }
 
+  toggleCourtInfo = () => {
+    this.setState({ courtInfo: !this.state.courtInfo })
+  }
+
   render() {
-    const { tabPlayers, tabCourts, tabRanking, tabSettings, showPicker } = this.state;
+    const { tabPlayers, tabCourts, tabSettings, showPicker } = this.state;
     const currentUser = firebase.auth().currentUser;
 
     if(showPicker) {
@@ -303,6 +308,7 @@ class HomeScreen extends Component {
                   />}
                 {tabCourts &&
                   <View style={{ flexDirection: 'row' }}>
+                    {!this.state.marker && (
                     <RNEIcon
                       name='map-marker-plus'
                       type='material-community'
@@ -311,6 +317,7 @@ class HomeScreen extends Component {
                       containerStyle={{ marginEnd: 16 }}
                       onPress={() => currentUser ? this.addMarker() : this.toggleModal() }
                     />
+                    )}
                     <ModalDropdown
                       ref={el => this.mapType = el}
                       defaultValue=''
@@ -356,6 +363,8 @@ class HomeScreen extends Component {
               remoteLon={this.state.remoteLon}
               mapType={this.state.mapType}
               marker={this.state.marker}
+              courtInfo={this.state.courtInfo}
+              toggleCourtInfo={() => this.toggleCourtInfo()}
               addMarker={() => this.addMarker()}
               markerAdded={() => this.markerAdded()}
               toggleModal={() => this.toggleModal()}

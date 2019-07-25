@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Alert, View, Linking, Platform, Image } from 'react-native';
+import { StyleSheet, Alert, View, Linking, Platform, Image, Dimensions } from 'react-native';
 import { Content } from 'native-base';
 import { Overlay, Text, Button, Input, Icon } from 'react-native-elements'
 import firebase from 'react-native-firebase';
@@ -54,10 +54,10 @@ class CourtList extends Component {
     });
 
     // Get query (as Promise)
-    query.get().then((snapshot) => {
+    query.onSnapshot(function(snapshot) {
       if (!snapshot.empty) {
         var courts = [];
-        snapshot.docs.forEach(doc => {
+        snapshot._querySnapshot.docs.forEach(function (doc) {
           const { name, phone, l } = doc.data();
           const number = doc.data().number ? doc.data().number : null;
           courts.push({
@@ -69,10 +69,12 @@ class CourtList extends Component {
         'No courts nearby',
         'We don\'t have any courts listed in your city yet. Can you help us and add them on the map?',
         [
-          { text: 'Add court', 
+          {
+            text: 'Add court',
             onPress: () => {
               currentUser ? this.props.addMarker() : this.props.toggleModal()
-            } },
+            }
+          },
           {
             text: 'Cancel',
             style: 'cancel',
@@ -81,15 +83,16 @@ class CourtList extends Component {
       );
 
       this.setState({ courts });
-    });
+    }.bind(this));
   }
 
   componentDidUpdate(prevProps) {
     if (!equal(this.props.mapType, prevProps.mapType)) this.setState({ mapType: this.props.mapType });
+    if (!equal(this.props.courtInfo, prevProps.courtInfo)) this.setState({ courtInfo: this.props.courtInfo });
   }
 
   addMarker = () => {
-    const { addMarkerCoord, courtName, courtPhone, courtNo } = this.state;
+    const { region, courtName, courtPhone, courtNo } = this.state;
     if(!courtName){
       this.setState({ courtNameEmpty: 'Name cannot be empty!' })
       return
@@ -98,19 +101,20 @@ class CourtList extends Component {
       name: courtName,
       phone: courtPhone,
       number: courtNo,
-      l: new firebase.firestore.GeoPoint(addMarkerCoord.latitude, addMarkerCoord.longitude),
-      g: Geokit.hash({ lat: addMarkerCoord.latitude,  lng: addMarkerCoord.longitude })
+      l: new firebase.firestore.GeoPoint(region.latitude, region.longitude),
+      g: Geokit.hash({ lat: region.latitude,  lng: region.longitude })
     }).then((value) => {
       this.setState({
-        courtInfo: false,
         courtNameEmpty: ''
-      }, () => this.props.markerAdded())
+      }, () => {
+        this.props.toggleCourtInfo()
+        this.props.markerAdded()
+      })
     })
   }
 
   onRegionChange = region => {
     this.setState({
-      courtInfo: true,
       region
     })
   }
@@ -137,9 +141,11 @@ class CourtList extends Component {
               <Callout
               onPress={() => Linking.openURL((Platform.OS === 'ios' ? 'tel://' : 'tel:') + court.phone)}>
                 <View style={{ flexDirection: 'row' }}>
+                  {court.phone && (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginEnd: 8 }}>
                     <Icon name='phone' />
                   </View>
+                  )}
                   <View>
                     <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{court.name}</Text>
                     <Text>{court.phone}</Text>
@@ -158,11 +164,11 @@ class CourtList extends Component {
           </View>
           )}
         {
-          this.state.courtInfo && this.props.marker && this.props.marker && (
-            <Overlay isVisible height={300}>
-              <View style={{ flex: 1, justifyContent: 'space-evenly' }}>
+          this.state.courtInfo && (
+            <Overlay isVisible height={Dimensions.get('window').height*0.35}>
+              <View style={{ flex: 1, justifyContent: 'center' }}>
                 <Text style={{
-                  fontSize: 20,
+                  fontSize: 18,
                   marginTop: 8,
                   marginStart: 8,
                   fontWeight: 'bold'
@@ -196,7 +202,7 @@ class CourtList extends Component {
                     titleStyle={{ color: '#ffa737' }}
                     title="Cancel"
                     type="outline"
-                    onPress={() => this.setState({ courtInfo: false })}
+                    onPress={() => this.props.toggleCourtInfo()}
                   />
                   <Button
                     buttonStyle={{ backgroundColor: '#ffa737', width: 75 }}
@@ -223,7 +229,7 @@ const styles = StyleSheet.create({
     top: '50%'
   },
   marker: {
-    height: 50,
-    width: 50
+    height: 56,
+    width: 56
   }
 })
