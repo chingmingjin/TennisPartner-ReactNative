@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Alert, View, Linking, Platform, Image, Dimensions, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Alert, View, Linking, Platform, Image, Dimensions, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Content } from 'native-base';
 import { Overlay, Text, Button, Input, Icon } from 'react-native-elements'
 import firebase from 'react-native-firebase';
@@ -15,7 +15,7 @@ const latitudeDelta = 0.0922
 const longitudeDelta = 0.0421
 
 class CourtList extends Component {
-  
+
   constructor(props) {
     super(props);
 
@@ -35,7 +35,7 @@ class CourtList extends Component {
       courtNameEmpty: '',
     };
   }
-    
+
   componentDidMount() {
     const { latitude, longitude, remoteLat, remoteLon } = this.props;
     const currentUser = firebase.auth().currentUser;
@@ -48,13 +48,13 @@ class CourtList extends Component {
     // Create a GeoQuery based on a location
     const query = geocollection.near({
       center: (remoteLat != 0 && remoteLon != 0) ?
-      new firebase.firestore.GeoPoint(remoteLat, remoteLon) :
-      new firebase.firestore.GeoPoint(latitude, longitude),
+        new firebase.firestore.GeoPoint(remoteLat, remoteLon) :
+        new firebase.firestore.GeoPoint(latitude, longitude),
       radius: 50
     });
 
     // Get query (as Promise)
-    query.onSnapshot(function(snapshot) {
+    query.onSnapshot(function (snapshot) {
       if (!snapshot.empty) {
         var courts = [];
         snapshot._querySnapshot.docs.forEach(function (doc) {
@@ -93,7 +93,7 @@ class CourtList extends Component {
 
   addMarker = () => {
     const { region, courtName, courtPhone, courtNo } = this.state;
-    if(!courtName){
+    if (!courtName) {
       this.setState({ courtNameEmpty: 'Name cannot be empty!' })
       return
     }
@@ -102,7 +102,7 @@ class CourtList extends Component {
       phone: courtPhone,
       number: courtNo,
       l: new firebase.firestore.GeoPoint(region.latitude, region.longitude),
-      g: Geokit.hash({ lat: region.latitude,  lng: region.longitude })
+      g: Geokit.hash({ lat: region.latitude, lng: region.longitude })
     }).then((value) => {
       this.setState({
         courtNameEmpty: ''
@@ -121,7 +121,7 @@ class CourtList extends Component {
 
   render() {
     const { region } = this.state
-    
+
     return (
       <Content contentContainerStyle={{ ...StyleSheet.absoluteFillObject }}>
         <MapView
@@ -139,12 +139,12 @@ class CourtList extends Component {
               image={require('../images/tennis_court_marker.png')}
             >
               <Callout
-              onPress={() => Linking.openURL((Platform.OS === 'ios' ? 'tel://' : 'tel:') + court.phone)}>
+                onPress={() => Linking.openURL((Platform.OS === 'ios' ? 'tel://' : 'tel:') + court.phone)}>
                 <View style={{ flexDirection: 'row' }}>
                   {court.phone && (
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginEnd: 8 }}>
-                    <Icon name='phone' />
-                  </View>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginEnd: 8 }}>
+                      <Icon name='phone' />
+                    </View>
                   )}
                   <View>
                     <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{court.name}</Text>
@@ -159,63 +159,68 @@ class CourtList extends Component {
           ))}
         </MapView>
         {this.props.marker && (
-            <View style={styles.markerFixed}>
+          <View style={styles.markerFixed}>
             <Image style={styles.marker} source={require('../images/tennis_court_marker_add.png')} />
           </View>
-          )}
+        )}
         {
           this.state.courtInfo && (
             <KeyboardAvoidingView
               behavior={Platform.OS === "ios" ? "padding" : null}
               style={{ flex: 1 }}
             >
-            <Overlay isVisible height={Dimensions.get('window').height*0.4}>
-              <View style={{ flex: 1, justifyContent: 'center' }}>
-                <Text style={{
-                  fontSize: 18,
-                  marginTop: 8,
-                  marginStart: 8,
-                  fontWeight: 'bold'
-                }}>Court Info</Text>
-                <Input
-                  placeholder='Name *'
-                  name='name'
-                  onChangeText={(text) => this.setState({courtName: text})}
-                  errorMessage={this.state.courtNameEmpty}
-                />
-                <Input
-                  placeholder='Phone Number'
-                  keyboardType='phone-pad'
-                  name='phone'
-                  onChangeText={(text) => this.setState({courtPhone: text})}
-                />
-                <Input
-                  placeholder='Number of courts'
-                  keyboardType='number-pad'
-                  name='num_courts'
-                  onChangeText={(text) => this.setState({courtNo: text})}
-                />
-                <View style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  marginTop: 16,
-                  marginBottom: 16
-                }}>
-                  <Button
-                    buttonStyle={{ marginEnd: 16, width: 75 }}
-                    titleStyle={{ color: '#ffa737' }}
-                    title="Cancel"
-                    type="outline"
-                    onPress={() => this.props.toggleCourtInfo()}
+              <Overlay
+                isVisible
+                height={Dimensions.get('window').height * 0.4}
+                onBackdropPress={Keyboard.dismiss}
+                style={{ justifyContent: 'flex-end' }}>
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                  <Text style={{
+                    fontSize: 18,
+                    marginTop: 8,
+                    marginStart: 8,
+                    fontWeight: 'bold'
+                  }}>Court Info</Text>
+                  <Input
+                    placeholder='Name *'
+                    name='name'
+                    onChangeText={(text) => this.setState({ courtName: text })}
+                    errorMessage={this.state.courtNameEmpty}
                   />
-                  <Button
-                    buttonStyle={{ backgroundColor: '#ffa737', width: 75 }}
-                    title="Add"
-                    onPress={() => this.addMarker() }
+                  <Input
+                    placeholder='Phone Number'
+                    keyboardType='phone-pad'
+                    name='phone'
+                    onChangeText={(text) => this.setState({ courtPhone: text })}
                   />
+                  <Input
+                    placeholder='Number of courts'
+                    keyboardType='number-pad'
+                    name='num_courts'
+                    onChangeText={(text) => this.setState({ courtNo: text })}
+                  />
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    marginTop: 16,
+                    marginBottom: 16
+                  }}>
+                    <Button
+                      buttonStyle={{ marginEnd: 16, width: 75 }}
+                      titleStyle={{ color: '#ffa737' }}
+                      title="Cancel"
+                      type="outline"
+                      onPress={() => this.props.toggleCourtInfo()}
+                    />
+                    <Button
+                      buttonStyle={{ backgroundColor: '#ffa737', width: 75 }}
+                      title="Add"
+                      onPress={() => this.addMarker()}
+                    />
+                  </View>
+                  <View style={{ flex: 1 }} />
                 </View>
-                </View>
-            </Overlay>
+              </Overlay>
             </KeyboardAvoidingView>
           )
         }
