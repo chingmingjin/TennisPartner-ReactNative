@@ -348,7 +348,6 @@ const styles = {
   messageInputViewStyle: {
     flex: 1,
     marginBottom: 0,
-    marginTop: 8,
     paddingBottom: 8,
     borderTopWidth: 1,
     borderTopColor: '#CCC',
