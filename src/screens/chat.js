@@ -347,7 +347,14 @@ const styles = {
   },
   messageInputViewStyle: {
     flex: 1,
-    marginBottom: 0,
+    ...Platform.select({
+      android: {
+        marginBottom: 0,
+      },
+      ios: {
+        marginBottom: isX ? 0 : 8
+      },
+  }),
     paddingBottom: 8,
     borderTopWidth: 1,
     borderTopColor: '#CCC',

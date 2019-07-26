@@ -20,7 +20,7 @@ const MessageInput = (props) => {
                                 width: width - 45
                             },
                             ios: {
-                                minHeight: isX ? 45 : 55,
+                                minHeight: isX ? 45 : 40,
                                 width: width - 45
                             },
                         })
