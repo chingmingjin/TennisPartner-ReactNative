@@ -195,7 +195,7 @@ class Chat extends Component {
   _renderTitle = () => {
     const { channel } = this.state;
     return (
-      <View style={{ flex: 1, paddingBottom: 5, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
         {channel.memberCount === 2 &&
           (<View style={{ flexDirection: 'row' }}>
             <View>
@@ -260,8 +260,9 @@ class Chat extends Component {
               }}
               placement="left"
               leftComponent={<ButtonBack />}
-              leftContainerStyle={{ alignSelf: 'flex-end' }}
+              leftContainerStyle={{ alignSelf: 'center' }}
               centerComponent={this._renderTitle()}
+              rightComponent={{ icon: 'person-add', color: '#fff' }}
             />
             <View style={styles.messageListViewStyle}>
               {isLoading && (
