@@ -161,6 +161,7 @@ class Chat extends Component {
     const message = rowData.item;
     const { channel } = this.state;
     if (message.isUserMessage() || message.isFileMessage()) {
+      console.log(channel.getReadReceipt(message), channel.memberCount)
       return (
         <Message
           key={message.messageId ? message.messageId : message.reqId}
@@ -185,9 +186,9 @@ class Chat extends Component {
     return (
       <View style={styles.renderTypingViewStyle}>
         <View style={{ opacity: this.props.typing ? 1 : 0, marginRight: 8 }}>
-          <BarIndicator count={4} size={12} animationDuration={900} color="#cbd0da" />
+          <BarIndicator count={4} size={12} animationDuration={900} color="#bbc0c9" />
         </View>
-        <Text style={{ color: "#cbd0da", fontSize: 12 }}>{this.props.typing}</Text>
+        <Text style={{ color: "#bbc0c9", fontSize: 12 }}>{this.props.typing}</Text>
       </View>
     );
   };
@@ -333,8 +334,8 @@ const styles = {
     flexDirection: "row",
     marginLeft: 14,
     marginRight: 14,
-    marginTop: 4,
-    marginBottom: 0,
+    marginTop: 8,
+    marginBottom: 8,
     paddingBottom: 0,
     height: 14
   },
