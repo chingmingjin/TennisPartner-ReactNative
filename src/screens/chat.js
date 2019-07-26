@@ -185,9 +185,9 @@ class Chat extends Component {
     return (
       <View style={styles.renderTypingViewStyle}>
         <View style={{ opacity: this.props.typing ? 1 : 0, marginRight: 8 }}>
-          <BarIndicator count={4} size={10} animationDuration={900} color="#cbd0da" />
+          <BarIndicator count={4} size={12} animationDuration={900} color="#cbd0da" />
         </View>
-        <Text style={{ color: "#cbd0da", fontSize: 10 }}>{this.props.typing}</Text>
+        <Text style={{ color: "#cbd0da", fontSize: 12 }}>{this.props.typing}</Text>
       </View>
     );
   };
@@ -348,6 +348,7 @@ const styles = {
   messageInputViewStyle: {
     flex: 1,
     marginBottom: 0,
+    paddingBottom: 8,
     borderTopWidth: 1,
     borderTopColor: '#CCC',
     flexDirection: "column",

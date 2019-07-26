@@ -14,10 +14,11 @@ const MessageInput = (props) => {
                         color: '#212529',
                         ...Platform.select({
                             android: {
+                                minHeight: 43,
                                 width: width - 45
                             },
                             ios: {
-                                minHeight: 40,
+                                minHeight: 36,
                                 width: width - 66
                             },
                         })

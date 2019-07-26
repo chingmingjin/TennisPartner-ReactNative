@@ -174,7 +174,7 @@ class CourtList extends Component {
                 height={Dimensions.get('window').height * 0.4}
                 onBackdropPress={Keyboard.dismiss}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={{ flex: 1, justifyContent: 'center' }}>
+                <View style={{ flex: 1, justifyContent: 'space-evenly' }}>
                   <Text style={{
                     fontSize: 18,
                     marginTop: 8,
@@ -218,7 +218,6 @@ class CourtList extends Component {
                       onPress={() => this.addMarker()}
                     />
                   </View>
-                  <View style={{ flex: 1 }} />
                 </View>
                 </TouchableWithoutFeedback>
               </Overlay>
