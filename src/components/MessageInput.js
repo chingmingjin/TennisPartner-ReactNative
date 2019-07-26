@@ -2,7 +2,9 @@ import React from 'react';
 import { View, TextInput, Dimensions, Platform } from 'react-native';
 import { Icon } from 'react-native-elements';
 
-const { width } = Dimensions.get('window');
+const d = Dimensions.get('window');
+const width = d.width;
+const isX = Platform.OS === "ios" && (d.height > 800 || d.width > 800) ? true : false;
 
 const MessageInput = (props) => {
     return (
@@ -18,7 +20,7 @@ const MessageInput = (props) => {
                                 width: width - 45
                             },
                             ios: {
-                                minHeight: 45,
+                                minHeight: isX ? 45 : 55,
                                 width: width - 45
                             },
                         })
