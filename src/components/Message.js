@@ -33,10 +33,10 @@ class Message extends Component {
     render() {
         return (
              <View style={styles.messageViewStyle}>
-                <View style={{flexDirection: this.props.isUser ? 'row-reverse' : 'row', paddingLeft: 14, paddingRight: 14, paddingTop: 4}}>
+                <View style={{flexDirection: this.props.isUser ? 'row-reverse' : 'row', paddingLeft: 14, paddingRight: 14, paddingTop: 4, paddingBottom: 4}}>
                     { this._renderMessageAvatar() }
                     <View>
-                    {!this.props.isUser && (
+                    {this.props.isShow && (
                     <Text style={{ color: '#878d99', fontSize: 12, marginBottom: 4 }}>{ this.props.isUser || !this.props.isShow ? null : this.props.nickname }</Text>
                     )}
                     <MessageContainer 
