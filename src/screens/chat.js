@@ -158,7 +158,6 @@ class Chat extends Component {
   };
 
   _renderList = rowData => {
-    console.log(rowData)
     const message = rowData.item;
     const { channel } = this.state;
     if (message.isUserMessage() || message.isFileMessage()) {
@@ -280,7 +279,7 @@ class Chat extends Component {
                 onEndReachedThreshold={0}
               />
             </View>
-            {this._renderTyping()}
+            {this.props.typing !== '' && this._renderTyping()}
             <View style={styles.messageInputViewStyle}>
               <MessageInput
                 onRightPress={this._onSendButtonPress}
@@ -349,6 +348,7 @@ const styles = {
   messageInputViewStyle: {
     flex: 1,
     marginBottom: 0,
+    marginTop: 8,
     paddingBottom: 8,
     borderTopWidth: 1,
     borderTopColor: '#CCC',
