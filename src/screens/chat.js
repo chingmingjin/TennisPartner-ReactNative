@@ -158,10 +158,10 @@ class Chat extends Component {
   };
 
   _renderList = rowData => {
+    console.log(rowData)
     const message = rowData.item;
     const { channel } = this.state;
     if (message.isUserMessage() || message.isFileMessage()) {
-      console.log(channel.getReadReceipt(message), channel.memberCount)
       return (
         <Message
           key={message.messageId ? message.messageId : message.reqId}
@@ -171,7 +171,7 @@ class Chat extends Component {
           onPress={() => this._onUserBlockPress(message.sender.userId)}
           nickname={message.sender.nickname}
           time={message.time}
-          readCount={false || channel.getReadReceipt(message) === channel.memberCount}
+          readCount={false || (channel.getReadReceipt(message) === 0 && rowData.index === 0)}
           message={this._renderFileMessageItem(rowData)}
         />
       );
