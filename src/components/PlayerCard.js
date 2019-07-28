@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Platform, Text } from 'react-native';
+import { View, StyleSheet, Image, Text } from 'react-native';
 import { ListItem, Avatar, Badge, Icon } from 'react-native-elements';
 import firebase from 'react-native-firebase';
 
@@ -22,10 +22,6 @@ class PlayerCard extends Component {
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <Icon size={16} name="near-me" color="#666" />
       <Text style={ styles.userInfo }> { distance } km</Text>
-      </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <Icon size={16} name="history" color="#666" />
-      <Text style={ styles.userInfo }> { this.props.last_changed }</Text>
       </View>
       </View>
     );
@@ -60,24 +56,11 @@ class PlayerCard extends Component {
               />)}
           </View>
         }
-        chevron={{ 
-          color: '#888', 
-          size: 28,
-          style: {
-            margin: 0
-          },
-          ...Platform.select({
-            ios: {
-                marginRight: 10
-            }
-          })
-        }}
         title={this._renderNameAge(this.props.firstName, getAge(this.props.birthday), this.props.distance, this.props.last_changed)}
         rightIcon={(
-          /// OVDJE STAVITI BROJ BODOVA
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#888' }}>200</Text>
-          <Text style={{ fontSize: 16, color: '#888' }}> pts</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginEnd: 16 }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#888', marginEnd: 8 }}>200</Text>
+          <Image style={{ width: 20, height: 20 }} source={require('../images/ball.png')} />
           </View>
         )}
         onPress={() => {
