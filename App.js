@@ -88,7 +88,7 @@ export default class App extends Component {
           this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
             const data = notificationOpen.notification.data;
             if(data.type === "MESG") {
-              console.log(data)
+            sbConnect(data.recipient.id).then(() => {
             this.navigator && this.navigator.dispatch(
               NavigationActions.navigate({
                 routeName: 'Chat',
@@ -100,6 +100,7 @@ export default class App extends Component {
                 }
               })
               );
+            });
             }
         });
         }
