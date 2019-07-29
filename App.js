@@ -86,7 +86,6 @@ export default class App extends Component {
             firebase.notifications().displayNotification(notification);
           });
         }
-        firebase.notifications().removeAllDeliveredNotifications();
       });
 
     //console.disableYellowBox = true;
@@ -162,6 +161,7 @@ export default class App extends Component {
     this.onTokenRefreshListener();
     this.onMessageListener();
   }
+
   render() {
     return (
       <Provider store={store}>
@@ -181,6 +181,7 @@ export default class App extends Component {
         }
         console.log('app is into foreground');
         sb.setForegroundState();
+        firebase.notifications().removeAllDeliveredNotifications();
       } else if (nextAppState === 'background') {
         console.log('app is into background');
         sb.setBackgroundState();
