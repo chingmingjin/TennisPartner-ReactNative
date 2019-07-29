@@ -353,7 +353,8 @@ class HomeScreen extends Component {
               country={this.state.country}
               placeId={this.state.placeId}
               countryId={this.state.countryId}
-              distance={this.state.distance} />
+              distance={this.state.distance}
+              toggleModal={() => this.toggleModal()} />
           )}
           {tabCourts && this.state.latitude != 0 && (
             <CourtList

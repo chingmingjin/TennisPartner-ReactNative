@@ -72,7 +72,7 @@ class PlayerCard extends Component {
               state: this.props.state,
               last_changed: this.props.last_changed
             }) :
-            this.toggleModal()
+            this.props.toggleModal()
         }}
       />
     );

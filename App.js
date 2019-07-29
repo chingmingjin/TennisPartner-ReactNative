@@ -71,7 +71,7 @@ export default class App extends Component {
                 show_in_foreground: true
               })
                 .android.setChannelId('app.tennispartner.chat')
-                //.android.setSmallIcon('sendbird_ic_notification')
+                .android.setSmallIcon(require('./src/images/rackets.png'))
                 .android.setLargeIcon(payload.sender.profile_url)
                 .android.setPriority(firebase.notifications.Android.Priority.High)
                 .setNotificationId(payload.channel.channel_url)
