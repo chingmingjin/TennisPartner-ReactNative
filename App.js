@@ -6,7 +6,7 @@ import {
 } from "react-native";
 import { Root } from 'native-base';
 
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { createStackNavigator, createAppContainer, NavigationActions } from "react-navigation";
 import { Provider } from "react-redux";
 import store from "./src/store";
 import SendBird from 'sendbird';
@@ -85,6 +85,24 @@ export default class App extends Component {
           this.removeNotificationListener = firebase.notifications().onNotification((notification) => {
             firebase.notifications().displayNotification(notification);
           });
+          this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+            const data = notificationOpen.notification.data;
+            if(data.type === "MESG") {
+              console.log(data)
+            this.navigator && this.navigator.dispatch(
+              NavigationActions.navigate({
+                routeName: 'Chat',
+                params: {
+                  userId: data.recepient.id,
+                  otherUserId: data.sender.id,
+                  avatarUrl: data.sender.profile_url,
+                  state: 'online',
+                  last_changed: new Date()
+                }
+              })
+              );
+            }
+        });
         }
       });
 
@@ -160,13 +178,15 @@ export default class App extends Component {
     AppState.removeEventListener("change", this._handleAppStateChange);
     this.onTokenRefreshListener();
     this.onMessageListener();
+    this.removeNotificationListener();
+    this.removeNotificationOpenedListener();
   }
 
   render() {
     return (
       <Provider store={store}>
         <Root>
-          <AppContainer />
+          <AppContainer ref={nav => { this.navigator = nav; }} />
         </Root>
       </Provider>
     );
