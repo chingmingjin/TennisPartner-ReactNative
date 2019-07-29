@@ -96,7 +96,6 @@ export default class App extends Component {
                   userId: data.recipient.id,
                   otherUserId: data.sender.id,
                   avatarUrl: data.sender.profile_url,
-                  state: 'online',
                 }
               })
               );
@@ -120,7 +119,7 @@ export default class App extends Component {
       });
 
 
-      var userStatusDatabaseRef = firebase.database().ref('/presence/' + uid);
+      var userStatusDatabaseRef = firebase.database().ref('/status/' + uid);
       var userStatusFirestoreRef = firebase.firestore().doc('players/' + uid);
 
       // We'll create two constants which we will write to 
