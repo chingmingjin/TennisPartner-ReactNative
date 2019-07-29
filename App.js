@@ -93,11 +93,10 @@ export default class App extends Component {
               NavigationActions.navigate({
                 routeName: 'Chat',
                 params: {
-                  userId: data.recepient.id,
+                  userId: data.recipient.id,
                   otherUserId: data.sender.id,
                   avatarUrl: data.sender.profile_url,
                   state: 'online',
-                  last_changed: new Date()
                 }
               })
               );
