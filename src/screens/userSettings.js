@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Share, View, SectionList, Image, StyleSheet, Platform, TouchableHighlight } from "react-native";
+import { Share, View, FlatList, Image, StyleSheet, Platform, TouchableHighlight } from "react-native";
 import { Left, Icon, Text, ListItem } from 'native-base';
 import { withNavigation } from "react-navigation";
 import { Avatar } from 'react-native-elements';
+import color from 'color'
 import {
   sbDisconnect
 } from '../sendbirdActions';
@@ -20,7 +21,7 @@ class UserSettings extends Component {
 
   componentDidMount() {
     this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
+      if (user && user.displayName) {
         this.setState({ user: user });
       } else {
         this.setState({
@@ -29,7 +30,7 @@ class UserSettings extends Component {
       }
     });
     this.unsubscribeUserChange = firebase.auth().onUserChanged((userInfo) => {
-      if (userInfo) {
+      if (userInfo && userInfo.displayName) {
         this.setState({ user: userInfo });
       } else {
         this.setState({
@@ -47,14 +48,14 @@ class UserSettings extends Component {
  link(item) {
   const { user } = this.state;
   if(item == 'Invite friends') Share.share({
-    message: 'Get new Tennis Partner app!\nhttps://tennispartner.app/get',
+    message: 'Get new Tennis Partner app!',
     url: 'https://tennispartner.app/get'
   },{
     dialogTitle: 'Invite via…'
   });
   if(item == 'Logout') if(user) {
     var uid = firebase.auth().currentUser.uid;
-    var userStatusDatabaseRef = firebase.database().ref('/presence/' + uid);
+    var userStatusDatabaseRef = firebase.database().ref('/status/' + uid);
     var isOfflineForDatabase = {
       state: 'offline',
       last_changed: firebase.database.ServerValue.TIMESTAMP,
@@ -74,18 +75,18 @@ class UserSettings extends Component {
         alignItems: 'stretch',
       },
       header: {
-        backgroundColor: '#ffa737',
+        backgroundColor: color('#ffa737').lighten(0.05).hex(),
         paddingTop: 20,
         paddingBottom: 20,
         alignItems: 'center'
       },
       profileImg: {
-        height: 90,
-        width: 90,
+        height: 150,
+        width: 150,
         borderRadius: 40,
       },
       userName: {
-        fontSize: 22,
+        fontSize: 24,
         color: 'white',
         paddingTop: 8
       },
@@ -106,9 +107,7 @@ class UserSettings extends Component {
     });
 
     const { user } = this.state;
-
-    const userMenu = user ? {title: 'User', data: ['My Games', 'Logout'], icon: ['baseball-ball', 'sign-out-alt']} : {data: []};
-
+console.log(user)
     return (
         <View style={styles.navigationView}>
         {!user && (
@@ -119,33 +118,35 @@ class UserSettings extends Component {
           </View>
         </TouchableHighlight>
         )}
-        {user && user.photoURL && (
+        {user && (
           <TouchableHighlight>
             <View style={styles.header}>
               <Avatar
                 source={{ uri: user.photoURL }}
-                containerStyle={{ width: 120, height: 120 }}
+                size='xlarge'
                 rounded
+                showEditButton={true}
+                editButton={{ name: 'mode-edit', type: 'material', size: 40, color: '#fff', underlayColor: '#000' }}
                 title={user.displayName.charAt(0)}
               />
               <Text style={styles.userName}>{user.displayName}</Text>
             </View>
           </TouchableHighlight>
         )}
-          <SectionList
-            sections={[
-              {data: ['Invite friends', 'About'], icon: ['share-alt', 'info-circle']},
-              userMenu
+          <FlatList
+            data={[
+              { key: 'Invite friends', icon: 'share-alt' },
+              { key: 'About', icon: 'info-circle' },
+              user ? { key: 'Logout', icon: 'sign-out-alt' } : {}
             ]}
-            renderItem={({item, index, section }) =>
-            <ListItem button noBorder onPress={() => this.link(item)}>
+            renderItem={({ item }) =>
+            <ListItem button noBorder onPress={() => this.link(item.key)}>
             <Left>
-              <Icon active type='FontAwesome5' name={section.icon[index]} style={{ color: "#888", fontSize: 22, width: 30 }} />
-              <Text style={styles.text}>{item}</Text>
+              <Icon active type='FontAwesome5' name={item.icon} style={{ color: "#888", fontSize: 22, width: 30 }} />
+              <Text style={styles.text}>{item.key}</Text>
             </Left>
             </ListItem>}
-            renderSectionHeader={({section}) => section.title ? <Text style={styles.sectionHeader}>{section.title}</Text> : (null)}
-            keyExtractor={(item, index) => index}
+            keyExtractor={(item, index) => index.toString()}
           />
         </View>
     );

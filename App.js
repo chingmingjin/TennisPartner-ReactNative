@@ -107,8 +107,17 @@ export default class App extends Component {
 
     //console.disableYellowBox = true;
     AppState.addEventListener("change", this._handleAppStateChange);
+    const currentUser = firebase.auth().currentUser;
+    if (currentUser) {
+      if (!currentUser.displayName) {
+        this.navigator && this.navigator.dispatch(
+          NavigationActions.navigate({
+            routeName: 'Login'
+          })
+        );
+        return;
+      }
 
-    if (firebase.auth().currentUser) {
       var uid = firebase.auth().currentUser.uid;
 
       sbConnect(uid).then(() => {
@@ -198,11 +207,9 @@ export default class App extends Component {
         if (Platform.OS === 'ios') {
           PushNotificationIOS.setApplicationIconBadgeNumber(0);
         }
-        console.log('app is into foreground');
         sb.setForegroundState();
         firebase.notifications().removeAllDeliveredNotifications();
       } else if (nextAppState === 'background') {
-        console.log('app is into background');
         sb.setBackgroundState();
       }
     }

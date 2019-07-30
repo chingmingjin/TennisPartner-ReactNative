@@ -27,7 +27,6 @@ import {
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
-    this.unsubscribe = null;
     this.state = {
       user: null,
       message: '',
@@ -55,7 +54,7 @@ class LoginScreen extends Component {
       if (user) {
         this.setState({ user: user });
         var uid = firebase.auth().currentUser.uid;
-        var userStatusDatabaseRef = firebase.database().ref('/presence/' + uid);
+        var userStatusDatabaseRef = firebase.database().ref('/status/' + uid);
         var isOnlineForDatabase = {
           state: 'online',
           last_changed: firebase.database.ServerValue.TIMESTAMP,
@@ -66,8 +65,7 @@ class LoginScreen extends Component {
   }
 
   componentWillUnmount() {
-     if (this.unsubscribe) this.unsubscribe();
-     this.onTokenRefreshListener();
+     this.unsubscribe();
   }
 
   signIn = () => {
@@ -94,12 +92,8 @@ class LoginScreen extends Component {
     if (confirmResult) {
       confirmResult.confirm(codeInput)
         .then((user) => {
-          sbConnect(user.uid)
-            .then(() => {
-              this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
-                sbRegisterPushToken()
-              });
-              if (user.metadata.creationTime === user.metadata.lastSignInTime)
+
+              if (user.metadata.creationTime === user.metadata.lastSignInTime || !user.displayName)
                 this.setState({ loading: false, message: '', title: 'Your Info' });
               else  {
                 Toast.show({
@@ -109,10 +103,6 @@ class LoginScreen extends Component {
                 });
                 this.props.navigation.goBack();
               }
-            })
-            .catch((err) => {
-              console.error(err);
-            });
         })
         .catch(error => this.setState({ loading: false, message: error.message }));
     }
@@ -241,30 +231,40 @@ class LoginScreen extends Component {
           const playerData = {
             avatarUrl: avatarSource,
             firstName: firstName,
-            phoneNumber: phoneNumber,
+            phoneNumber: user.phoneNumber,
             gender: gender,
             birthday: date,
             l: location,
-            g: Geokit.hash({ lat: lat,  lng: lon })
+            g: Geokit.hash({ lat: lat,  lng: lon }),
+            presence: {
+              state: 'online',
+              last_changed: firebase.firestore.FieldValue.serverTimestamp()
+            }
           }
           firebase.firestore().collection('players').doc(user.uid).set(playerData)
-          .then((userRef) => {
-            sbUpdateProfile(firstName, avatarSource)
-              .then(() => {
-                user.updateProfile({ displayName: firstName, photoURL: avatarSource }).then(() => {
-                  this.setState({ loading: false });
-                  Toast.show({
-                    text: "Login successful!",
-                    duration: 3000,
-                    type: "success"
-                  });
-                  this.props.navigation.goBack()
+            .then((userRef) => {
+              sbConnect(user.uid)
+                .then(() => {
+                  sbUpdateProfile(firstName, avatarSource)
+                    .then(() => {
+                      user.updateProfile({ displayName: firstName, photoURL: avatarSource }).then(() => {
+                        this.setState({ loading: false });
+                        Toast.show({
+                          text: "Login successful!",
+                          duration: 3000,
+                          type: "success"
+                        });
+                        this.props.navigation.goBack()
+                      });
+                    })
+                    .catch((err) => {
+                      console.error(err);
+                    });
+                })
+                .catch((err) => {
+                  console.error(err);
                 });
-              })
-              .catch((err) => {
-                console.error(err);
-              });
-          }).catch(error => console.error(error));
+            }).catch(error => console.error(error));
         },
         (error) => {
             // See error code charts below.
@@ -274,14 +274,7 @@ class LoginScreen extends Component {
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
     } else {
-      if(!avatarSelected) {
-        Toast.show({
-          text: 'You didn\'t select your avatar!',
-          textStyle: { textAlign: 'center' },
-          type: 'danger',
-          duration: 3500
-        });
-      } else if(!firstName) {
+      if(!firstName) {
         Toast.show({
           text: 'You didn\'t enter your name!',
           textStyle: { textAlign: 'center' },
@@ -303,10 +296,31 @@ class LoginScreen extends Component {
           duration: 3500
         });
       } else {
-        this.setState({ loadingProgress: true, uploadProgress: 0, loadingText: 'Signing in...' });
+        this.setState({ 
+          loadingProgress: avatarSelected,
+          loading: !avatarSelected, 
+          uploadProgress: 0, 
+          loadingText: 'Signing in...' 
+        });
 
         Geolocation.getCurrentPosition(
           (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const location = new firebase.firestore.GeoPoint(lat, lon);
+            const playerData = {
+              firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
+              phoneNumber: user.phoneNumber,
+              gender: (male) ? 'male' : 'female',
+              birthday: moment(date, "DD.MM.YYYY").format("YYYY-MM-DD"),
+              l: location,
+              g: Geokit.hash({ lat: lat,  lng: lon }),
+              presence: {
+                state: 'online',
+                last_changed: firebase.firestore.FieldValue.serverTimestamp()
+              }
+            }
+            if(avatarSelected) {
             const ref = firebase.storage().ref('/images/avatars/' + user.uid + '.jpg');
             const uploadTask = ref.putFile(avatarSource.uri, { contentType: 'image/jpeg' });
             const unsubscribe = uploadTask.on(
@@ -316,28 +330,46 @@ class LoginScreen extends Component {
                 this.setState({ uploadProgress: progress });
                 if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
                   unsubscribe();
-                  const lat = position.coords.latitude;
-                  const lon = position.coords.longitude;
-                  const location = new firebase.firestore.GeoPoint(lat, lon);
-                  const playerData = {
-                    avatarUrl: snapshot.downloadURL,
-                    firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
-                    phoneNumber: phoneNumber,
-                    gender: (male) ? 'male' : 'female',
-                    birthday: moment(date, "DD.MM.YYYY").format("YYYY-MM-DD"),
-                    l: location,
-                    g: Geokit.hash({ lat: lat,  lng: lon })
-                  }
 
-//UBACITI I PRESENCE U BAZU
-
-
+                  playerData.avatarUrl = snapshot.downloadURL;
+                  
                   firebase.firestore().collection('players').doc(user.uid).set(playerData)
                   .then((userRef) => {
-                    sbUpdateProfile(firstName, snapshot.downloadURL)
+                    sbConnect(user.uid)
                       .then(() => {
-                        user.updateProfile({ displayName: firstName, photoURL: snapshot.downloadURL }).then(() => {
-                          this.setState({ loadingProgress: false });
+                        sbUpdateProfile(firstName, snapshot.downloadURL)
+                          .then(() => {
+                            user.updateProfile({ displayName: firstName, photoURL: snapshot.downloadURL }).then(() => {
+                              this.setState({ loadingProgress: false });
+                              Toast.show({
+                                text: "Login successful!",
+                                duration: 3000,
+                                type: "success"
+                              });
+                              this.props.navigation.goBack()
+                            });
+                          })
+                          .catch((err) => {
+                            console.error(err);
+                          });
+                      }).catch((err) => {
+                        console.error(err);
+                      });
+                  }).catch(error => console.error(error));
+                }
+              },
+              (error) => {
+                unsubscribe();
+                console.error(error);
+              },
+            );
+          } else {
+            firebase.firestore().collection('players').doc(user.uid).set(playerData)
+                  .then((userRef) => {
+                    sbUpdateProfile(firstName, 'https://tennispartner.app/images/user.png')
+                      .then(() => {
+                        user.updateProfile({ displayName: firstName }).then(() => {
+                          this.setState({ loading: false });
                           Toast.show({
                             text: "Login successful!",
                             duration: 3000,
@@ -350,13 +382,7 @@ class LoginScreen extends Component {
                         console.error(err);
                       });
                   }).catch(error => console.error(error));
-                }
-              },
-              (error) => {
-                unsubscribe();
-                console.error(error);
-              },
-            );
+          }
           },
           (error) => {
               // See error code charts below.

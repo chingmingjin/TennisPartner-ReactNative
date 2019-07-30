@@ -60,7 +60,7 @@ class HomeScreen extends Component {
 
   componentDidMount() {
     this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
+      if (user && user.displayName) {
         this.setState({ user: user });
       } else {
         this.setState({
@@ -315,7 +315,7 @@ class HomeScreen extends Component {
                       underlayColor='#1976d2'
                       color='#fff'
                       containerStyle={{ marginEnd: 16 }}
-                      onPress={() => currentUser ? this.addMarker() : this.toggleModal() }
+                      onPress={() => (currentUser && currentUser.displayName) ? this.addMarker() : this.toggleModal() }
                     />
                     )}
                     <ModalDropdown

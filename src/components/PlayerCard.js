@@ -64,7 +64,7 @@ class PlayerCard extends Component {
           </View>
         )}
         onPress={() => {
-          currentUser ?
+          (currentUser && currentUser.displayName) ?
             this.props.navigation.navigate('Chat', {
               userId: currentUser.uid,
               otherUserId: this.props.doc.id,

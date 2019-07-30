@@ -27,7 +27,7 @@ class PlayersList extends Component {
 
   componentDidMount() {
     this.unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) this.setState({ user: user, loading: true }, () => this.getNearbyPlayers(this.props.distance)); 
+      if (user && user.displayName) this.setState({ user: user, loading: true }, () => this.getNearbyPlayers(this.props.distance)); 
       else this.setState({ user: null, loading: true }, () => this.getNearbyPlayers(this.props.distance));
     });
   }
